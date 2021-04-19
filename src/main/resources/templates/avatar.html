@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="ch" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-FYBEW0S5S5"></script>
+    <script> window.dataLayer = window.dataLayer || []; function gtag() { dataLayer.push(arguments); } gtag('js', new Date()); gtag('config', 'G-FYBEW0S5S5'); </script>
+    <meta charset="utf-8"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <title>月幕Galgame - 个人中心</title>
+
+
+
+    <link rel="stylesheet" href="/avatar/css/main.css?version=v2.16.26">
+    <link rel="stylesheet" href="/avatar/components/semanticui/semantic.min.css">
+    <link rel="stylesheet" href="/avatar/components/cropper/cropper.min.css">
+
+    <style type="text/css">
+
+        .inpuFile {
+            display: none;
+        }
+
+        .previewBox, .previewBoxRound {
+            box-shadow: 0 0 5px #adadad;
+            width: 100px;
+            height: 100px;
+            margin-top: 30px;
+            overflow: hidden; /*这个超出设置为隐藏很重要，否则就会整个显示出来了*/
+        }
+
+        .previewBoxRound {
+            border-radius: 50%; /*设置为圆形*/
+        }
+
+        #cropImg {
+            height: 350px;
+            width: 350px;
+            box-shadow: 0 0 5px #adadad;
+        }
+    </style>
+
+</head>
+<body>
+
+<link rel="stylesheet" href="/index/style/icon/iconfont.css">
+
+<div class="ui text ro-menu menu " style="position: relative;
+        background: #fff;
+box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.08);
+        margin-bottom: 0;
+        margin-top: 0;
+        ">
+    <a href="/index">
+        <img src="/image/logo.png">
+    </a>
+    <a class="ro-menu-item" href="/co/article">
+        <span>文章</span>
+    </a>
+    <a class="ro-menu-item" href="/co/notes">
+        <span>手记</span>
+    </a>
+    <a class="ro-menu-item" href="/specialcode">
+        <span>特殊码</span>
+    </a>
+    <a class="ro-menu-item" href="/co/picset">
+        <span>画札</span>
+    </a>
+    <div class="right menu" th:if="${session.userId}!=null" login=yes>
+        <div id="ro-search-box" class="ro-menu-item" style="display: none">
+            <div id="main-search-input" class="ui left icon input">
+                <input type="text" placeholder="搜索...">
+                <i class="icon iconfont icon-search"></i>
+            </div>
+        </div>
+        <a id="ro-search-button" class="ro-menu-item">
+            <i class="icon iconfont icon-search"></i>
+        </a>
+        <div id="ro-menu-split">
+            <span></span>
+        </div>
+
+        <a id="menu-user-avatar" href="#" target="_blank">
+            <img class="ui mini circular image" th:src="@{${session.avatar}}">
+        </a>
+        <a class="ro-menu-item" id="menu-user-msg" href="/message?type=reply" target="_blank">
+            消息
+        </a>
+    </div>
+    <div class="right menu" th:unless="${session.userId}!=null" login=no>
+        <div id="ro-search-box" class="ro-menu-item" style="display: none">
+            <div id="main-search-input" class="ui left icon input">
+                <input type="text" placeholder="搜索...">
+                <i class="icon iconfont icon-search"></i>
+            </div>
+        </div>
+        <a id="ro-search-button" class="ro-menu-item">
+            <i class="icon iconfont icon-search"></i>
+        </a>
+        <div id="ro-menu-split">
+            <span></span>
+        </div>
+
+        <a id="menu-user-avatar" class="ro-menu-item" href="/log">
+            <span>登录</span>
+        </a>
+    </div>
+</div>
+
+<div id="user-menu" class="ui popup" style="padding: 0">
+
+    <div class="ui large vertical secondary menu">
+        <a class="item" href="/userCenter" >
+            个人中心
+        </a>
+        <a class="item" href="/co/publish/overview" target="_blank">
+            投稿后台
+        </a>
+        <a class="item" href="/avatarLogout">
+            退出
+        </a>
+    </div>
+</div>
+
+<div id="user-msg-menu" class="ui popup" style="padding: 0">
+    <div class="ui large vertical secondary menu">
+        <a class="item" tab="reply" href="/message?type=reply" target="_blank">
+            回复
+        </a>
+        <a class="item" tab="inform" href="/message?type=inform" target="_blank">
+            通知
+        </a>
+    </div>
+</div>
+
+
+
+<div style="min-height: 1000px;max-width: 980px;margin: 0 auto;padding-bottom: 60px">
+
+    <div>
+
+    </div>
+
+    <!-- 1.一个用于获取上传文件的input，type="file"，并且监听onchange事件  -->
+    <input
+            type="file"
+            accept="image/*"
+            id="imgReader"
+            onchange="loadingImg(event)"
+            style="display: none"
+    >
+
+    <div class="ui grid" style="margin-top: 68px">
+
+        <div class="row">
+            <div class="four wide column">
+
+            </div>
+            <div class="twelve wide column">
+
+                <div class="row">
+                    <div class="ui grid">
+                        <div class="eight wide column">
+                            <!-- 2.一个用于给Cropper.js覆盖使用的img  -->
+                            <div style="width: 350px">
+                                <img id="cropImg">
+
+                            </div>
+                        </div>
+                        <div class="eight wide column">
+                            <div style="max-width: 120px">
+                                <div class="row">
+                                    <h4 class="previewText ui header dividing">裁剪预览</h4>
+                                </div>
+                                <div class="row">
+                                    <div class="previewBox"></div>
+                                </div>
+                                <div class="row">
+                                    <div class="previewBoxRound"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+
+                <div class="row">
+                    <div style="width:50%;margin: 0 auto;margin-top: 45px">
+                        <div class="ui buttons">
+                            <button class="ui button" onclick="uploadImg()">选择图片</button>
+                            <div class="or" data-text="or"></div>
+                            <button class="ui blue basic button" onclick="pushData(this)">上传头像</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+
+    </div>
+
+</div>
+
+
+<script src="/index/style/components/jquery.min.js"></script>
+<script src="/index/style/components/semanticui/semantic.min.js"></script>
+<script src="/index/style/js/common.js"></script>
+<script src="/index/style/js/usermenu.js"></script>
+
+<script type="text/javascript">
+    $(".footer-spread-tip")
+        .popup({
+            inline: true,
+            position: 'top center',
+        });
+</script>
+<script src="/avatar/components/cropper/cropper.min.js"></script>
+
+</body>
+
+<script type="application/javascript">
+
+    function uploadImg() {
+        $('#imgReader').click();
+        //再次上传不同图片的时候，还是出现原来的图片，只需要在上传文件的时候，对之前存在的CROPPER进行摧毁就可以了
+        if (CROPPER) {
+            CROPPER.destroy()
+        }
+    }
+
+    let CROPPER;    //创建一个cropper的全局对象
+
+    function loadingImg(eve) {
+
+        //读取上传文件
+        let reader = new FileReader();
+        if (eve.target.files[0]) {
+
+            //readAsDataURL方法可以将File对象转化为data:URL格式的字符串（base64编码）
+            reader.readAsDataURL(eve.target.files[0]);
+            reader.onload = (e) => {
+                var dataURL = reader.result;
+                //将img的src改为刚上传的文件的转换格式
+                document.querySelector('#cropImg').src = dataURL;
+
+                var image = document.getElementById('cropImg');
+
+                //创建cropper实例-----------------------------------------
+                CROPPER = new Cropper(image, {
+                    aspectRatio: 16 / 16,
+                    viewMode: 0,
+                    minContainerWidth: 350,
+                    maxContainerWidth: 350,
+                    minContainerHeight: 350,
+                    maxContainerHeight: 350,
+                    dragMode: 'move',
+                    preview: [document.querySelector('.previewBox'),
+                        document.querySelector('.previewBoxRound')]
+                })
+            }
+        }
+    }
+
+    //获取图片数据
+    function pushData(bt) {
+        if (!CROPPER) {
+            return;
+        }
+
+        $(bt).addClass("disabled");
+        setTimeout(function () {
+            $(bt).removeClass("disabled");
+        }, 3000);
+
+        //getCroppedCanvas方法可以将裁剪区域的数据转换成canvas数据
+        CROPPER.getCroppedCanvas({
+            width:256,//输出画布的目标宽度
+            height:256,//输出画布的目标高度。
+            // minWidth:256,//输出画布的最小目标宽度，默认值为0。
+            // minHeight:256,//输出画布的最小目标高度，默认值为0。
+            // maxWidth:256,//输出画布的最大目标宽度，默认值为Infinity(无穷大)。
+            // maxHeight:256,//输出画布的最大目标高度，默认值为Infinity(无穷大)。
+            fillColor: '#fff',
+            imageSmoothingEnabled: true,
+            imageSmoothingQuality: 'high',
+        }).toBlob((blob) => {
+            //然后调用浏览器原生的toBlob方法将canvas数据转换成blob数据
+
+            //之后就可以将blob数据发送至后端
+            var param = new FormData();
+            // 第三个参数为文件名，可选填.
+            param.append('file', blob, 'avatar.webp');
+
+            $.ajax({
+                type: "POST",
+                url: "/uploadAvatar",
+                data: param,
+                dataType: 'json',
+                contentType: false,
+                processData: false,
+                //请求成功
+                success: function (result) {
+                    if (!result.success) {
+                        $msg.error(result.msg);
+                        return;
+                    }
+                    //成功则跳转
+                    $msg.info("上传头像成功!", 2);
+
+
+                    setTimeout(function () {
+                        window.location.href = "/avatar"
+                    }, 2000)
+                }
+            })
+        },)
+    }
+</script>
+</html>

@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="ch" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>登陆</title>
+</head>
+<style>
+    #h{
+
+        border-radius: 50%;
+        width: 450px;
+        height: 450px;
+        position: relative;
+        background-color: rgba(0,0,0,0.5);
+        margin-left: -5%;
+
+
+    }
+    #hhh{
+        /*background-image: url(image/04.jpg) ;*/
+        background-size:cover;
+        background-repeat: no-repeat;
+        border-radius: 50%;
+        width: 430px;
+        height: 430px;
+        position: relative;
+        background-color: rgba(173,216,230,0.5);
+        margin-top: 10px;
+        margin-left: 10px;
+    }
+    #hh{
+        width: 100%;
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        /*align-items: center;*/
+        /*background-image: url(image/05.jpg) ;*/
+        background-size: cover;
+        padding-top: 90px;
+
+    }
+
+
+    #ff{
+        width: 400px;
+        height: 400px;
+        position: absolute;
+        width: 90%;
+        margin-left: 5%;
+        height: 90%;
+        margin-top: 5%;
+
+        border-radius: 50%;
+
+        background-color: rgba(255,255,255,0.3);
+    }
+    #span{
+        height:20px;
+        font-size: 18px;
+        font-family: 华文楷体;
+        font-weight: bolder;
+        margin-left: 25%;
+    }
+    *{
+        margin: 0px;
+        padding: 0px;
+    }
+    video{
+        position: fixed;
+        right: 0px;
+        bottom: 0px;
+        min-width: 100%;
+        min-height: 100%;
+        height: auto;
+        width: auto;
+        /*加滤镜*/
+        /*filter: blur(15px); //背景模糊设置 */
+        /*-webkit-filter: grayscale(100%);*/
+        /*filter:grayscale(100%); //背景灰度设置*/
+        z-index:-11
+    }
+    source{
+        min-width: 100%;
+        min-height: 100%;
+        height: auto;
+        width: auto;
+    }
+#i{
+    -webkit-writing-mode:vertical-rl;
+    writing-mode:tb-rl;
+    writing-mode:vertical-rl;
+    font-family: 方正字迹－曾正国行楷繁体;
+    font-size:40px;
+margin-left: 200px;
+}
+</style>
+
+<title>Title</title>
+<script th:src="@{/style/bootstrap-3.3.7-dist/js/bootstrap.min.js}"></script>
+<script th:src="@{/style/bootstrap-3.3.7-dist/js/jquery-1.9.1.min.js}"></script>
+<script th:src="@{/style/layer/layer.js}"></script>
+<link rel="stylesheet" th:href="@{/style/bootstrap-3.3.7-dist/css/bootstrap.min.css}">
+</head>
+<body th:style="'background-image: url(/image/02.png);background-size:cover;background-attachment: fixed'">
+<div><h1 style="margin-left: 35%;font-family:方正行楷繁体;font-size: 60px">三国爱好者交流论坛</h1></div>
+<div id="hh"  >
+    <div style="margin-left: -17%;margin-top: -5%;opacity:0.8" ><img src="/image/03.png"></div>
+    <div id="h">
+        <div id="hhh">
+            <div id="ff" > <h2 style="text-align: center;font-family:'RuiHei Bauhaus Kr' ;margin-top: 50px">烽烟再起</h2>
+
+                <form class="form-horizontal" style="width: 100%;height: 100%" >
+                    <div class="form-group" style="margin-top:30px">
+
+                        <div class="col-sm-10">
+                            <input type="text" name="username" class="form-control" id="username" placeholder="用户名"style="width: 80%;height:40px;margin-left: 60px;border-radius: 10px;background-color: rgba(255,255,255,0.5);font-family:'RuiHei Bauhaus Kr' ;font-size: medium">
+                            <div id="span"><span id="sp"></span></div>
+
+                        </div>
+
+                    </div>
+                    <div class="form-group"style="margin-top: 25px">
+
+                        <div class="col-sm-10">
+                            <input type="password"name="password" class="form-control" id="password" placeholder="密码"  style="width:80%;height:40px;margin-left: 60px;border-radius: 10px;background-color: rgba(255,255,255,0.5);font-family:'RuiHei Bauhaus Kr';font-size: medium ">
+                        </div>
+                    </div>
+
+                    <div class="form-group" style="margin-top: 30px">
+                        <div class="col-sm-offset-2 col-sm-10">
+                            <button type="button" id="log" style="height:40px;margin-left: 24%;width: 100px;;border-radius: 15px;background-color: rgba(255,255,153,0.7);color: #2b669a ;font-family:'RuiHei Bauhaus Kr' ;font-size: medium;font-weight: bold;font-size: larger">起飞!</button>
+                        </div>
+                    </div><div style="margin-left:95px;font-family:'RuiHei Bauhaus Kr' "> <u ><button type="button" class="btn" style="background-color: rgba(255,255,255,0);color:/* #bce8f1*/white;font-size: large;font-weight: bold" onclick="location.href='/reg'">还没有账号?点击注册</button></u></div>
+
+                </form>
+            </div>
+        </div>
+    </div><div id="i">滚滚长江东逝水<br>浪花淘尽英雄<br>是非成败转头空<br>青山依旧在<br>几度夕阳红</div>
+</div>
+</body>
+<script>
+    //给登录按钮添加点击事件
+$("#log").click(function () {
+    //获取输入的用户名和密码
+    var username=$("#username").val();
+    var password=$("#password").val();
+    //发送Ajax;
+    $.post("/toLog",{"username":username,"password":password},function (data) {
+
+        if(data.state==200){
+            if(data.role=="user"){
+                alert(data.msg,function () {
+                    //跳转主页
+                    window.location.href="/index"
+                });
+                var name=data.username;
+
+                setCookie("username",name,0.1);
+            }else{
+                window.location.href="/admin"
+            }
+
+
+        }else {
+                alert(data.msg,function () {
+                //刷新表单
+                window.location.reload(true);
+            });
+
+        }
+
+
+    })
+
+})
+//设置cookie
+    function setCookie(cname, cvalue, exdays) {
+        var d = new Date();
+        d.setTime(d.getTime() + (exdays*24*60*60*1000));
+        var expires = "expires="+ d.toUTCString();
+        document.cookie = cname + "=" +  encodeURIComponent(cvalue) + ";" + expires + ";path=/";
+    }
+</script>
+<!--自定义弹框-->
+<script>
+    window.alert = alert;
+    function alert(data, callback) { //回调函数
+        var alert_bg = document.createElement('div');
+        alert_box = document.createElement('div'),
+            alert_text = document.createElement('div'),
+            alert_btn = document.createElement('button'),
+            textNode = document.createTextNode(data ? data : ''),
+            btnText = document.createTextNode('👌🏻');
+
+        // 控制样式
+        css(alert_bg, {
+            'position': 'fixed',
+            'top': '190px',
+            'left': '720px',
+            'right': '720px',
+            'bottom': '600px',
+            'background-color': 'rgba(0, 0, 0, 0.5)',
+            'z-index': '999999999',
+            'border-radius': '15%',
+            'background-image':'url(../images/picture/05.jpg)',
+            // 'background-size':'550px,250px',
+            // 'background-position':'center',
+            'background-size':'cover',
+            'border-bottom-left-radius':'80px',
+            'border-top-left-radius':'10px',
+
+
+        });
+
+        css(alert_box, {
+            'height':'70px',
+            'width': '100%',
+            'max-width': '100%',
+            'font-size': '28px',
+            'text-align': 'center',
+            'background-color': 'rgba(200,250,200,0.7)',
+            // 'border-bottom-left-radius': '43px',
+            'position': 'absolute',
+            'top': '40%',
+            'left': '49.7%',
+            'transform': 'translate(-50%, -50%)',
+            // 'font-family':'RuiHei Bauhaus Kr',
+            'font-weight':'bold',
+            'font-family':'宋体',
+            'background-size':'500px,500px',
+            'background-position':'center',
+
+
+        });
+
+        css(alert_text, {
+            'padding': '20px 15px',
+
+            'color': 'rgba(255,100,0,0.7)',
+        });
+
+        css(alert_btn, {
+            'padding': '8px 7px',
+            'color': 'rgba(255,255,255,0.9)',
+            'font-weight': '600',
+            'cursor': 'pointer',
+            // 'background-color': 'rgba(10,120,10,0.7)',
+            'background-color': 'rgba(100,250,130,0.6)',
+            'border-radius': '100%',
+            'height':'57px',
+            'width': '57px',
+
+            'font-family':'RuiHei Bauhaus Kr',
+            'font-size': '23px',
+            'margin-left':'390px',
+
+        });
+
+        // 内部结构套入
+        alert_text.appendChild(textNode);
+        alert_btn.appendChild(btnText);
+        alert_box.appendChild(alert_text);
+        alert_box.appendChild(alert_btn);
+        alert_bg.appendChild(alert_box);
+
+        // 整体显示到页面内
+        document.getElementsByTagName('body')[0].appendChild(alert_bg);
+
+        // 确定绑定点击事件删除标签
+        alert_btn.onclick = function() {
+            alert_bg.parentNode.removeChild(alert_bg);
+            if (typeof callback =='function') {
+                callback(); //回调
+            }
+        }
+    }
+
+    function css(targetObj, cssObj) {
+        var str = targetObj.getAttribute("style") ? targetObj.getAttribute('style') : '';
+        for (var i in cssObj) {
+            str += i + ':' + cssObj[i] + ';';
+        }
+        targetObj.style.cssText = str;
+    }
+
+
+</script>
+
+</html>

@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="ch" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>注册</title>
+</head>
+
+<style>
+
+    #h{
+
+        border-radius: 50%;
+        width: 450px;
+        height: 450px;
+        position: relative;
+        background-color: rgba(0,0,0,0.5);
+        margin-left: -5%;
+    }
+
+    #hhh{
+        /*background-image: url(image/04.jpg) ;*/
+        background-size:cover;
+        background-repeat: no-repeat;
+        border-radius: 50%;
+        width: 430px;
+        height: 430px;
+        position: relative;
+        background-color: rgba(173,216,230,0.5);
+        margin-top: 10px;
+        margin-left: 10px;
+    }
+    #hh{
+        width: 100%;
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        /*align-items: center;*/
+        /*background-image: url(image/05.jpg) ;*/
+        background-size: cover;
+        padding-top: 90px;
+    }
+
+
+    #ff{
+        width: 400px;
+        height: 400px;
+        position: absolute;
+        width: 90%;
+        margin-left: 5%;
+        height: 90%;
+        margin-top: 5%;
+
+        border-radius: 50%;
+
+        background-color: rgba(255,255,255,0.3);
+
+
+    }
+    #span{
+        height:20px;
+        font-size: 18px;
+        font-family:"RuiHei Bauhaus Kr";
+        font-weight: bold;
+        margin-left: 21%;
+    }
+    *{
+        margin: 0px;
+        padding: 0px;
+    }
+    video{
+        position: fixed;
+        right: 0px;
+        bottom: 0px;
+        min-width: 100%;
+        min-height: 100%;
+        height: auto;
+        width: auto;
+        /*加滤镜*/
+        /*filter: blur(15px); //背景模糊设置 */
+        /*-webkit-filter: grayscale(100%);*/
+        /*filter:grayscale(100%); //背景灰度设置*/
+        z-index:-11
+    }
+    source{
+        min-width: 100%;
+        min-height: 100%;
+        height: auto;
+        width: auto;
+    }
+    #i{
+        -webkit-writing-mode:vertical-rl;
+        writing-mode:tb-rl;
+        writing-mode:vertical-rl;
+        font-family: 方正字迹－曾正国行楷繁体;
+        font-size:40px;
+        margin-left: 200px;
+    }
+
+</style>
+
+<title>注册</title>
+<script th:src="@{/style/bootstrap-3.3.7-dist/js/bootstrap.min.js}"></script>
+<script th:src="@{/style/bootstrap-3.3.7-dist/js/jquery-1.9.1.min.js}"></script>
+<script th:src="@{/style/layer/layer.js}"></script>
+<link rel="stylesheet" th:href="@{/style/bootstrap-3.3.7-dist/css/bootstrap.min.css}">
+
+</head>
+
+<body th:style="'background-image: url(/image/01.png);background-size:cover;background-attachment: fixed'">
+<div><h1 style="margin-left: 35%;font-family:方正行楷繁体;font-size: 60px">三国爱好者交流论坛</h1></div>
+<div id="hh"  >
+    <div style="margin-left: -17%;margin-top: -5%;opacity:0" ><img  src="/image/03.png"></div>
+    <div id="h">
+        <div id="hhh">
+            <div id="ff" > <h2 style="text-align: center;font-family:'RuiHei Bauhaus Kr' ;margin-top: 50px">桃园结义</h2>
+
+                <form class="form-horizontal"  style="width: 100%;height: 100%" id="regForm">
+                    <div class="form-group" style="margin-top:30px">
+
+                        <div class="col-sm-10">
+                            <input type="text" name="username" class="form-control" id="username" placeholder="用户名"style="width: 80%;height:40px;margin-left: 60px;border-radius: 10px;background-color: rgba(255,255,255,0.5);font-family:'RuiHei Bauhaus Kr' ;font-size: medium">
+                            <div id="span" ><span id="sp1"></span></div>
+
+                        </div>
+
+                    </div>
+                    <div class="form-group"style="margin-top: 25px">
+
+                        <div class="col-sm-10">
+                            <input type="password"name="password" class="form-control" id="password" placeholder="密码"  style="width:80%;height:40px;margin-left: 60px;border-radius: 10px;background-color: rgba(255,255,255,0.5);font-family:'RuiHei Bauhaus Kr';font-size: medium ">
+                        </div>
+                    </div>
+
+                    <div class="form-group" style="margin-top: 30px">
+                        <div class="col-sm-offset-2 col-sm-10">
+                            <button type="button" id="reg" name="reg" style="height:40px;margin-left: 24%;width: 100px;;border-radius: 15px;background-color: rgba(255,255,153,0.7);color: #2b669a ;font-family:'RuiHei Bauhaus Kr' ;font-size: medium;font-weight: bold;font-size: larger">芜湖!</button>
+                        </div>
+                    </div><div style="margin-left:95px;font-family:'RuiHei Bauhaus Kr' "> <u ><button type="button" class="btn" style="background-color: rgba(255,255,255,0);color:/* #bce8f1*/white;font-size: large;font-weight: bold" onclick="location.href='/log'">已经有账号?去登陆</button></u></div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+    <div id="i">白发渔樵江渚上<br>惯看秋月春风<br>一壶浊酒喜相逢<br>古今多少事<br>都付笑谈中</div>
+</div>
+
+</body>
+<script>
+    //给用户名添加失去焦点事件
+    $("#username").blur(function () {
+        //获取用户数据
+        var username=$("#username").val();
+
+
+
+//发Ajax请求
+        $.post("/checkUsername",{"username":username},function (data) {
+            if (data.state==1){
+                $("#sp1").html(data.msg);
+                $("#sp1").css("color","green");
+            }else {
+                $("#sp1").html(data.msg);
+                $("#sp1").css("color","red");
+            }
+        })
+    })
+    //给注册按钮添加点击事件
+    $("#reg").click(function () {
+//获取用户名,密码
+//         var username=$("#username").val();
+//         var password = $("#password").val();
+        //序列化表单,表单的name属性作为参数,具体的值作为参数值
+        var data=$("#regForm").serialize();
+
+        $.ajax({
+            url:"/toReg",
+            data:data,//向服务器提交的参数
+            dataType:"json",//服务端返回数据类型
+            type:"post",
+            success:function (obj) { //回调函数
+
+                if(obj.state==200){
+                    alert(obj.msg,function () {
+                    });     //跳转登录
+                     window.location.href="/log";
+                }else {
+                    alert(obj.msg,function () {
+                    });
+                    //刷新表单
+                    window.location.reload(true);
+
+                }
+
+            }
+        })
+    })
+
+
+</script>
+
+
+</html>

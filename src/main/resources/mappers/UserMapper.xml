@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--
+namespace:命名空间  作为多个mapper文件的唯一标识
+-->
+<mapper namespace="com.fc.threekindom.mappers.UserMapper">
+<select id="find" resultType="User">
+  select * from tb_user
+</select>
+  <!--    通过用户名查找用户信息-->
+  <select id="findUserByUserName" resultType="User">
+    select * from tb_user
+    where user_name=#{username}
+</select>
+  <!--    注册-->
+  <insert id="regUser" parameterType="User">
+        insert into tb_user(user_id,user_name,password,salt,create_time) values (null,#{userName},#{password},#{salt},now())
+    </insert>
+  <!--    根据用户名和密码查询用户-->
+  <select id="loginCheck" resultType="User">
+    select * from tb_user
+    where user_name=#{username} and password=#{password}
+  </select>
+  <!--    根据用户名修改用户密码-->
+  <update id="toUpdatePassword">
+    update tb_user set password=#{newPassword},salt=#{newSalt} where user_name=#{username}
+  </update>
+  <!--    更新头像-->
+  <update id="uploadFace">
+    update tb_user set avatar=#{face} where user_name=#{username}
+  </update>
+  <!--    根据用户名修改用户信息-->
+  <update id="modifyUserInfoByUsername" parameterType="User">
+    update tb_user set  mailbox=#{mailbox},signature=#{signature} where user_name=#{userName}
+  </update>
+</mapper>

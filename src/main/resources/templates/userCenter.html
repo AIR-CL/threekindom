@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="ch" xmlns:th="http://www.thymeleaf.org">
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <link rel="icon" href="/favicon.ico">
+    <title>个人中心</title>
+    <link th:href="@{/userCenter/css/chunk-libs.css}" rel="stylesheet">
+    <link th:href="@{/userCenter/css/app.css}" rel="stylesheet">
+    <script src="https://hm.baidu.com/hm.js?2c2888b2fe22cba4fac6b948cd7e7834"></script>
+    <script charset="utf-8" th:src="@{/userCenter/js/chunk-4d7bc9dd.js}"></script>
+    <link rel="stylesheet" type="text/css" th:href="@{/userCenter/css/chunk-d441e11c.css}">
+    <script charset="utf-8" th:src="@{/userCenter/js/chunk-d441e11c.js}"></script>
+    <script charset="utf-8" th:src="@{/userCenter/js/chunk-79ad96ec.js}"></script>
+    <link rel="stylesheet" type="text/css" th:href="@{/userCenter/css/chunk-2b8e08e4.css}">
+    <script charset="utf-8" th:src="@{/userCenter/js/chunk-2b8e08e4.js}"></script>
+    <link rel="stylesheet" th:href="@{/index/style/css/main.css}">
+    <link rel="stylesheet" th:href="@{/index/style/components/semanticui/semantic.min.css}">
+    <link rel="stylesheet" th:href="@{/index/style/components/swiper/swiper-bundle.min.css}">
+    <link rel="stylesheet" th:href="@{/index/style/css/index.css}">
+
+</head>
+<body style="">
+<link rel="stylesheet" th:href="@{/index/style/icon/iconfont.css}">
+
+<div class="ui text ro-menu menu " style="position: relative;
+        background: #fff;
+box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.08);
+        margin-bottom: 0;
+        margin-top: 0;
+        ">
+    <a href="/index">
+        <img src="/image/logo.png">
+    </a>
+    <a class="ro-menu-item" href="/co/article">
+        <span>文章</span>
+    </a>
+    <a class="ro-menu-item" href="/co/notes">
+        <span>手记</span>
+    </a>
+    <a class="ro-menu-item" href="/specialcode">
+        <span>特殊码</span>
+    </a>
+    <a class="ro-menu-item" href="/co/picset">
+        <span>画札</span>
+    </a>
+    <div class="right menu" th:if="${session.userId}!=null" login=yes>
+        <div id="ro-search-box" class="ro-menu-item" style="display: none">
+            <div id="main-search-input" class="ui left icon input">
+                <input type="text" placeholder="搜索...">
+                <i class="icon iconfont icon-search"></i>
+            </div>
+        </div>
+        <a id="ro-search-button" class="ro-menu-item">
+            <i class="icon iconfont icon-search"></i>
+        </a>
+        <div id="ro-menu-split">
+            <span></span>
+        </div>
+
+        <a id="menu-user-avatar" href="#" target="_blank">
+            <img class="ui mini circular image" th:src="@{${session.avatar}}">
+        </a>
+        <a class="ro-menu-item" id="menu-user-msg" href="/message?type=reply" target="_blank">
+            消息
+        </a>
+    </div>
+    <div class="right menu" th:unless="${session.userId}!=null" login=no>
+        <div id="ro-search-box" class="ro-menu-item" style="display: none">
+            <div id="main-search-input" class="ui left icon input">
+                <input type="text" placeholder="搜索...">
+                <i class="icon iconfont icon-search"></i>
+            </div>
+        </div>
+        <a id="ro-search-button" class="ro-menu-item">
+            <i class="icon iconfont icon-search"></i>
+        </a>
+        <div id="ro-menu-split">
+            <span></span>
+        </div>
+
+        <a id="menu-user-avatar" class="ro-menu-item" href="/log">
+            <span>登录</span>
+        </a>
+    </div>
+</div>
+
+<div id="user-menu" class="ui popup" style="padding: 0">
+    <div id="user-menu-namebox" th:text="${session.username}">
+    </div>
+    <div class="ui large vertical secondary menu">
+        <a class="item" href="/userCenter" >
+            个人中心
+        </a>
+        <a class="item" href="/co/publish/overview" >
+            投稿后台
+        </a>
+        <a class="item" href="/ucLogout">
+            退出
+        </a>
+    </div>
+</div>
+
+<div id="user-msg-menu" class="ui popup" style="padding: 0">
+    <div class="ui large vertical secondary menu">
+        <a class="item" tab="reply" href="/message?type=reply" target="_blank">
+            回复
+        </a>
+        <a class="item" tab="inform" href="/message?type=inform" target="_blank">
+            通知
+        </a>
+    </div>
+</div>
+<div id="app" data-v-app="">
+    <section class="ant-layout layout" data-v-0ce5845f="" data-v-308ba341="">
+
+        <main class="ant-layout-content ym-container" data-v-0ce5845f="">
+            <div class="uspace-container" data-v-308ba341="">
+                <div class="ant-spin-nested-loading" data-v-308ba341=""><!---->
+                    <div class="ant-spin-container">
+                        <div class="ant-row" data-v-308ba341="" style="margin-left: -8px; margin-right: -8px;">
+                            <div class="ant-col ant-col-7 user-info" data-v-308ba341=""
+                                 style="padding-left: 8px; padding-right: 8px;">
+                                <div class="ant-card ant-card-bordered uinfo card" data-v-df33d5ac=""><!----><!---->
+                                    <div class="ant-card-body">
+                                        <div class="ant-row" data-v-df33d5ac=""
+                                             style="margin-left: -8px; margin-right: -8px;">
+                                            <div class="ant-col ant-col-8" data-v-df33d5ac="" style="padding-left: 8px; padding-right: 8px;">
+                                                <a href="/avatar"><span  class="ant-avatar ant-avatar-image avatar-mask" data-v-df33d5ac="" style="width: 86px; height: 86px; line-height: 86px; font-size: 18px;">
+                                                   <img   th:src="@{${session.avatar}}">
+                                                </span></a>
+                                            </div>
+                                            <div class="ant-col ant-col-16" data-v-df33d5ac=""
+                                                 style="padding-left: 8px; padding-right: 8px;">
+                                                <h2 class="uname" data-v-df33d5ac=""th:text="${session.username}">用户名
+                                                    </h2>
+                                                <div class="ant-space ant-space-horizontal ant-space-align-center"
+                                                     data-v-df33d5ac="">
+                                                    <div class="ant-space-item"><span class="ant-tag" data-v-df33d5ac=""
+                                                                                      style="color: tomato;font-family: Verdana" th:text="level+' '+${session.level}">level 1<!----></span></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <p class="signature" data-v-df33d5ac=""th:text="${session.signature}">还没有任何说明哦~</p></div><!----></div>
+                                <div class="ant-card ant-card-bordered creator-info card" data-v-df33d5ac=""><!---->
+                                    <!---->
+                                    <div class="ant-card-body">
+                                        <div data-v-df33d5ac="" style="display: flex; justify-content: space-around;">
+                                            <div class="topic-stat" data-v-df33d5ac=""><h3 data-v-df33d5ac="">0</h3>
+                                                <p data-v-df33d5ac="">阅读总数</p></div>
+                                            <div class="topic-stat" data-v-df33d5ac=""><h3 data-v-df33d5ac="">0</h3>
+                                                <p data-v-df33d5ac="">点赞总数</p></div>
+                                            <div class="topic-stat" data-v-df33d5ac=""><h3 data-v-df33d5ac="">0</h3>
+                                                <p data-v-df33d5ac="">收藏总数</p></div>
+                                        </div>
+                                        <div class="ant-divider ant-divider-horizontal" role="separator"
+                                             data-v-df33d5ac=""><!----></div>
+                                        <p data-v-df33d5ac="">贡献了特殊码 <span data-v-df33d5ac="">0</span> 个</p></div>
+                                    <!----></div>
+                                <div class="ant-card ant-card-bordered meta-info card" data-v-df33d5ac=""><!----><!---->
+                                    <div class="ant-card-body">
+                                        <div class="ant-space ant-space-horizontal ant-space-align-center"
+                                             data-v-df33d5ac="">
+                                            <div class="ant-space-item" style="margin-right: 80px;">
+                                                <div class="uid" data-v-df33d5ac="" th:text="'UID: '+${session.userId} "> UID: 1001</div>
+                                            </div>
+                                            <div class="ant-space-item">
+                                                <div class="create-time" data-v-df33d5ac=""th:text="'加入时间 :  '+${#dates.format(session.createTime,'yyyy-MM-dd')}"> 加入时间: 2021-04-17</div>
+                                            </div>
+                                        </div>
+                                    </div><!----></div>
+                            </div>
+                            <div class="ant-col ant-col-17 user-stream-detail" data-v-308ba341=""
+                                 style="padding-left: 8px; padding-right: 8px;">
+                                <div class="ant-card ant-card-bordered stream-warp card" data-v-cbb9c798="" data-v-308ba341=""><!----><!---->
+                                    <div class="ant-card-body" style="padding: 6px 20px 20px;">
+                                        <ul role="menu"
+                                            class="ant-menu-light ant-menu-root ant-menu ant-menu-horizontal"
+                                            data-v-cbb9c798="">
+                                            <li class="ant-menu-submenu ant-menu-submenu-horizontal ant-menu-overflowed-submenu"
+                                                role="menuitem" style="display: none;"><!----><!----><!---->
+                                                <div aria-expanded="false" aria-haspopup="true"
+                                                     class="ant-menu-submenu-title"><span>···</span><i
+                                                        class="ant-menu-submenu-arrow"></i></div>
+                                            </li><!---->
+                                            <li role="menuitem" class="ant-menu-item "th:classappend="${set == 3} ? 'ant-menu-item-selected' : '' "><a
+                                                    aria-current="page" href="/dongTai"
+                                                    class="router-link-active router-link-exact-active"
+                                                    data-v-cbb9c798=""> 动态 </a></li>
+
+                                            <li role="menuitem" class="ant-menu-item "th:classappend="${set == 4} ? 'ant-menu-item-selected' : '' "><a href="/space/4277/notes"
+                                                                                         class="" data-v-cbb9c798="">
+                                                手记 </a><!----></li>
+
+                                            <li role="menuitem" class="ant-menu-item "th:classappend="${set == 1} ? 'ant-menu-item-selected' : ''"><a href="/setting"
+                                                                                         class="" data-v-cbb9c798="">
+                                                信息设置 </a><!----></li>
+
+<!--                                            修改密码-->
+                                            <li role="menuitem" class="ant-menu-item "th:classappend="${set == 2} ? 'ant-menu-item-selected' : ''"><a href="/modifyPwd"
+                                                                                         class="" data-v-cbb9c798="">
+                                                修改密码 </a></li>
+
+                                        </ul>
+<!--设置小界面-->
+                                        <div th:if="${set}==1" data-v-e0c01028="">
+                                            <div class="ant-card" data-v-e0c01028="">
+                                                <div class="ant-card-head">
+                                                    <div class="ant-card-head-wrapper">
+                                                        <div class="ant-card-head-title">基本资料</div><!----></div><!---->
+                                                </div><!---->
+                                                <div class="ant-card-body">
+                                                    <form  id="modifyForm" class="ant-form ant-form-horizontal" data-v-e0c01028="">
+                                                        <!--用户名-->
+                                                        <div class="ant-row ant-form-item" data-v-e0c01028="">
+                                                            <div class="ant-col ant-col-3 ant-form-item-label">
+                                                                <label class="" title="用户名">用户名</label></div>
+                                                            <div class="ant-col ant-col-12 ant-col-offset-1 ant-form-item-control-wrapper">
+                                                                <div class="ant-form-item-control">
+                                                                    <span class="ant-form-item-children"  name="userName" id="userName" th:text="${session.username}">罗贯中
+                                                                        </span></div>
+                                                            </div>
+                                                        </div>
+                                                        <!--用户等级-->
+                                                        <div class="ant-row ant-form-item" data-v-e0c01028="">
+                                                            <div class="ant-col ant-col-3 ant-form-item-label">
+                                                                <label class="" title="用户等级">用户等级</label></div>
+                                                            <div class="ant-col ant-col-12 ant-col-offset-1 ant-form-item-control-wrapper">
+                                                                <div class="ant-form-item-control">
+                                                                    <span class="ant-form-item-children" th:text="${session.level}">1</span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <!--用户积分-->
+                                                        <div class="ant-row ant-form-item" data-v-e0c01028="">
+                                                            <div class="ant-col ant-col-3 ant-form-item-label">
+                                                                <label class="" title="用户积分">用户积分</label></div>
+                                                            <div class="ant-col ant-col-12 ant-col-offset-1 ant-form-item-control-wrapper">
+                                                                <div class="ant-form-item-control">
+                                                                    <span class="ant-form-item-children" th:text="${session.integral}">0</span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <!--邮箱-->
+                                                        <div class="ant-row ant-form-item" data-v-e0c01028="">
+                                                            <div class="ant-col ant-col-3 ant-form-item-label">
+                                                                <label class="" title="邮箱">邮箱</label></div>
+                                                            <div class="ant-col ant-col-12 ant-col-offset-1 ant-form-item-control-wrapper">
+                                                                <div class="ui left input">
+                                                                    <input  name="mailbox",id="mailbox" class="ant-form-item-children" th:value="${session.mailbox}" placeholder="例:123456@qq.com" >
+                                                                </div>
+                                                            </div>
+                                                        </div>
+<!--                                                        <--个性签名-->
+                                                        <div class="ant-row ant-form-item" data-v-e0c01028="">
+                                                            <div class="ant-col ant-col-3 ant-form-item-label">
+                                                                <label class="" title="个性签名">个性签名</label></div>
+                                                            <div class="ant-col ant-col-12 ant-col-offset-1 ant-form-item-control-wrapper">
+                                                                <div class="ant-form-item-control"><span
+                                                                        class="ant-form-item-children">
+                                                                <textarea  name="signature" id="signature" th:text="${session.signature}" placeholder="输入个性签名" class="ant-input"
+                                                                          data-v-e0c01028=""
+                                                                          style="height: 54px; min-height: 54px; max-height: 120px; overflow-y: hidden; resize: none;"></textarea>
+                                                                    </span></div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="ant-row ant-form-item" data-v-e0c01028=""><!---->
+                                                            <div class="ant-col ant-col-12 ant-col-offset-4 ant-form-item-control-wrapper">
+                                                                <div class="ant-form-item-control">
+                                                                    <span class="ant-form-item-children">
+                                                                    <button class="ant-btn ant-btn-primary" id="modifyInfoBtn" type="button" data-v-e0c01028="">
+                                                                       <span>保 存</span>
+                                                                    </button>
+                                                                    </span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </form>
+                                                </div></div>
+                                        </div>
+<!--                     密码修改小界面                   -->
+                                        <div th:if="${set}==2" data-v-e0c01028="">
+                                            <div class="ant-card" data-v-e0c01028="">
+
+                                                <div class="ant-card-body">
+                                                    <form class="ant-form ant-form-horizontal" data-v-e0c01028="">
+
+                                                        <div class="ant-row ant-form-item" data-v-e0c01028="">
+                                                            <div class="ant-col ant-col-3 ant-form-item-label">
+                                                                <label class="" title="原密码">原密码</label></div>
+                                                            <div class="ant-col ant-col-12 ant-col-offset-1 ant-form-item-control-wrapper">
+                                                                <div class="ui left input">
+                                                                    <input class="ant-form-item-children"id="oldPassword"  type="password" placeholder="请输入您的密码" >
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="ant-row ant-form-item" data-v-e0c01028="">
+                                                            <div class="ant-col ant-col-3 ant-form-item-label">
+                                                                <label class="" title="新密码">新密码</label></div>
+                                                            <div class="ant-col ant-col-12 ant-col-offset-1 ant-form-item-control-wrapper">
+                                                                <div class="ui left input">
+                                                                    <input class="ant-form-item-children"type="password" id="newPassword"  placeholder="请输入新密码" >
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="ant-row ant-form-item" data-v-e0c01028="">
+                                                            <div class="ant-col ant-col-3 ant-form-item-label">
+                                                                <label class="" title="确认密码">确认密码</label></div>
+                                                            <div class="ant-col ant-col-12 ant-col-offset-1 ant-form-item-control-wrapper">
+                                                                <div class="ui left input">
+                                                                    <input class="ant-form-item-children" id="confirmPassword" type="password" placeholder="请确认新密码" >
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="ant-row ant-form-item" data-v-e0c01028="">
+                                                            <div class="ant-col ant-col-12 ant-col-offset-4 ant-form-item-control-wrapper">
+                                                                <div class="ant-form-item-control">
+                                                                    <span class="ant-form-item-children">
+                                                                    <button class="ant-btn ant-btn-primary" style="margin-left: 15%" type="button" data-v-e0c01028="" id="updateBtn">
+                                                                        <span>确认</span>
+                                                                    </button>
+                                                                    </span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </form>
+                                                </div></div>
+                                        </div>
+
+                                    </div></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </section>
+</div>
+<script th:src="@{/userCenter/js/runtime.js}"></script>
+<script th:src="@{/userCenter/js/app.js}"></script>
+<script th:src="@{/index/style/components/jquery.min.js}"></script>
+<script th:src="@{/index/style/components/semanticui/semantic.min.js}"></script>
+<script th:src="@{/index/style/js/common.js}"></script>
+<script th:src="@{/index/style/js/usermenu.js}"></script>
+</body>
+
+<!--修改密码-->
+<script>
+    //给修改按钮添加点击事件
+    $("#updateBtn").click(function () {
+        //获取三个密码
+        var oldPassword = $("#oldPassword").val();
+        var newPassword = $("#newPassword").val();
+        var confirmPassword = $("#confirmPassword").val();
+        //发送Ajax
+        $.post("/toUpdatePwd",{"oldPassword":oldPassword,"newPassword":newPassword,"confirmPassword":confirmPassword},
+            function (data) {
+                if (data.state==200){
+                    alert(data.msg,function () {
+                        //重新登录
+                        location.href="/ucLogout";
+                    });
+
+                }else {
+                    alert(data.msg);
+                }
+
+
+            })
+    })
+</script>
+<!--自定义弹框-->
+<script>
+    window.alert = alert;
+    function alert(data, callback) { //回调函数
+        var alert_bg = document.createElement('div');
+        alert_box = document.createElement('div'),
+            alert_text = document.createElement('div'),
+            alert_btn = document.createElement('button'),
+            textNode = document.createTextNode(data ? data : ''),
+            btnText = document.createTextNode('明白啦!');
+
+        // 控制样式
+        css(alert_bg, {
+            'position': 'fixed',
+            'top': '187px',
+            'left': '880px',
+            'right': '520px',
+            'bottom': '617px',
+            'background-color': 'rgba(0, 0, 0, 0.5)',
+            'z-index': '999999999',
+
+            'background-image':'url(../images/picture/07.jpg)',
+            // 'background-size':'550px,250px',
+            // 'background-position':'center',
+            'background-size':'cover',
+            // 'border-bottom-left-radius':'80px',
+            // 'border-top-left-radius':'10px',
+
+
+        });
+
+        css(alert_box, {
+            'height':'70px',
+            'width': '100%',
+            'max-width': '100%',
+            'font-size': '28px',
+            'text-align': 'center',
+            'background-color': 'rgba(100,100,200,0.7)',
+            // 'border-bottom-left-radius': '43px',
+            'position': 'absolute',
+            'top': '40%',
+            'left': '49.7%',
+            'transform': 'translate(-50%, -50%)',
+            // 'font-family':'RuiHei Bauhaus Kr',
+            'font-weight':'bold',
+            'font-family':'宋体',
+            'background-size':'500px,500px',
+            'background-position':'center',
+
+
+        });
+
+        css(alert_text, {
+            'padding': '20px 15px',
+
+            'color': 'rgba(80,250,250,1)',
+        });
+
+        css(alert_btn, {
+            'padding': '8px 7px',
+            'color': 'rgba(255,255,255,0.9)',
+            'font-weight': '600',
+            'cursor': 'pointer',
+            'background-color': 'rgba(255,170,10,0.7)',
+            'border-radius': '20%',
+            'height':'45px',
+            'width': '110px',
+            'margin-top':'15px',
+            'font-family':'RuiHei Bauhaus Kr',
+            'font-size': '23px',
+            'margin-left':'305px',
+
+        });
+
+        // 内部结构套入
+        alert_text.appendChild(textNode);
+        alert_btn.appendChild(btnText);
+        alert_box.appendChild(alert_text);
+        alert_box.appendChild(alert_btn);
+        alert_bg.appendChild(alert_box);
+
+        // 整体显示到页面内
+        document.getElementsByTagName('body')[0].appendChild(alert_bg);
+
+        // 确定绑定点击事件删除标签
+        alert_btn.onclick = function() {
+            alert_bg.parentNode.removeChild(alert_bg);
+            if (typeof callback =='function') {
+                callback(); //回调
+            }
+        }
+    }
+
+    function css(targetObj, cssObj) {
+        var str = targetObj.getAttribute("style") ? targetObj.getAttribute('style') : '';
+        for (var i in cssObj) {
+            str += i + ':' + cssObj[i] + ';';
+        }
+        targetObj.style.cssText = str;
+    }
+</script>
+<!--修改信息-->
+<script >
+
+    $("#modifyInfoBtn").click(function () {
+        //获取表单信息
+        var userName=document.getElementById("userName").innerText;
+        var mailbox=  $(" input[ name='mailbox' ] ").val();
+        var signature=$("#signature").val();
+
+        $.post("/modifyUserInfoByUsername",{"userName":userName,"mailbox":mailbox,"signature":signature},function (data) {
+            if (data.state==201){
+                alert(data.msg,function () {
+                    //重新登录
+                    location.href="/log";
+                })
+            }else{
+                alert(data.msg,function () {
+                    window.location.reload(true);
+                })
+            }
+        })
+
+    })
+
+</script>
+</html>

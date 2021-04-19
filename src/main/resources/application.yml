@@ -1,0 +1,21 @@
+server:
+  port: 8088
+#  servlet:
+#    context-path: /sglt
+spring:
+  thymeleaf:
+    cache: false
+  datasource:
+    #引入druid数据源
+    type: com.alibaba.druid.pool.DruidDataSource
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/threekindom?characterEncoding=utf8
+    username: root
+    password:
+
+mybatis:
+  type-aliases-package: com.fc.threekindom.pojo #实体类别名配置到包即可
+  mapper-locations: classpath:mappers/*.xml  #配置mapper接口的映射的sql文件位置
+  #开启驼峰映射
+  configuration:
+    map-underscore-to-camel-case: true
