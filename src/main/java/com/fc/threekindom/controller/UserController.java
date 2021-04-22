@@ -111,6 +111,7 @@ public class UserController {
     @PostMapping("/checkUsername")
     @ResponseBody//将返回值转成json数据
     public Map<String,Object> checkUsername(String username){
+        System.out.println(username);
         //使用业务层对象调用业务层方法
         Map<String, Object> map = userService.checkUserName(username);
         return map;
@@ -141,7 +142,6 @@ public class UserController {
     @PostMapping("/uploadAvatar")
     @ResponseBody
     public Map<String,Object>toUpload(MultipartFile file, HttpServletRequest request){
-        System.out.println(file+"2323");
         Map<String, Object> map = userService.uploadFace(file, request);
         return map;
     }

@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="ch" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-FYBEW0S5S5"></script> <script> window.dataLayer = window.dataLayer || []; function gtag() { dataLayer.push(arguments); } gtag('js', new Date()); gtag('config', 'G-FYBEW0S5S5'); </script>        <meta charset="utf-8"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <title>文章总览</title>
+
+
+    <link rel="stylesheet" th:href="@{/index/style/components/semanticui/semantic.min.css}">
+    <link rel="stylesheet" th:href="@{/index/style/components/semanticui/components/dropdown.min.css}">
+    <link rel="stylesheet" th:href="@{/index/style/css/main.css}">
+    <link rel="stylesheet" th:href="@{/index/style/css/co/publish/main.css}">
+
+    <style type="text/css">
+
+        .dashboard-topic-list {
+            border: 1px solid #e5e9ef;
+            border-radius: 4px;
+            background-color: white;
+            margin: 0 auto;
+            padding: 40px;
+            min-height: 300px
+        }
+
+        .dashboard-topic-list > div .main-image {
+            height: 100px !important;
+            width: 190px !important;
+        }
+
+        .dashboard-topic-list > div .main-image img {
+            width: 100% !important;
+            height: 100% !important;
+            object-fit: cover;
+            overflow: hidden;
+        }
+
+        .dashboard-topic-list > div .article-title {
+            font-size: 16px;
+            font-weight: 600;
+            font-family: -apple-system, "Helvetica Neue", Arial, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "WenQuanYi Micro Hei", sans-serif !important;
+            color: black;
+            transition: .3s;
+            width: 100%;
+            letter-spacing: 0;
+            text-overflow: ellipsis;
+            overflow: hidden;
+            white-space: nowrap;
+        }
+
+        .dashboard-topic-list > div .article-title:hover {
+            color: #ff837d;
+        }
+
+        #article-manager-list div[id^="topic"] {
+            height: 150px;
+        }
+    </style>
+
+    <style type="text/css">
+    </style>
+
+</head>
+<body style="background: #fafafa;">
+
+<link rel="stylesheet" th:href="@{/index/style/icon/iconfont.css}">
+
+<div class="ui text ro-menu menu " style="position: relative;
+        background: #fff;
+box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.08);
+        margin-bottom: 0;
+        margin-top: 0;
+        ">
+    <a href="/index">
+        <img src="/image/logo.png">
+    </a>
+    <a class="ro-menu-item" href="/co/article">
+        <span>文章</span>
+    </a>
+    <a class="ro-menu-item" href="/co/notes">
+        <span>手记</span>
+    </a>
+    <a class="ro-menu-item" href="/specialcode">
+        <span>特殊码</span>
+    </a>
+    <a class="ro-menu-item" href="/co/picset">
+        <span>画札</span>
+    </a>
+    <div class="right menu" th:if="${session.userId}!=null" login=yes>
+        <div id="ro-search-box" class="ro-menu-item" style="display: none">
+            <div id="main-search-input" class="ui left icon input">
+                <input type="text" placeholder="搜索...">
+                <i class="icon iconfont icon-search"></i>
+            </div>
+        </div>
+        <a id="ro-search-button" class="ro-menu-item">
+            <i class="icon iconfont icon-search"></i>
+        </a>
+        <div id="ro-menu-split">
+            <span></span>
+        </div>
+
+        <a id="menu-user-avatar" href="#" target="_blank">
+            <img class="ui mini circular image" th:src="@{${session.avatar}}">
+        </a>
+        <a class="ro-menu-item" id="menu-user-msg" href="/message?type=reply" target="_blank">
+            消息
+        </a>
+    </div>
+    <div class="right menu" th:unless="${session.userId}!=null" login=no>
+        <div id="ro-search-box" class="ro-menu-item" style="display: none">
+            <div id="main-search-input" class="ui left icon input">
+                <input type="text" placeholder="搜索...">
+                <i class="icon iconfont icon-search"></i>
+            </div>
+        </div>
+        <a id="ro-search-button" class="ro-menu-item">
+            <i class="icon iconfont icon-search"></i>
+        </a>
+        <div id="ro-menu-split">
+            <span></span>
+        </div>
+
+        <a id="menu-user-avatar" class="ro-menu-item" href="/log">
+            <span>登录</span>
+        </a>
+    </div>
+</div>
+
+<div id="user-menu" class="ui popup" style="padding: 0">
+    <div id="user-menu-namebox" th:text="${session.username}">
+    </div>
+    <div class="ui large vertical secondary menu">
+        <a class="item" href="/userCenter" >
+            个人中心
+        </a>
+        <a class="item" href="/publish/overview" >
+            投稿后台
+        </a>
+        <a class="item" href="/ucLogout">
+            退出
+        </a>
+    </div>
+</div>
+
+<div id="user-msg-menu" class="ui popup" style="padding: 0">
+    <div class="ui large vertical secondary menu">
+        <a class="item" tab="reply" href="/message?type=reply" target="_blank">
+            回复
+        </a>
+        <a class="item" tab="inform" href="/message?type=inform" target="_blank">
+            通知
+        </a>
+    </div>
+</div>
+
+
+
+<div class="ui grid co-container" style="padding: 20px 0 0 0">
+    <div class="co-publish-left three wide column">
+        <div id="publish-menu" class="ui vertical accordion menu">
+            <div class="item">
+                <a class="title" href="/publish/overview">
+                    <span menu-tab="overview" class="iconfont icon-user root menu-item">总览</span>
+                </a>
+            </div>
+            <div class="item">
+                <a class="active title">
+                    <span class="iconfont icon-edit-fill"> 文章管理</span>
+                </a>
+                <div class="active content">
+                    <div>
+                        <div class="ui vertical text menu">
+                            <a class="item menu-item" menu-tab="article-dashboard" href="/publish/board">
+                                文章总览
+                            </a>
+                            <a class="item menu-item" menu-tab="news" href="/co/publish/news">
+                                发布资讯
+                            </a>
+                            <a class="item menu-item" menu-tab="column" href="/publish/column">
+                                撰写专栏
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="item">
+                <a class="active title">
+                    <span class="iconfont icon-file-image"> 画札管理</span>
+                </a>
+                <div class="active content">
+                    <div>
+                        <div class="ui vertical text menu">
+                            <a class="item menu-item" menu-tab="picset-dashboard" href="/co/publish/picset-dashboard">
+                                画札总览
+                            </a>
+                            <a class="item menu-item" menu-tab="picset" href="/co/publish/picset">
+                                创建画札
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div class="co-publish-right thirteen wide column" th:if="${session.userId}!=null">
+        <div class="dashboard-topic-list">
+            <div id="article-manager-list" class="ui divided items">
+                <div id="topic173089872116973568" th:each="u: ${session.userArticle}" class="ui item" >
+
+                    <div class="content">
+                        <a class="article-title" target="_blank" th:text="${u.articleTitle}"
+                           href="/co/article/173089872116973568">法国红酒看</a>
+                        <div class="meta">
+                            <span th:text="${#dates.format(u.modifyTime,'yyyy-MM-dd HH:mm:ss')}" >2021-04-22 15:17:21</span>
+                            <span class="ui mini basic orange label">专栏</span>
+                            <span class="ui mini basic label" th:text="${u.tag}">无分类</span>
+                            <span class="ui mini basic label" th:text="${u.articleState}">草稿</span>
+                        </div>
+                        <div class="extra" >
+                            <i class="iconfont icon-eye" ></i><span th:text="${u.viewCount}">0</span>
+                        </div>
+                    </div>
+
+                    <div>
+                        <div class="ui inline dropdown">
+                            <i class="iconfont icon-menu" style="font-size: 18px"></i>
+                            <div class="menu">
+
+                                <a class="item"
+                                   href="javaScript:updateTopicType('173089872116973568','NEWS')">转移到资讯</a>
+                                <a class="item" href="/co/publish/column?id=173089872116973568">再次编辑</a>
+
+                                <a class="item"  th:onclick="|javascript:deleteTopic('${u.articleId}')|">删除</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script th:src="@{/index/style/components/jquery.min.js}"></script>
+<script th:src="@{/index/style/components/semanticui/semantic.min.js}"></script>
+<script th:src="@{/index/style/js/common.js}"></script>
+<script th:src="@{/index/style/js/usermenu.js}"></script>
+
+
+<script type="text/javascript">
+
+    function updateTopicType(id, target) {
+        $.ajax({
+            type: 'PUT',
+            contentType: 'application/json',
+            url: '/co/article/type?id=' + id + '&target=' + target
+        }).done(function (res) {
+            if (!res.success) {
+                $msg.error(res.msg);
+                return;
+            }
+
+            $msg.info("转移成功!");
+            setTimeout(function () {
+                window.location.reload()
+            }, 1000);
+        })
+    }
+
+    function deleteTopic(id) {
+
+        var title = $("#topic" + id).find(".article-title").text();
+        $("#del-title").text(title);
+
+       var articleId=id;
+        $('#delete-model')
+            .modal({
+                duration: 200,
+                inverted: false,
+                onApprove: function () {
+                    $.ajax({
+                        type: "post",
+                        // contentType: "application/json",
+                        url: "/article/delete",
+                        data:{"articleId":articleId},
+                        //请求成功
+                        success: function (result) {
+                            if (result.state==100) {
+                                $msg.error(result.msg);
+                                return;
+                            }
+                            $msg.info("删除成功!");
+                           location.reload();
+                        }
+                    })
+                }
+            })
+            .modal('show')
+        ;
+    }
+
+    $('.ui.dropdown')
+        .dropdown()
+    ;
+</script>
+<script>
+    $.post("/article/searchAllArticle",function (data) {
+        if (data[0]==100){
+            $msg.error(data[1]);
+        }
+    })
+</script>
+</body>
+
+
+<script type="application/javascript">
+
+    $('.menu-item[menu-tab="article-dashboard"]').addClass('active');
+
+    $('#publish-menu').sticky({
+        context: '.co-container'
+    });
+</script>
+
+
+</html>
+
+
+
+<div id="delete-model" class="ui tiny basic modal">
+    <div class="ui icon header">
+        <i class="icon huge iconfont icon-file-exception"></i>
+        <div id="del-title"></div>
+    </div>
+    <div class="content">
+        <p>确定要刪除这篇文章吗?</p>
+    </div>
+    <div class="actions">
+        <div class="ui basic cancel inverted button">
+            <i class="iconfont icon-close icon"></i>
+            否
+        </div>
+        <div class="ui red ok inverted button">
+            <i class="iconfont icon-check icon"></i>
+            是
+        </div>
+    </div>
+</div>

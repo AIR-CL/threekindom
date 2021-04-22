@@ -258,7 +258,7 @@ public class UserServiceImpl implements UserService {
 //        //从后往前找文件名的第一个"."
 //      int start = filename.lastIndexOf(".");
         //得到文件的后缀
-        String subffix = ".jpg";
+        String subffix = ".webp";
         //filename.substring(start);
         //使用UUID产生文件名前缀
         String preffix = UUID.randomUUID().toString();
@@ -273,10 +273,12 @@ public class UserServiceImpl implements UserService {
         try {   //实现上传到服务器
             file.transferTo(filePath);
 
+            System.out.println(filePath);
             //头像路径
             String face="/upload/face/"+newFileName;
 
             int row = userMapper.uploadFace(username, face);
+
             if (row>=1){
                 map.put("state","200");
                 map.put("msg","上传成功");

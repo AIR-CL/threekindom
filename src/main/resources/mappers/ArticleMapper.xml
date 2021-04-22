@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--
+namespace:命名空间  作为多个mapper文件的唯一标识
+-->
+<mapper namespace="com.fc.threekindom.mappers.ArticleMapper">
+    <!--    发布文章-->
+    <insert id="publishArticle" parameterType="Article">
+        insert into tb_article(article_title, create_id, create_name, article_face, article_content,tag,modifyTime,article_state) values (#{articleTitle},#{createId},#{createName},#{articleFace},#{articleContent},#{tag},now(),#{articleState})
+    </insert>
+    <!--    根据用户id查询所有文章-->
+    <select id="searchAllArticleById" resultType="Article">
+        select * from tb_article
+    </select>
+    <!--删除文章-->
+    <delete id="deleteArticle">
+        delete from tb_article where article_id=#{articleId}
+    </delete>
+</mapper>

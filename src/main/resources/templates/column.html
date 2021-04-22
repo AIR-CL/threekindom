@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="ch" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-FYBEW0S5S5"></script>
+    <script> window.dataLayer = window.dataLayer || []; function gtag() { dataLayer.push(arguments); } gtag('js', new Date()); gtag('config', 'G-FYBEW0S5S5'); </script>
+    <meta charset="utf-8"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <title>撰写专栏</title>
+    <link rel="stylesheet" th:href="@{/index/style/components/semanticui/semantic.min.css}">
+    <link rel="stylesheet" th:href="@{/index/style/components/semanticui/components/dropdown.min.css}">
+    <link rel="stylesheet" th:href="@{/index/style/css/main.css}">
+    <link rel="stylesheet" th:href="@{/index/style/css/co/publish/main.css}">
+
+    <link rel="stylesheet" th:href="@{/avatar/components/cropper/cropper.min.css}">
+    <link rel="stylesheet" th:href="@{/index/style/css/co/publish/article.css}">
+    <link rel="stylesheet" th:href="@{/index/style/css/co/article-style.css}">
+
+
+    <style type="text/css">
+    </style>
+
+</head>
+<body style="background: #fafafa;">
+
+<link rel="stylesheet" th:href="@{/index/style/icon/iconfont.css}">
+
+<div class="ui text ro-menu menu " style="position: relative;
+        background: #fff;
+box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.08);
+        margin-bottom: 0;
+        margin-top: 0;
+        ">
+    <a href="/index">
+        <img src="/image/logo.png">
+    </a>
+    <a class="ro-menu-item" href="/co/article">
+        <span>文章</span>
+    </a>
+    <a class="ro-menu-item" href="/co/notes">
+        <span>手记</span>
+    </a>
+    <a class="ro-menu-item" href="/specialcode">
+        <span>特殊码</span>
+    </a>
+    <a class="ro-menu-item" href="/co/picset">
+        <span>画札</span>
+    </a>
+    <div class="right menu" th:if="${session.userId}!=null" login=yes>
+        <div id="ro-search-box" class="ro-menu-item" style="display: none">
+            <div id="main-search-input" class="ui left icon input">
+                <input type="text" placeholder="搜索...">
+                <i class="icon iconfont icon-search"></i>
+            </div>
+        </div>
+        <a id="ro-search-button" class="ro-menu-item">
+            <i class="icon iconfont icon-search"></i>
+        </a>
+        <div id="ro-menu-split">
+            <span></span>
+        </div>
+
+        <a id="menu-user-avatar" href="#" target="_blank">
+            <img class="ui mini circular image" th:src="@{${session.avatar}}">
+        </a>
+        <a class="ro-menu-item" id="menu-user-msg" href="/message?type=reply" target="_blank">
+            消息
+        </a>
+    </div>
+    <div class="right menu" th:unless="${session.userId}!=null" login=no>
+        <div id="ro-search-box" class="ro-menu-item" style="display: none">
+            <div id="main-search-input" class="ui left icon input">
+                <input type="text" placeholder="搜索...">
+                <i class="icon iconfont icon-search"></i>
+            </div>
+        </div>
+        <a id="ro-search-button" class="ro-menu-item">
+            <i class="icon iconfont icon-search"></i>
+        </a>
+        <div id="ro-menu-split">
+            <span></span>
+        </div>
+
+        <a id="menu-user-avatar" class="ro-menu-item" href="/log">
+            <span>登录</span>
+        </a>
+    </div>
+</div>
+
+<div id="user-menu" class="ui popup" style="padding: 0">
+    <div id="user-menu-namebox" th:text="${session.username}">
+    </div>
+    <div class="ui large vertical secondary menu">
+        <a class="item" href="/userCenter" >
+            个人中心
+        </a>
+        <a class="item" href="/publish/overview" >
+            投稿后台
+        </a>
+        <a class="item" href="/ucLogout">
+            退出
+        </a>
+    </div>
+</div>
+
+<div id="user-msg-menu" class="ui popup" style="padding: 0">
+    <div class="ui large vertical secondary menu">
+        <a class="item" tab="reply" href="/message?type=reply" target="_blank">
+            回复
+        </a>
+        <a class="item" tab="inform" href="/message?type=inform" target="_blank">
+            通知
+        </a>
+    </div>
+</div>
+
+<div class="ui grid co-container" style="padding: 20px 0 0 0">
+    <div class="co-publish-left three wide column">
+        <div id="publish-menu" class="ui vertical accordion menu">
+            <div class="item">
+                <a class="title" href="/publish/overview">
+                    <span menu-tab="overview" class="iconfont icon-user root menu-item">总览</span>
+                </a>
+            </div>
+            <div class="item">
+                <a class="active title">
+                    <span class="iconfont icon-edit-fill"> 文章管理</span>
+                </a>
+                <div class="active content">
+                    <div>
+                        <div class="ui vertical text menu">
+                            <a class="item menu-item" menu-tab="article-dashboard" href="/publish/board">
+                                文章总览
+                            </a>
+                            <a class="item menu-item" menu-tab="news" href="/publish/news">
+                                发布资讯
+                            </a>
+                            <a class="item menu-item" menu-tab="column" href="/publish/column">
+                                撰写专栏
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="item">
+                <a class="active title">
+                    <span class="iconfont icon-file-image"> 画札管理</span>
+                </a>
+                <div class="active content">
+                    <div>
+                        <div class="ui vertical text menu">
+                            <a class="item menu-item" menu-tab="picset-dashboard" href="/co/publish/picset-dashboard">
+                                画札总览
+                            </a>
+                            <a class="item menu-item" menu-tab="picset" href="/co/publish/picset">
+                                创建画札
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div class="co-publish-right thirteen wide column">
+        <topic
+                state=""
+                tab="column"
+        ></topic>
+        <div id="co-articlepublish-context">
+            <div class="content-wrap">
+                <div id="editor-toolbar" class="toolbar" style="width: 100%"></div>
+
+                <div id="co-editor-text-warp">
+                <textarea id="topicTitle" class="article-title" maxlength="" placeholder="请输入标题（建议30字以内）"
+                          style="overflow-y: hidden; height: 64px;"></textarea>
+                    <div id="editor-text" class="text">
+                    </div>
+                    <div style="color: #9d9d9d;font-size: 10px!important;">已输入<span id="wordCount">0</span>字</div>
+                    <div id="article-handler">
+                        <div id="article-category" class="block-wrap">
+                            <div class="block-title">选择文章分类</div>
+                            <ul class="category-list">
+                                <li class="category-list-item">感想评测</li>
+                                <li class="category-list-item">盘点</li>
+                                <li class="category-list-item">攻略</li>
+                                <li class="category-list-item">技术教程</li>
+                                <li class="category-list-item">杂谈</li>
+                                <li class="category-list-item">同人</li>
+                                <li class="category-list-item">翻译</li>
+                            </ul>
+                        </div>
+
+                        <div id="article-bigimg" class="block-wrap">
+                            <!-- 一个用于获取上传文件的input，type="file"，并且监听onchange事件  -->
+                            <input
+                                    type="file"
+                                    accept="image/*"
+                                    id="imgReader"
+                                    onchange="loadingImg('cropImg',event)"
+                                    style="display: none"
+                            >
+
+                            <!-- 2.一个用于给Cropper.js覆盖使用的img  -->
+                            <div id="main-img">
+                                <div class="block-title">设置文章主图</div>
+                                <img id="ggb" src="" onclick='$("#imgReader").click()' >
+                            </div>
+                        </div>
+                        <div style="text-align: center; margin-bottom: 20px">
+                            <button id="toPublish" class="ui primary button">发布</button>
+                            <button id="saveToDraft" class="ui primary basic button">存草稿</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+b
+
+        <div class="ui modal">
+            <div class="header">
+                选择截取位置
+            </div>
+            <div class="image content">
+                <div class="ui image" style="width: 520px">
+                    <img id="cropImg">
+                </div>
+                <div class="description" style="max-width: 360px">
+                    <div>最终展示效果</div>
+                    <div class="previewBox"></div>
+                </div>
+            </div>
+            <div class="actions">
+                <div class="ui black deny button">
+                    取消
+                </div>
+                <div class="ui positive right button" onclick="submitMainImage(this)">
+                    确定
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<!--</script>-->
+<script th:src="@{/index/style/components/jquery.min.js}"></script>
+<script th:src="@{/index/style/components/semanticui/semantic.min.js}"></script>
+<script th:src="@{/index/style/js/common.js}"></script>
+<script th:src="@{/index/style/js/usermenu.js}"></script>
+
+<script th:src="@{/index/style/components/wangEditor/wangEditor4.min.js}"></script>
+<script th:src="@{/index/style/components/compressor.min.js}"></script>
+<script th:src="@{/avatar/components/cropper/cropper.min.js}"></script>
+<script type="application/javascript" th:src="@{/index/style/js/co/articlepublish.js}"></script>
+
+
+
+</body>
+
+<script type="application/javascript">
+
+    $('.menu-item[menu-tab="column"]').addClass('active');
+
+    $('#publish-menu').sticky({
+        context: '.co-container'
+    });
+</script>
+
+
+</html>
+
+

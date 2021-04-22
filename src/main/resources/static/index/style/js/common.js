@@ -171,8 +171,8 @@ class GlobalMessage {
 var $msg = new GlobalMessage();
 //endregion
 
-
-// 全局异常捕获
+//
+// // 全局异常捕获
 // $.ajaxSetup({
 //     contentType: "application/x-www-form-urlencoded;charset=utf-8",
 //     complete: function (XMLHttpRequest, textStatus) {
