@@ -1,6 +1,7 @@
 package com.fc.threekindom.service;
 
 import com.fc.threekindom.pojo.User;
+import org.springframework.ui.Model;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
@@ -21,4 +22,6 @@ public interface UserService {
  Map<String,Object> uploadFace(MultipartFile file, HttpServletRequest request);
  //根据用户名修改密码
  Map<String,Object> modifyUserByName(String userName,String mailbox,String signature,HttpServletRequest req);
+ //去用户中心
+ void toUserCenter(Model model, HttpServletRequest request);
 }

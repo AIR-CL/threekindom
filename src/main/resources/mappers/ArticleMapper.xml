@@ -8,14 +8,48 @@ namespace:命名空间  作为多个mapper文件的唯一标识
 <mapper namespace="com.fc.threekindom.mappers.ArticleMapper">
     <!--    发布文章-->
     <insert id="publishArticle" parameterType="Article">
-        insert into tb_article(article_title, create_id, create_name, article_face, article_content,tag,modifyTime,article_state) values (#{articleTitle},#{createId},#{createName},#{articleFace},#{articleContent},#{tag},now(),#{articleState})
+        insert into tb_article(article_title, create_id, create_name, article_face, article_content,tag,modifyTime,article_state,text,create_avatar) values (#{articleTitle},#{createId},#{createName},#{articleFace},#{articleContent},#{tag},now(),#{articleState},#{text},#{createAvatar})
     </insert>
     <!--    根据用户id查询所有文章-->
     <select id="searchAllArticleById" resultType="Article">
-        select * from tb_article
+        select * from tb_article where create_id=#{userId} order by article_id desc
     </select>
     <!--删除文章-->
     <delete id="deleteArticle">
         delete from tb_article where article_id=#{articleId}
     </delete>
+    <!--    按分类查询所有文章-->
+    <select id="searchAllArticle" resultType="Article">
+        select * from tb_article order by article_id desc
+    </select>
+    <select id="findArticleById" resultType="Article">
+        select *from tb_article where article_id=#{articleId}
+    </select>
+    <update id="readAdd">
+        update tb_article set view_count=view_count+1 where article_id=#{articleId}
+    </update>
+    <insert id="like" parameterType="like">
+        insert into tb_like  (article_id,user_id,like_type) values (#{articleId},#{userId},#{likeType})
+    </insert>
+    <select id="likeState" resultType="like">
+        select * from tb_like where article_id=#{articleId} and user_id=#{userId}
+    </select>
+    <update id="modifyLike">
+        update tb_like set like_type=#{likeType} where article_id=#{articleId} and user_id=#{userId}
+    </update>
+    <select id="likeCount" resultType="like">
+        select *from tb_like where article_id=#{articleId} and like_type=#{likeType}
+    </select>
+    <update id="addLikeCount">
+        update tb_article set like_count=like_count+1 where article_id=#{articleId}
+    </update>
+    <update id="decLikeCount">
+        update tb_article set like_count=like_count-1 where article_id=#{articleId}
+    </update>
+    <select id="findArticleByCreateId" resultType="Article">
+        select * from tb_article where create_id=#{createId}
+    </select>
+    <select id="findArticleByCreateIdAndTag" resultType="Article">
+        select * from tb_article where create_id=#{createId} and tag=#{tag}
+    </select>
 </mapper>

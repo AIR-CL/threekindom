@@ -1,11 +1,14 @@
 package com.fc.threekindom.service.impl;
 
+import com.fc.threekindom.mappers.ArticleMapper;
 import com.fc.threekindom.mappers.UserMapper;
+import com.fc.threekindom.pojo.Article;
 import com.fc.threekindom.pojo.User;
 import com.fc.threekindom.service.UserService;
 import com.fc.threekindom.util.UploadUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.ui.Model;
 import org.springframework.util.DigestUtils;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -23,7 +26,8 @@ public class UserServiceImpl implements UserService {
     //注入持久层对象
     @Autowired(required = false)
     private UserMapper userMapper;
-
+   @Autowired(required = false)
+   private ArticleMapper articleMapper;
   @Override
    public List<User> findAll(){
         List<User> list=userMapper.find();
@@ -330,7 +334,22 @@ public class UserServiceImpl implements UserService {
         }
 
     }
+    //去用户中心
+    @Override
+    public void toUserCenter(Model model, HttpServletRequest request){
+        int createId = Integer.parseInt(request.getSession().getAttribute("userId").toString());
+        List<Article> list=articleMapper.findArticleByCreateId(createId);
+        request.getSession().setAttribute("createArticleNum",list.size());
+        int viewAll=0;
+        int likeAll=0;
+        for (int i=0;i<list.size();i++){
+            viewAll=viewAll+list.get(i).getViewCount();
+            likeAll=likeAll+list.get(i).getLikeCount();
+        }
+        request.getSession().setAttribute("viewAll",viewAll);
+        request.getSession().setAttribute("likeAll",likeAll);
 
+    }
 
     //封装一个密码加密的方法
     private String getMD5Password(String password,String salt){

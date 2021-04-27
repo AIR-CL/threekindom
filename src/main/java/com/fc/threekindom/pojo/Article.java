@@ -20,4 +20,6 @@ public class Article implements Serializable {
     private String tag;
     private String articleState;
     private Date modifyTime;
+    private String text;
+    private String createAvatar;
 }

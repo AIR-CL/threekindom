@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="ch" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-FYBEW0S5S5"></script>
+    <script>window.dataLayer = window.dataLayer || [];
+    function gtag() {
+        dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-FYBEW0S5S5');
+    </script>
+    <meta charset="utf-8"/>
+    <meta name="renderer" content="webkit"/>
+    <meta name="force-rendering" content="webkit"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+    <title>文章</title>
+    <link rel="stylesheet" th:href="@{/index/style/components/semanticui/semantic.min.css}">
+    <link rel="stylesheet" th:href="@{/index/style/components/semanticui/components/dropdown.min.css}">
+    <link rel="stylesheet" th:href="@{/index/style/css/main.css}">
+    <link rel="stylesheet" th:href="@{/index/style/css/co/articledetail.css}">
+    <link rel="stylesheet" th:href="@{/index/style/css/co/article-style.css}">
+    <link rel="stylesheet"  th:href="@{/index/style/css/common/replies.css}">
+
+    <style type="text/css">
+
+    </style>
+
+</head>
+<body style="background: #fff;">
+
+<link rel="stylesheet" th:href="@{/index/style/icon/iconfont.css}">
+
+
+<div class="ui text ro-menu menu " style="position: relative;
+        background: #fff;
+box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.08);
+        margin-bottom: 0;
+        margin-top: 0;
+        ">
+    <a href="#">
+        <img src="/image/logo.png">
+    </a>
+    <a class="ro-menu-item" href="/index">
+        <span>主页</span>
+    </a>
+    <a class="ro-menu-item" href="#">
+        <span>图鉴查询</span>
+    </a>
+    <a class="ro-menu-item" href="#">
+        <span>获取积分</span>
+    </a>
+    <div class="right menu" th:if="${session.userId}!=null" login=yes>
+        <div id="ro-search-box" class="ro-menu-item" style="display: none">
+            <div id="main-search-input" class="ui left icon input">
+                <input type="text" placeholder="搜索...">
+                <i class="icon iconfont icon-search"></i>
+            </div>
+        </div>
+        <a id="ro-search-button" class="ro-menu-item">
+            <i class="icon iconfont icon-search"></i>
+        </a>
+        <div id="ro-menu-split">
+            <span></span>
+        </div>
+
+        <a id="menu-user-avatar" href="#" target="_blank">
+            <img class="ui mini circular image" th:src="@{${session.avatar}}">
+        </a>
+        <a class="ro-menu-item" id="menu-user-msg" href="/message?type=reply" target="_blank">
+            消息
+        </a>
+    </div>
+    <div class="right menu" th:unless="${session.userId}!=null" login=no>
+        <div id="nologin" style="visibility: hidden">55</div>
+        <div id="ro-search-box" class="ro-menu-item" style="display: none">
+            <div id="main-search-input" class="ui left icon input">
+                <input type="text" placeholder="搜索...">
+                <i class="icon iconfont icon-search"></i>
+            </div>
+        </div>
+        <a id="ro-search-button" class="ro-menu-item">
+            <i class="icon iconfont icon-search"></i>
+        </a>
+        <div id="ro-menu-split">
+            <span></span>
+        </div>
+
+        <a id="menu-user-avatar" class="ro-menu-item" href="/log">
+            <span>登录</span>
+        </a>
+    </div>
+</div>
+
+<div id="user-menu" class="ui popup" style="padding: 0">
+    <div id="user-menu-namebox" th:text="${session.username}">
+    </div>
+    <div class="ui large vertical secondary menu">
+        <a class="item" href="/userCenter" >
+            个人中心
+        </a>
+        <a class="item" href="/publish/overview" >
+            投稿后台
+        </a>
+        <a class="item" href="/logout">
+            退出
+        </a>
+    </div>
+</div>
+
+<div id="user-msg-menu" class="ui popup" style="padding: 0">
+    <div class="ui large vertical secondary menu">
+        <a class="item" tab="reply" href="/message?type=reply" target="_blank">
+            回复
+        </a>
+        <a class="item" tab="inform" href="/message?type=inform" target="_blank">
+            通知
+        </a>
+    </div>
+</div>
+
+
+<div id="topic-container" th:if="${session.clickArticle}!=null">
+    <div class="ui grid">
+        <div class="ui row">
+            <div class="two wide column index-left">
+            </div>
+            <div class="nine wide column index-middle">
+                <h1 th:text="${session.clickArticle.articleTitle}">富商大贾符合国际汇款记录</h1>
+                <div class="article-sub">
+                    <span>专栏</span>
+                    <span th:text="${#dates.format(session.clickArticle.modifyTime,'yyyy-MM-dd HH:mm:ss')}">2021-04-23 22:16</span>
+                    <span th:text="${session.clickArticle.tag}">盘点</span>
+                    <span th:text="${session.clickArticle.viewCount}+'阅读'">0</span>
+                </div>
+                <p><br></p>
+
+
+
+                    <div id="fff"></div>
+                    <div  id= ss style="visibility: hidden" th:text="${session.clickArticle.articleContent}"></div>
+
+                <div  id= fc style="visibility: hidden" th:text="${session.clickArticle.articleId}"></div>
+
+
+                <div class="t-operate-box" style="padding: 10px 0 10px">
+                    <span><i class="iconfont icon-message-fill" th:text="${session.commentCount}">0 </i> 条评论</span>
+                    <span class="event-like " th:if="${session.likeType==1}">
+                        <i class="iconfont icon-like-fill"  ></i> <span th:text="${session.clickArticle.likeCount}">0</span>
+                    </span>
+                    <span class="event-like active " th:if="${session.likeType==2}">
+                        <i class="iconfont icon-like-fill"></i> <span th:text="${session.clickArticle.likeCount}">0</span>
+                    </span>
+                    <span class="ui simple dropdown item">
+                        <i class="iconfont icon-retweet"></i>转发
+                        <div class="menu">
+                            <div class="item retweet-weibo"><i class="iconfont icon-weibo" style="color: #ee5444"></i> 新浪微博</div>
+                            <div class="item retweet-qq"><i class="iconfont icon-QQ"
+                                                            style="color: #73c4ff"></i> QQ好友</div>
+                            <div class="item retweet-qzone"><i class="iconfont icon-QQ-circle-fill"
+                                                               style="color: #ffd209"></i> QQ空间</div>
+                        </div>
+                </span>
+
+                </div>
+
+
+                <div style="margin-top: 50px">
+                    <span class="card-title">评论</span>
+                    <div class="ui divider" style="margin-top: 0"></div>
+                </div>
+
+
+                <div   class="ui comments" th:each="f: ${session.clickArticleComment}"style="margin-top: 20px;">
+                    <div  th:id="${f.commentator}" class="comment comment-interval root-list">
+                        <div class="avatar root-avatar">
+                            <img class="root-avatar" style="border-radius: 50%;height: 38px;width: 38px" th:src="${f.commentFace}">
+                        </div>
+                        <div  style="font-size: 20px;font-family: 华文隶书;margin-top: 10px" th:text="'&nbsp;&nbsp;&nbsp;'+${f.commentator}"></div>
+
+
+                        <!--                            <div v-if="reply.replySubList && reply.childReplyNum > 0" class="ui comments sub-list">-->
+                        <!--                                <div v-for="subNode in reply.replySubList.result" class="comment">-->
+                        <!--                                    <a class="avatar" :href="'https://f.ymgal.com/space/' + subNode.uid"-->
+                        <!--                                       target="_blank">-->
+                        <!--                                        <img class="sub-avatar" :src="'https://store.ymgal.com/'+subNode.avatar">-->
+                        <!--                                    </a>-->
+                        <!--                                    <div class="content">-->
+                        <!--                                        <a class="uname" :href="'https://f.ymgal.com/space/' + subNode.uid"-->
+                        <!--                                           target="_blank">{{subNode.createAt}}</a>-->
+                        <!--                                        <div class="comment-content">-->
+                        <!--                            <span v-if="subNode.replyTargetType == 99">-->
+                        <!--                                回复 <a :href="'https://f.ymgal.com/space/' + subNode.targetUid" target="_blank">@{{subNode.targetName}}</a>:-->
+                        <!--                            </span>-->
+                        <!--                                            {{subNode.replyContent}}-->
+                        <!--                                        </div>-->
+                        <!--                                        <div class="actions comment-extends">-->
+                        <!--                                            <span class="date">{{subNode.createTime}}</span>-->
+                        <!--                                            <span><a class="reply"-->
+                        <!--                                                     @click="clickReply(reply.replyId,99,subNode.uid,subNode.createAt)">回复</a></span>-->
+                        <!--                                        </div>-->
+                        <!--                                    </div>-->
+                        <!--                                </div>-->
+                        <!--                            </div>-->
+
+                        <!--                            <div v-if="subReply.rootReplyId == reply.replyId" class="ui comments">-->
+                        <!--                                <div class="comment sub-comment-box">-->
+                        <!--                                    <a class="avatar">-->
+                        <!--                                        <img src="https://store.ymgal.com/avatar/nxV/7rV/nxV7rVBPYdS8USiw.webp">-->
+                        <!--                                    </a>-->
+                        <!--                                    <div class="content">-->
+                        <!--                                        <div class="text">-->
+                        <!--                            <textarea class="reply-textarea"-->
+                        <!--                                      :placeholder="subReply.targetName !== ''? '回复:'+subReply.targetName : ''"-->
+                        <!--                                      v-model="subReply.content"></textarea>-->
+                        <!--                                        </div>-->
+                        <!--                                        <div class="actions">-->
+                        <!--                                            <div id="subReplyButton" class="btn-reply" @click="replyTarget">回复</div>-->
+                        <!--                                        </div>-->
+                        <!--                                    </div>-->
+                        <!--                                </div>-->
+                        <!--                            </div>-->
+                    </div>
+
+                    <div class="content" style="margin-left: 10%">
+                        <!--                                <a class="uname"  target="_blank">{{reply.createAt}}</a>-->
+                        <div class="comment-content" th:text="'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'+${f.commentContent}">
+                            fffff
+                        </div>
+                        <br>
+                        <div class="actions comment-extends">
+                            <span class="date" th:text="${#dates.format(f.createTime,'yyyy-MM-dd HH:mm:ss')}" >2012.1.1</span>
+                            <!--                                    <span><a class="reply" @click="clickReply(reply.replyId,2,0)">回复</a></span>-->
+                        </div>
+                    </div>
+                    <br>
+
+                    <div class="ui divider" style="margin-top: 0"></div>
+                </div>
+                <div id="replies-container" style="margin-top: 40px">
+
+<!--评论-->
+                    <div class="ui comments" th:if="${session.userId}!=null">
+                        <div id="reply-input-box" class="comment">
+                            <a class="avatar">
+                                <img th:src="${session.avatar}">
+                            </a>
+                            <div class="content">
+                                <div class="text">
+                        <textarea id="reply-input" class="reply-textarea"
+                                  placeholder=输入评论...></textarea>
+                                </div>
+                                <div class="actions">
+                                    <div id="reply-button" class="btn-comments">
+                                        评论 <i class="iconfont icon-send"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+
+            <div class="five wide column rail index-right">
+                <div class="ui sticky">
+                    <div id="user-box">
+                        <p>
+                            <a href="#">
+                                <img class="ui tiny avatar image"
+                                     th:src="${session.clickArticle.createAvatar}">
+                            </a>
+                        </p>
+                        <div class="content username">
+                            <a href="https://f.ymgal.com/space/4277" th:text="${session.clickArticle.createName}">呼啸南瓜</a>
+                        </div>
+                        <div class="ui internally celled equal width grid">
+                            <a href="#" class="column user-box-nav">
+                                <span th:text="${session.likeAll}">0</span>
+                                <span>点赞</span>
+                            </a>
+                            <a href="#" class="column user-box-nav">
+                                <span th:text="${session.viewAll}">0</span>
+                                <span>阅读</span>
+                            </a>
+                            <a href="#" class="column user-box-nav">
+                                <span th:text="${session.createArticleNum}">1</span>
+                                <span>文章</span>
+                            </a>
+                        </div>
+                        <div class="ui divider"></div>
+
+                    </div><!--end user box-->
+
+<!--                    <div id="recommend-topic">-->
+<!--                        <div class="block-title">更多好文</div>-->
+<!--                        <div class="ui items">-->
+<!--                            <div class="ui item rt-topic">-->
+<!--                                <div class="content">-->
+<!--                                    <a target="_blank"-->
+<!--                                       href="/co/article/158712046005780480">个人声优介绍（二）名为天赋的枷锁——石原舞</a>-->
+<!--                                    <div class="extra">-->
+<!--                                        <span>2021-03-13</span>-->
+<!--                                        <span><i class="iconfont icon-eye"-->
+<!--                                                 style="font-size: 12px">275</i></span>-->
+<!--                                    </div>-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                            <div class="ui item rt-topic">-->
+<!--                                <div class="content">-->
+<!--                                    <a target="_blank"-->
+<!--                                       href="/co/article/158557386863280128">个人声优介绍（一）跨界女王清水爱</a>-->
+<!--                                    <div class="extra">-->
+<!--                                        <span>2021-03-13</span>-->
+<!--                                        <span><i class="iconfont icon-eye"-->
+<!--                                                 style="font-size: 12px">163</i></span>-->
+<!--                                    </div>-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                            <div class="ui item rt-topic">-->
+<!--                                <div class="content">-->
+<!--                                    <a target="_blank"-->
+<!--                                       href="/co/article/141657667117514752">galgame业界2020全年总结</a>-->
+<!--                                    <div class="extra">-->
+<!--                                        <span>2021-01-25</span>-->
+<!--                                        <span><i class="iconfont icon-eye"-->
+<!--                                                 style="font-size: 12px">326</i></span>-->
+<!--                                    </div>-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                    </div>-->
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+
+<script th:src="@{/index/style/components/jquery.min.js}"></script>
+<script th:src="@{/index/style/components/semanticui/semantic.min.js}"></script>
+<script th:src="@{/index/style/components/vue/vue.min.js}"></script>
+<script th:src="@{/index/style/js/common.js}"></script>
+<script th:src="@{/index/style/js/usermenu.js}"></script>
+<script th:src="@{/index/style/js/common/replies.js}"></script>
+<script th:src="@{/index/style/js/co/articledetail.js}"></script>
+
+<!--文章内容拼接-->
+<script>
+    var dd=$("#ss").text();
+    $("#fff").append(dd.toString());
+</script>
+
+<div class="ym-right-bar">
+    <a href="/feedback" target="_blank">
+        <li data-inverted="" data-tooltip="建议·反馈" data-position="left center">
+            <i class="iconfont icon-customerservice"></i>
+        </li>
+    </a>
+
+    <li data-inverted="" data-tooltip="关注公众号" data-position="left center" onclick="wechatModel()">
+        <i class="iconfont icon-wechat-fill"></i>
+    </li>
+    <li id="gotoTop" style="display: none" data-inverted="" data-tooltip="返回顶部" data-position="left center">
+        <i class="iconfont icon-rocket"></i>
+    </li>
+</div>
+
+<div id="wechat-model" class="ui tiny modal">
+    <div class="content">
+        <div class="description" style="padding-top: 12px">
+            <div style="text-align: center">
+                <h3>公众号: 月幕Galgame</h3>
+                <img src="/static/img/spread/wechat-qrcode.jpg" width="260px">
+            </div>
+            <p>随时随地获取<b>最新的汉化情报</b>。每两小时更新</p>
+            <p>可在微信上搜索站点内容, 查看最新Galgame资讯以及站长转载的各路文章。上午 10:00 整不定期推送 (只要前一日有文章)</p>
+        </div>
+        <div class="ui divider"></div>
+    </div>
+</div>
+
+<script type="application/javascript">
+
+    $(function () {
+        gotoTop();
+    });
+
+    function wechatModel() {
+        $('#wechat-model')
+            .modal({
+                duration: 200,
+                inverted: false
+            })
+            .modal('show');
+    }
+</script>
+</body>
+<!--点赞-->
+<script type="application/javascript">
+    // var topicId = '173557714473975808';
+$(function () {
+    var articleId=$("#fc").text();
+    var log=$("#nologin").text();
+    var likeLoading = false;
+    $('.t-operate-box .event-like').click(function () {
+        if (likeLoading) return;
+if (log==55){
+    return;
+}
+        likeLoading = true;
+        var self = $(this);
+        var likeNum = parseInt(self.find('span').text());
+        var isLike = self.hasClass('active');
+
+        if (isLike) {
+            var likeType = 1;
+        } else {
+             var likeType = 2;
+        }
+        alert(likeType);
+        $.ajax({
+            type: "POST",
+            // contentType: 'application/json',
+            url: "/article/like",
+            data:{"articleId":articleId, "likeType":likeType},
+            success: function (result) {
+                likeLoading = false;
+                if (result.state==200) {
+                    $msg.error(result.msg);
+                    return;
+                }
+                if (isLike) {/*取消赞*/
+                    self.find('span').text(--likeNum);
+                    self.removeClass('active')
+                } else {/*点赞*/
+                    self.find('span').text(++likeNum);
+                    self.addClass('active')
+                }
+            }
+        })
+    });
+});
+</script>
+
+
+<script type="application/javascript"> function shareModel() {
+    var shareTitle = $('head > title').text();/*分享的标题*/
+    var shareUrl = window.location.href; /*分享地址*/
+    var shareImg = 'https://www.ymgal.com/static/cantfind.png'; /*分享显示的图片*/
+    var shareDesc = $('head > meta[name="description"]').attr('content');
+    if (!isEmpty($('head > meta[itemprop="image"]'))) {
+        shareImg = $('head > meta[itemprop="image"]').attr('content');
+    }
+    return {shareTitle: shareTitle, shareUrl: shareUrl, shareImg: shareImg, shareDesc: shareDesc};
+}
+
+$('.retweet-weibo').click(function () {
+    var modal = shareModel();
+    retweetToWeibo(modal.shareTitle, modal.shareUrl, modal.shareImg);
+});
+$('.retweet-qq').click(function () {
+    var modal = shareModel();
+    retweetToQQ(modal.shareTitle, modal.shareUrl, modal.shareImg, modal.shareDesc);
+});
+$('.retweet-qzone').click(function () {
+    var modal = shareModel();
+    retweetToQZone(modal.shareTitle, modal.shareUrl, modal.shareImg, modal.shareDesc);
+}); /*分享新浪微博*/
+function retweetToWeibo(title, url, pic) {
+    var param = {
+        url: url,
+        type: '3',
+        count: '1',
+        /** 是否显示分享数，1显示(可选)*/ title: title,
+        /** 分享的文字内容(可选，默认为所在页面的title)*/ pic: pic,
+        /**分享图片的路径(可选)*/ ralateUid: '',
+        /**关联用户的UID，分享微博会@该用户(可选)*/ rnd: new Date().valueOf()
+    };
+    var temp = [];
+    for (var p in param) {
+        temp.push(p + '=' + encodeURIComponent(param[p] || ''))
+    }
+    var target_url = "http://service.weibo.com/share/share.php?" + temp.join('&');
+    window.open(target_url, 'sinaweibo', 'height=450, width=620');
+} /*分享到QQ好友*/
+function retweetToQQ(title, url, pic, desc) {
+    var p = {
+        url: url,/*获取URL，可加上来自分享到QQ标识，方便统计*/
+        desc: '来自月幕Galgame的分享~ ', /*分享理由(风格应模拟用户对话),支持多分享语随机展现（使用|分隔）*/
+        title: title,/*分享标题(可选)*/
+        summary: desc,/*分享描述(可选)*/
+        pics: pic,/*分享图片(可选)*/
+        site: '月幕Galgame'/*分享来源 (可选) ，如：QQ分享*/
+    };
+    var s = [];
+    for (var i in p) {
+        s.push(i + '=' + encodeURIComponent(p[i] || ''));
+    }
+    var target_url = "http://connect.qq.com/widget/shareqq/index.html?" + s.join('&');
+    window.open(target_url, 'qq', 'height=450, width=620');
+} /*分享到QQ空间*/
+function retweetToQZone(title, url, pic, desc) {
+    var p = {
+        url: url,
+        showcount: '1',/*是否显示分享总数,显示：'1'，不显示：'0' */
+        desc: '来自月幕Galgame的分享~ ',/*默认分享理由(可选)*/
+        summary: desc,/*分享摘要(可选)*/
+        title: title,/*分享标题(可选)*/
+        site: '月幕Galgame',/*分享来源 如：腾讯网(可选)summary*/
+        pics: pic, /*分享图片的路径(可选)*/
+        style: '101',
+        width: 199,
+        height: 30
+    };
+    var s = [];
+    for (var i in p) {
+        s.push(i + '=' + encodeURIComponent(p[i] || ''));
+    }
+    var target_url = "http://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?" + s.join('&');
+    window.open(target_url, 'qZone', 'height=450, width=620');
+} </script>
+</html>

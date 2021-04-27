@@ -2,15 +2,19 @@ package com.fc.threekindom.controller;
 
 
 
+import com.fc.threekindom.pojo.Article;
 import com.fc.threekindom.pojo.User;
+import com.fc.threekindom.service.ArticleService;
 import com.fc.threekindom.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -23,6 +27,8 @@ import java.util.Map;
 public class UserController {
     @Autowired
     private UserService userService;
+    @Autowired
+    private ArticleService articleService;
 
     @GetMapping("/find")
     @ResponseBody
@@ -49,17 +55,27 @@ public class UserController {
         return "userCenter";
     }
     //主界面退出登录
-    @GetMapping("/logout")
-    protected String logout(HttpServletRequest req){
+    @RequestMapping("/logout")
+    public ModelAndView logout(HttpServletRequest req){
         HttpSession session = req.getSession();
         session.removeAttribute("username");
         session.removeAttribute("userId");
-        return "index";
 
+            ModelAndView modelAndView = new ModelAndView();
+            modelAndView.setViewName("index");
+
+            List<Article> list=articleService.searchAllArticle("杂谈");
+            modelAndView.addObject("zaTan",list);
+            List<Article> list1=articleService.searchAllArticle("盘点");
+            modelAndView.addObject("panDian",list1);
+        List<Article> list2=articleService.searchAllArticle("学术");
+        modelAndView.addObject("xueShu",list2);
+
+            return modelAndView;
     }
     //个人中心界面退出登录
     @GetMapping("/ucLogout")
-    protected String ucLogout(HttpServletRequest req){
+  public  String ucLogout(HttpServletRequest req){
         HttpSession session = req.getSession();
         session.removeAttribute("username");
         session.removeAttribute("userId");
@@ -68,7 +84,7 @@ public class UserController {
     }
     //头像修改退出登录
     @GetMapping("/avatarLogout")
-    protected String avatarLogout(HttpServletRequest req) {
+    public String avatarLogout(HttpServletRequest req) {
         HttpSession session = req.getSession();
         session.removeAttribute("username");
         session.removeAttribute("userId");
@@ -86,10 +102,19 @@ public class UserController {
     public String toRegPage(){
         return "register";
     }
-    //跳转到主界面
-    @GetMapping("/index")
-    public String toIndexPage(){
-        return "index";
+    //去主界面
+    @RequestMapping("/index")
+    public ModelAndView toIndexPage() {
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("index");
+        List<Article> list=articleService.searchAllArticle("杂谈");
+        modelAndView.addObject("zaTan",list);
+        List<Article> list1=articleService.searchAllArticle("资讯");
+        modelAndView.addObject("ziXun",list1);
+        List<Article> list2=articleService.searchAllArticle("学术");
+        modelAndView.addObject("xueShu",list2);
+        return modelAndView;
+
     }
     //跳转到管理员界面
     @GetMapping("/admin")
@@ -98,14 +123,20 @@ public class UserController {
     }
     //跳转到用户中心
     @GetMapping("/userCenter")
-    public String toUserCenterPage(Model model){
+    public String toUserCenterPage(Model model,HttpServletRequest request){
         model.addAttribute("set",3);
+        userService.toUserCenter(model,request);
         return "userCenter";
     }
     //跳转到头像修改界面
     @GetMapping("/avatar")
     public String toAvatarPage(){
         return "avatar";
+    }
+    //跳转到文章界面
+    @GetMapping("/article")
+    public String toArticlePage(){
+        return "article";
     }
 
     @PostMapping("/checkUsername")

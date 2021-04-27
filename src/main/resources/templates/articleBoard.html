@@ -60,7 +60,22 @@
     </style>
 
 </head>
-<body style="background: #fafafa;">
+<script >
+    function search(){
+
+        $.post("/article/searchAllArticle",function (data) {
+            if (data[0]==100){
+                $msg.error(data[1]);
+            }
+
+        })
+
+    }
+
+
+
+</script>
+<body onload="search()" style="background: #fafafa;">
 
 <link rel="stylesheet" th:href="@{/index/style/icon/iconfont.css}">
 
@@ -70,20 +85,17 @@ box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.08);
         margin-bottom: 0;
         margin-top: 0;
         ">
-    <a href="/index">
+    <a href="#">
         <img src="/image/logo.png">
     </a>
-    <a class="ro-menu-item" href="/co/article">
-        <span>文章</span>
+    <a class="ro-menu-item" href="/index">
+        <span>主页</span>
     </a>
-    <a class="ro-menu-item" href="/co/notes">
-        <span>手记</span>
+    <a class="ro-menu-item" href="#">
+        <span>图鉴查询</span>
     </a>
-    <a class="ro-menu-item" href="/specialcode">
-        <span>特殊码</span>
-    </a>
-    <a class="ro-menu-item" href="/co/picset">
-        <span>画札</span>
+    <a class="ro-menu-item" href="#">
+        <span>获取积分</span>
     </a>
     <div class="right menu" th:if="${session.userId}!=null" login=yes>
         <div id="ro-search-box" class="ro-menu-item" style="display: none">
@@ -173,9 +185,9 @@ box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.08);
                             <a class="item menu-item" menu-tab="article-dashboard" href="/publish/board">
                                 文章总览
                             </a>
-                            <a class="item menu-item" menu-tab="news" href="/co/publish/news">
-                                发布资讯
-                            </a>
+<!--                            <a class="item menu-item" menu-tab="news" href="/co/publish/news">-->
+<!--                                发布资讯-->
+<!--                            </a>-->
                             <a class="item menu-item" menu-tab="column" href="/publish/column">
                                 撰写专栏
                             </a>
@@ -184,31 +196,30 @@ box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.08);
                 </div>
             </div>
 
-            <div class="item">
-                <a class="active title">
-                    <span class="iconfont icon-file-image"> 画札管理</span>
-                </a>
-                <div class="active content">
-                    <div>
-                        <div class="ui vertical text menu">
-                            <a class="item menu-item" menu-tab="picset-dashboard" href="/co/publish/picset-dashboard">
-                                画札总览
-                            </a>
-                            <a class="item menu-item" menu-tab="picset" href="/co/publish/picset">
-                                创建画札
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
+<!--            <div class="item">-->
+<!--                <a class="active title">-->
+<!--                    <span class="iconfont icon-file-image"> 画札管理</span>-->
+<!--                </a>-->
+<!--                <div class="active content">-->
+<!--                    <div>-->
+<!--                        <div class="ui vertical text menu">-->
+<!--                            <a class="item menu-item" menu-tab="picset-dashboard" href="/co/publish/picset-dashboard">-->
+<!--                                画札总览-->
+<!--                            </a>-->
+<!--                            <a class="item menu-item" menu-tab="picset" href="/co/publish/picset">-->
+<!--                                创建画札-->
+<!--                            </a>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </div>-->
 
         </div>
     </div>
     <div class="co-publish-right thirteen wide column" th:if="${session.userId}!=null">
         <div class="dashboard-topic-list">
             <div id="article-manager-list" class="ui divided items">
-                <div id="topic173089872116973568" th:each="u: ${session.userArticle}" class="ui item" >
-
+                <div id="topic173089872116973568" th:each="u: ${article}" class="ui item" >
                     <div class="content">
                         <a class="article-title" target="_blank" th:text="${u.articleTitle}"
                            href="/co/article/173089872116973568">法国红酒看</a>
@@ -267,7 +278,7 @@ box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.08);
 
             $msg.info("转移成功!");
             setTimeout(function () {
-                window.location.reload()
+                location.replace(location.href);
             }, 1000);
         })
     }
@@ -295,7 +306,8 @@ box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.08);
                                 return;
                             }
                             $msg.info("删除成功!");
-                           location.reload();
+                            window.location.href = "/publish/board";
+
                         }
                     })
                 }
@@ -308,13 +320,7 @@ box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.08);
         .dropdown()
     ;
 </script>
-<script>
-    $.post("/article/searchAllArticle",function (data) {
-        if (data[0]==100){
-            $msg.error(data[1]);
-        }
-    })
-</script>
+
 </body>
 
 

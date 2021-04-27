@@ -7,7 +7,7 @@ $(function () {
     var E = window.wangEditor;
     var editor = new E('#editor-toolbar', '#editor-text');
 
-    editor.config.uploadImgMaxLength = 1;
+    editor.config.uploadImgMaxLength = 5;
 
     editor.config.customAlert = function (info) {
         $msg.error(info);
@@ -27,7 +27,7 @@ $(function () {
         new Compressor(resultFiles[0], {
             quality: 0.6,
             mimeType: isSupportWebp ? 'image/webp' : 'image/jpeg',
-            maxWidth: 1600,
+            maxWidth: 700,
             success(result) {
                 var formData = new FormData();
                 formData.append('file', result, result.name);
@@ -136,7 +136,7 @@ $(function () {
 
     //发布
     $("#toPublish").click(function () {
-        toPublish(editor.txt.html())
+        toPublish(editor.txt.html(),editor.txt.text());
     });
 
     //草稿
@@ -266,7 +266,7 @@ function submitMainImage(bt) {
 
 
 //保存发布
-function toPublish(html) {
+function toPublish(html,txt) {
 
     var $topic = $("topic");
 
@@ -280,7 +280,9 @@ function toPublish(html) {
         "title": $("#topicTitle").val(),
         "mainImg": $("#main-img>img").attr("src"),
         "content": html,
-        "category": $('#article-category .category-list > .active').text()
+        "category": $('#article-category .category-list > .active').text(),
+        "text":txt,
+        "userAvatar":$("#menu-user-avatar>img").attr("src"),
     };
 
 
@@ -300,12 +302,15 @@ function toPublish(html) {
             }
             //成功则跳转
             $msg.info("发布成功!");
-            setTimeout(function () {
-                window.location.href = "/publish/board";
-            }, 3000);
+
+            window.location.href = "/publish/board";
+            // setTimeout(function () {
+            //     window.location.href = "/publish/overview";
+            // }, 3000);
         }
     })
 }
+
 
 //保存到草稿
 function saveToDraft(html) {
