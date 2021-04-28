@@ -35,4 +35,7 @@ namespace:命名空间  作为多个mapper文件的唯一标识
   <update id="modifyUserInfoByUsername" parameterType="User">
     update tb_user set  mailbox=#{mailbox},signature=#{signature} where user_name=#{userName}
   </update>
+  <update id="signIn" >
+    update tb_user set signInTime=now(),integral=integral+#{integral},exp=exp+#{exp} where user_id=#{userId}
+  </update>
 </mapper>

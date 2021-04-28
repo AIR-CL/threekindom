@@ -32,7 +32,6 @@ public class ArticleController {
     @PostMapping("/publish")
     @ResponseBody
     public Map<String,Object> toPublish( String topicId, String title, String content , String mainImg, String  category, String text,String userAvatar,HttpServletRequest request){
-        System.out.println(userAvatar);
         Map<String, Object> map = articleService.toPublishArticle(topicId,title,content,mainImg,category,text,userAvatar,request);
         return map;
     }
@@ -80,5 +79,14 @@ public class ArticleController {
         return map;
 
     }
+    //根据标签查找文章
+    @PostMapping("/more")
+    @ResponseBody
+    public Map<String,Object> toMore(String tag,HttpServletRequest request){
+        Map<String,Object> map=articleService.toMore(tag,request);
+        return map;
+
+    }
+
 
 }

@@ -22,4 +22,5 @@ public class Article implements Serializable {
     private Date modifyTime;
     private String text;
     private String createAvatar;
+    private Integer commentCount;
 }

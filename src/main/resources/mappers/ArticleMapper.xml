@@ -52,4 +52,19 @@ namespace:命名空间  作为多个mapper文件的唯一标识
     <select id="findArticleByCreateIdAndTag" resultType="Article">
         select * from tb_article where create_id=#{createId} and tag=#{tag}
     </select>
+    <select id="findArticleByTagTime" resultType="Article">
+        select * from tb_article where tag=#{tag} order by modifyTime desc
+    </select>
+    <select id="findArticleByTagComment" resultType="Article">
+        select * from tb_article where tag=#{tag} order by comment_count desc
+    </select>
+    <select id="findArticleByView" resultType="Article">
+        select *from tb_article where tag=#{tag} order by view_count  desc limit 10;
+    </select>
+    <select id="findArticleByLike" resultType="Article">
+        select * from tb_article where tag=#{tag} order by like_count  desc limit 10;
+    </select>
+    <update id="modifyCommentCount">
+        update tb_article set comment_count=#{commentCount} where article_id=#{articleId};
+    </update>
 </mapper>

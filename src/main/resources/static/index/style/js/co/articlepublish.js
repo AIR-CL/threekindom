@@ -136,7 +136,7 @@ $(function () {
 
     //发布
     $("#toPublish").click(function () {
-        toPublish(editor.txt.html(),editor.txt.text());
+        toPublish(editor.txt.html(),editor.txt.text().toString().replaceAll("&nbsp;",""));
     });
 
     //草稿
@@ -269,7 +269,8 @@ function submitMainImage(bt) {
 function toPublish(html,txt) {
 
     var $topic = $("topic");
-
+// var txt=txt.toString.trim();
+alert(txt);
     if ($topic.attr("tab") == 'column' && parseInt($("#wordCount").text()) < 5) {
         $msg.error("发布专栏最少需要200字!");
         return;

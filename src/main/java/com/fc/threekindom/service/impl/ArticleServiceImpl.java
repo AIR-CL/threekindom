@@ -233,11 +233,11 @@ public Map<String,Object> reload(String articleId, HttpServletRequest request, M
     Map<String,Object> map=new HashMap<>();
     Article article=articleMapper.findArticleById(id);
     List<Comment> comment=commentMapper.findCommentById(id);
+    articleMapper.modifyCommentCount(comment.size(),id);
     if (article==null){
         map.put("state",100);
     }else {
         int i=articleMapper.readAdd(id);
-        System.out.println(i+"+阅读数");
         like like = articleMapper.likeState(Integer.parseInt(articleId), Integer.parseInt(request.getSession().getAttribute("userId").toString()));
         if (like==null){
             request.getSession().setAttribute("likeType",1);
@@ -269,7 +269,6 @@ public Map<String,Object> reload(String articleId, HttpServletRequest request, M
             like1.setArticleId(Integer.parseInt(articleId));
             like1.setLikeType(Integer.parseInt(likeType));
             articleMapper.addLikeCount(Integer.parseInt(articleId));
-            System.out.println("222222");
             int row = articleMapper.like(like1);
             if (row>=1){
                 map.put("state",100);
@@ -280,11 +279,11 @@ public Map<String,Object> reload(String articleId, HttpServletRequest request, M
         }else {
             if (likeType.equals("2")){
                 articleMapper.addLikeCount(Integer.parseInt(articleId));
-                System.out.println("222222");
+
 
             }else{
                 articleMapper.decLikeCount(Integer.parseInt(articleId));
-                System.out.println("111111111");
+
             }
             int row = articleMapper.modifyLike(Integer.parseInt(likeType), Integer.parseInt(articleId), Integer.parseInt(request.getSession().getAttribute("userId").toString()));
             if (row>=1){
@@ -338,5 +337,20 @@ public Map<String,Object> reload(String articleId, HttpServletRequest request, M
         }
         request.getSession().setAttribute("tViewAll",tviewAll);
         request.getSession().setAttribute("tLikeAll",tlikeAll);
+    }
+    //去更多文章页面
+    @Override
+    public Map<String,Object> toMore(String tag,HttpServletRequest request){
+        Map<String,Object> map=new HashMap<>();
+//        List<Article> articleByTag = articleMapper.findArticleByTag(tag);
+//        List<Article> articleByLike = articleMapper.findArticleByLike(tag);
+//        List<Article> articleByView = articleMapper.findArticleByView(tag);
+//        request.getSession().setAttribute("tagList",articleByTag);
+//        request.getSession().setAttribute("likeList",articleByLike);
+//        request.getSession().setAttribute("viewList",articleByView);
+        request.getSession().setAttribute("tag",tag);
+        map.put("state",200);
+        return map;
+
     }
 }

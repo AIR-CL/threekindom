@@ -21,4 +21,6 @@ public interface UserMapper {
     int uploadFace(@Param("username") String username,@Param("face") String face);
     //根据用户名修改信息
     int modifyUserInfoByUsername(User user);
+    //签到
+    int signIn(@Param("userId") Integer userId,@Param("integral") Integer integral,@Param("exp") Integer exp);
 }

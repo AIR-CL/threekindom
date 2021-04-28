@@ -27,4 +27,6 @@ public interface ArticleService {
     Map<String,Object> like(String articleId,String likeType,HttpServletRequest request);
     //去文章总览
     void toOverView(Model model,HttpServletRequest request);
+    //去更多界面
+    Map<String,Object> toMore(String tag,HttpServletRequest request);
 }

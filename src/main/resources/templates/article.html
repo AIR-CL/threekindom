@@ -66,7 +66,7 @@ box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.08);
         <a id="menu-user-avatar" href="#" target="_blank">
             <img class="ui mini circular image" th:src="@{${session.avatar}}">
         </a>
-        <a class="ro-menu-item" id="menu-user-msg" href="/message?type=reply" target="_blank">
+        <a class="ro-menu-item" id="menu-user-msg" href="#" target="_blank">
             消息
         </a>
     </div>
@@ -272,7 +272,7 @@ box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.08);
                             </a>
                         </p>
                         <div class="content username">
-                            <a href="https://f.ymgal.com/space/4277" th:text="${session.clickArticle.createName}">呼啸南瓜</a>
+                            <a href="#" th:text="${session.clickArticle.createName}">呼啸南瓜</a>
                         </div>
                         <div class="ui internally celled equal width grid">
                             <a href="#" class="column user-box-nav">
@@ -372,11 +372,11 @@ box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.08);
     <div class="content">
         <div class="description" style="padding-top: 12px">
             <div style="text-align: center">
-                <h3>公众号: 月幕Galgame</h3>
-                <img src="/static/img/spread/wechat-qrcode.jpg" width="260px">
+                <h3>公众号: 三国爱好者交流论坛</h3>
+                <img src="/image/06.jpg" width="260px">
             </div>
-            <p>随时随地获取<b>最新的汉化情报</b>。每两小时更新</p>
-            <p>可在微信上搜索站点内容, 查看最新Galgame资讯以及站长转载的各路文章。上午 10:00 整不定期推送 (只要前一日有文章)</p>
+            <p>随时随地获取<b>最新的情报</b>。每两小时更新</p>
+            <p>可在微信上搜索站点内容, 查看最新三国资讯以及站长转载的各路文章。上午 10:00 整不定期推送 (只要前一日有文章)</p>
         </div>
         <div class="ui divider"></div>
     </div>

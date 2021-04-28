@@ -162,6 +162,14 @@ public class UserServiceImpl implements UserService {
             req.getSession().setAttribute("integral",user.getIntegral());
             req.getSession().setAttribute("mailbox",user.getMailbox());
             req.getSession().setAttribute("signature",user.getSignature());
+            Date t = new Date();
+            SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+            if (df.format(t).equals(df.format(user.getSignInTime()))){
+                req.getSession().setAttribute("signIn","yes");
+            }
+            else{
+                req.getSession().setAttribute("signIn","no");
+            }
             return map;
         }else{
             map.put("state",100);
@@ -277,7 +285,7 @@ public class UserServiceImpl implements UserService {
         try {   //实现上传到服务器
             file.transferTo(filePath);
 
-            System.out.println(filePath);
+
             //头像路径
             String face="/upload/face/"+newFileName;
 

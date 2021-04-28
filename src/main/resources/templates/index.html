@@ -15,6 +15,7 @@
     <link rel="stylesheet" th:href="@{/index/style/components/semanticui/semantic.min.css}">
     <link rel="stylesheet" th:href="@{/index/style/components/swiper/swiper-bundle.min.css}">
     <link rel="stylesheet" th:href="@{/index/style/css/index.css}">
+
 </head>
 <body>
 <link rel="stylesheet" th:href="@{/index/style/icon/iconfont.css}">
@@ -37,7 +38,9 @@ box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.08);
     <a class="ro-menu-item" href="#">
         <span>获取积分</span>
     </a>
-
+   <a  style="margin-left: 20%;margin-top: 1.2%;font-family: 方正行楷繁体;font-size: 33px">
+       <span>三国爱好者交流论坛 </span>
+   </a>
     <div class="right menu" th:if="${session.userId}!=null" login=yes>
         <div id="ro-search-box" class="ro-menu-item" style="display: none">
             <div id="main-search-input" class="ui left icon input">
@@ -105,17 +108,15 @@ box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.08);
         </a>
     </div>
 </div>
-
-
-
-<div style="min-height: 1600px;width: 100%;">
+<div style=" background-image: url(/image/04.jpg);background-size: cover;background-attachment: fixed;">
+<div style="min-height: 1600px;width: 100%;background-color: rgba(255,255,255,0.2)">
 
     <section class="mindex-top-banner">
         <div class="swiper-container">
             <div class="swiper-wrapper">
                 <div class="swiper-slide" style="width: 950px">
                     <div>
-                        <a href="https://www.ymgal.com/co/collection/3" target="_blank">
+                        <a href="#">
                             <div class="banner-pic"
                                  style="background-image: url(/image/cover.jpg)">
                             </div>
@@ -125,10 +126,10 @@ box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.08);
                 </div>
                 <div class="swiper-slide" style="width: 950px">
                     <div>
-                        <a href="#">
+                        <a href="/more" id="moreZiXun1">
                             <div class="banner-pic"
                                  style="background-image: url(/image/cover02.jpg)">
-                                <div class="banner-text"><h2>资讯盘点</h2></div>
+                                <div class="banner-text"><h2 style="color: white">资讯盘点</h2></div>
                             </div>
                         </a>
                         <div class="mask"></div>
@@ -136,10 +137,10 @@ box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.08);
                 </div>
                 <div class="swiper-slide" style="width: 950px">
                     <div>
-                        <a href="#" target="_blank">
+                        <a href="/more" id="moreZaTan1" >
                             <div class="banner-pic"
                                  style="background-image: url(/image/cover03.jpg)">
-                                <div class="banner-text"><h2>三国杂谈</h2></div>
+                                <div class="banner-text"><h2 style="color: white">三国杂谈</h2></div>
                             </div>
                         </a>
                         <div class="mask"></div>
@@ -147,10 +148,10 @@ box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.08);
                 </div>
                 <div class="swiper-slide" style="width: 950px">
                     <div>
-                        <a href="#" target="_blank">
+                        <a href="/more" id="moreXueShu1"target="_blank">
                             <div class="banner-pic"
                                  style="background-image: url(/image/cover04.jpg)">
-                                <div class="banner-text"><h2>学术专栏</h2></div>
+                                <div class="banner-text"><h2 style="color: white">学术专栏</h2></div>
                             </div>
                         </a>
                         <div class="mask"></div>
@@ -204,11 +205,11 @@ box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.08);
 
         <div style="margin-top: 48px">
 
-            <div id="ym-main-box" class="ui grid">
-                <div class="ten wide column">
+            <div id="ym-main-box" class="ui grid" style="background-color: rgba(255,255,255,0.6)">
+                <div class="ten wide column" >
                     <h3 id="article-stream" class="ui dividing header">
                         学术<span style="color: #ff837d">专栏</span>
-                        <a href="/co/article" class="ym-right-link">查看更多</a>
+                        <a href="/more" class="ym-right-link"id="moreXueShu" >查看更多</a>
                     </h3>
                     <div class="ui items main-list-topic" th:each="z:${xueShu}">
                         <div class="ui item"  >
@@ -229,9 +230,9 @@ box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.08);
                                     <span><i class="iconfont icon-eye"
                                              style="font-size: 12px" th:text="${z.viewCount}"> 92</i></span>
                                     <span><i class="iconfont icon-like"
-                                             style="font-size: 12px"> 3</i></span>
+                                             style="font-size: 12px" th:text="${z.likeCount}"> 3</i></span>
                                     <span><i class="iconfont icon-message"
-                                             style="font-size: 12px"> 4</i></span>
+                                             style="font-size: 12px" th:text="${z.commentCount}"> 4</i></span>
                                 </div>
                             </div>
                         </div>
@@ -241,7 +242,7 @@ box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.08);
 
                     <h3 id="news-stream" class="ui dividing header" style="margin-top: 80px">
                         盘点<span style="color: #ff837d">资讯</span>
-                        <a href="/co/article" class="ym-right-link">查看更多</a>
+                        <a href="/more" class="ym-right-link" id="moreZiXun">查看更多</a>
                     </h3>
                     <div class="ui items main-list-topic">
                         <div class="ui items main-list-topic" th:each="u: ${ziXun}">
@@ -263,9 +264,9 @@ box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.08);
                                         <span><i class="iconfont icon-eye"
                                                  style="font-size: 12px" th:text="${u.viewCount}"> 92</i></span>
                                         <span><i class="iconfont icon-like"
-                                                 style="font-size: 12px"> 3</i></span>
+                                                 style="font-size: 12px" th:text="${u.likeCount}"> 3</i></span>
                                         <span><i class="iconfont icon-message"
-                                                 style="font-size: 12px"> 4</i></span>
+                                                 style="font-size: 12px" th:text="${u.commentCount}"> 4</i></span>
                                     </div>
                                 </div>
                             </div>
@@ -279,7 +280,7 @@ box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.08);
                     <div id="main-bcolumn-box" class="row" style="margin-top: 80px">
                         <h3 class="ui dividing header">
                            三国<span style="color: #ff837d">杂谈</span>
-                            <a href="/co/article" class="ym-right-link">查看更多</a>
+                            <a href="/more" class="ym-right-link" id="moreZaTan">查看更多</a>
                         </h3>
                         <div class="ui items main-list-topic">
                             <div class="ui items main-list-topic" th:each="u: ${zaTan}">
@@ -301,9 +302,9 @@ box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.08);
                                             <span><i class="iconfont icon-eye"
                                                      style="font-size: 12px" th:text="${u.viewCount}"> 92</i></span>
                                             <span><i class="iconfont icon-like"
-                                                     style="font-size: 12px"> 3</i></span>
+                                                     style="font-size: 12px" th:text="${u.likeCount}"> 3</i></span>
                                             <span><i class="iconfont icon-message"
-                                                     style="font-size: 12px"> 4</i></span>
+                                                     style="font-size: 12px" th:text="${u.commentCount}"> 4</i></span>
                                         </div>
                                     </div>
                                 </div>
@@ -327,10 +328,19 @@ box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.08);
                              每日签到
                             <span>每日一签, 经验升级</span>
                         </h3>
+
                         <div>
                             <p class="tag-list">
-                                <a href="#right-route-box">导航</a>
-
+                                <button  th:unless="${session.signIn}==yes" style=" color: #fff;
+    background-color: limegreen;
+    border-color: limegreen;
+    text-shadow: 0 -1px 0 rgba(0, 0, 0, .12);
+    box-shadow: 0 2px 0 rgba(0, 0, 0, .045);  height: 28px;width: 40%;" id="qianDao">签到</button>
+                                <button  th:if="${session.signIn}==yes" style="  color: #fff;
+    background-color: #ff6b80;
+    border-color: #ff6b80;
+    text-shadow: 0 -1px 0 rgba(0, 0, 0, .12);
+    box-shadow: 0 2px 0 rgba(0, 0, 0, .045); height: 28px;width: 40%" >已签到</button>
                             </p>
                         </div>
                     </div>
@@ -475,6 +485,7 @@ box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.08);
     </div>
 
 </div>
+</div>
 
 <footer class="ro-footer">
     <div class="ui grid stackable">
@@ -483,9 +494,9 @@ box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.08);
             <h3>三国爱好者交流论坛 <span
                     style="font-size: 12px; margin-left: 8px; font-weight: initial">请感受这绝妙的故事体裁</span>
             </h3>
-            <p> 本站提供的内容基本引用自公开网络或用户自行上传，仅供网友阅读与交流。站点本身不发布、提供任何资源。</p>
+            <p> 本论坛提供的内容基本引用自公开网络或用户自行上传，仅供网友阅读与交流。站点本身不发布、提供任何资源。</p>
             <div style="min-height: 18px"></div>
-            <p> ©YMGal. All Rights Reserved!</p>
+            <p> ©SGAHZLT. All Rights Reserved!<span id= "isLog" style="visibility: hidden" th:text="${session.userId}"></span></p>
         </div>
         <div class="six wide column" style="text-align: right">
             <div style="margin-bottom: 20px">
@@ -493,16 +504,16 @@ box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.08);
                         <span class="iconfont icon-wechat-fill footer-spread-tip"
                               style="color: white;font-size: 48px;"></span>
                     <div class="ui special popup" style="width: 200px">
-                        <img src="/static/img/spread/wechat-qrcode.jpg" width="200px">
-                        <p style="text-align: center">关注公众号: <b>月幕Galgame</b><br/> 洞悉Galgame大小事</p>
+                        <img src="image/06.jpg" width="200px">
+                        <p style="text-align: center">关注公众号: <b>三国爱好者交流论坛</b><br/> 洞悉三国大小事</p>
                     </div>
                 </a>
                 <a href="javaScript:void(0);">
                         <span class="iconfont icon-QQ-circle-fill footer-spread-tip"
                               style="color: white;font-size: 48px;"></span>
                     <div class="ui special popup" style="width: 200px">
-                        <img src="/static/img/spread/ymqq-qun.jpg" width="200px">
-                        <p style="text-align: center">讨论、反馈、交流q群<br/> 885297273</p>
+                        <img src="/image/06.jpg" width="200px">
+                        <p style="text-align: center">讨论、反馈、交流q群<br/> 276491323</p>
                     </div>
                 </a>
             </div>
@@ -515,7 +526,7 @@ box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.08);
         <div class="two wide column"></div>
         <div class="three wide column"></div>
         <div class="six wide column" style="text-align: center">
-            <img style="max-width: 400px" src="/static/footer.png" alt="月幕Galgame www.ymgal.com">
+            <img style="max-width: 200px" src="/image/logo.png">
         </div>
         <div class="three wide column"></div>
         <div class="two wide column"></div>
@@ -525,7 +536,6 @@ box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.08);
 <script th:src="@{/index/style/components/semanticui/semantic.min.js}"></script>
 <script th:src="@{/index/style/js/common.js}"></script>
 <script th:src="@{/index/style/js/usermenu.js}"></script>
-
 <script type="text/javascript " th:inline="none">
     $(".footer-spread-tip")
         .popup({
@@ -552,11 +562,11 @@ box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.08);
     <div class="content">
         <div class="description" style="padding-top: 12px">
             <div style="text-align: center">
-                <h3>公众号: 月幕Galgame</h3>
-                <img src="/static/img/spread/wechat-qrcode.jpg" width="260px">
+                <h3>公众号: 三国爱好者交流论坛</h3>
+                <img src="/image/06.jpg" width="260px">
             </div>
             <p>随时随地获取<b>最新的汉化情报</b>。每两小时更新</p>
-            <p>可在微信上搜索站点内容, 查看最新Galgame资讯以及站长转载的各路文章。上午 10:00 整不定期推送 (只要前一日有文章)</p>
+            <p>可在微信上搜索论坛内容, 查看最新三国资讯以及站长转载的各路文章。上午 10:00 整不定期推送 (只要前一日有文章)</p>
         </div>
         <div class="ui divider"></div>
     </div>
@@ -643,6 +653,171 @@ box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.08);
       })
 
   }
+</script>
+<!--签到-->
+<script>
+    $("#qianDao").click(function () {
+var log=$("#isLog").html();
+if (log==""){
+    $msg.info("请先登录");
+    return;
+}
+        $.ajax({
+            type: "POST",
+            url: "/signIn" ,
+            success: function (result) {
+                if (result.state!=200) {
+                    $msg.error(result.msg);
+                    return;
+                }
+                //成功则跳转
+             alert("签到成功,经验+100,积分+10");
+                window.location.href = "/index";
+
+            }
+
+        })
+
+    })
+
+</script>
+<!--查看更多学术文章-->
+<script>
+$("#moreXueShu").click(function () {
+var tag="学术";
+$.ajax({
+    type: "POST",
+    url: "/article/more" ,
+    data: {"tag":tag},
+    success: function (result) {
+        console.log(result);
+        if (result.state!=200) {
+            $msg.error(result.msg);
+            return;
+        }
+        //成功则跳转
+        $msg.info("发布成功!");
+
+        window.location.href = "/more";
+
+    }
+})
+})
+</script>
+<!--查看更多学术文章-->
+<script>
+    $("#moreXueShu1").click(function () {
+        var tag="学术";
+        $.ajax({
+            type: "POST",
+            url: "/article/more" ,
+            data: {"tag":tag},
+            success: function (result) {
+                console.log(result);
+                if (result.state!=200) {
+                    $msg.error(result.msg);
+                    return;
+                }
+                //成功则跳转
+                $msg.info("发布成功!");
+
+                window.location.href = "/more";
+
+            }
+        })
+    })
+</script>
+<!--查看更多资讯文章-->
+<script>
+    $("#moreZiXun").click(function () {
+        var tag="资讯";
+        $.ajax({
+            type: "POST",
+            url: "/article/more" ,
+            data: {"tag":tag},
+            success: function (result) {
+                console.log(result);
+                if (result.state!=200) {
+                    $msg.error(result.msg);
+                    return;
+                }
+                //成功则跳转
+                $msg.info("发布成功!");
+
+                window.location.href = "/more";
+
+            }
+        })
+    })
+</script>
+<!--查看更多资讯文章-->
+<script>
+    $("#moreZiXun1").click(function () {
+        var tag="资讯";
+        $.ajax({
+            type: "POST",
+            url: "/article/more" ,
+            data: {"tag":tag},
+            success: function (result) {
+                console.log(result);
+                if (result.state!=200) {
+                    $msg.error(result.msg);
+                    return;
+                }
+                //成功则跳转
+                $msg.info("发布成功!");
+
+                window.location.href = "/more";
+
+            }
+        })
+    })
+</script>
+<!--查看更多杂谈文章-->
+<script>
+    $("#moreZaTan").click(function () {
+        var tag="杂谈";
+        $.ajax({
+            type: "POST",
+            url: "/article/more" ,
+            data: {"tag":tag},
+            success: function (result) {
+                console.log(result);
+                if (result.state!=200) {
+                    $msg.error(result.msg);
+                    return;
+                }
+                //成功则跳转
+                $msg.info("发布成功!");
+
+                window.location.href = "/more";
+
+            }
+        })
+    })
+</script>
+<!--查看更多杂谈文章-->
+<script>
+    $("#moreZaTan1").click(function () {
+        var tag="杂谈";
+        $.ajax({
+            type: "POST",
+            url: "/article/more" ,
+            data: {"tag":tag},
+            success: function (result) {
+                console.log(result);
+                if (result.state!=200) {
+                    $msg.error(result.msg);
+                    return;
+                }
+                //成功则跳转
+                $msg.info("发布成功!");
+
+                window.location.href = "/more";
+
+            }
+        })
+    })
 </script>
 </body>
 </html>

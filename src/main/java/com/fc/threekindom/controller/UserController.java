@@ -2,6 +2,8 @@ package com.fc.threekindom.controller;
 
 
 
+import com.fc.threekindom.mappers.ArticleMapper;
+import com.fc.threekindom.mappers.UserMapper;
 import com.fc.threekindom.pojo.Article;
 import com.fc.threekindom.pojo.User;
 import com.fc.threekindom.service.ArticleService;
@@ -19,6 +21,7 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -29,6 +32,10 @@ public class UserController {
     private UserService userService;
     @Autowired
     private ArticleService articleService;
+    @Autowired(required = false)
+    private ArticleMapper articleMapper;
+    @Autowired(required = false)
+    private UserMapper userMapper;
 
     @GetMapping("/find")
     @ResponseBody
@@ -60,7 +67,7 @@ public class UserController {
         HttpSession session = req.getSession();
         session.removeAttribute("username");
         session.removeAttribute("userId");
-
+        session.removeAttribute("signIn");
             ModelAndView modelAndView = new ModelAndView();
             modelAndView.setViewName("index");
 
@@ -79,6 +86,7 @@ public class UserController {
         HttpSession session = req.getSession();
         session.removeAttribute("username");
         session.removeAttribute("userId");
+        session.removeAttribute("signIn");
         return "userCenter";
 
     }
@@ -88,6 +96,7 @@ public class UserController {
         HttpSession session = req.getSession();
         session.removeAttribute("username");
         session.removeAttribute("userId");
+        session.removeAttribute("signIn");
         return "avatar";
     }
 
@@ -104,7 +113,7 @@ public class UserController {
     }
     //去主界面
     @RequestMapping("/index")
-    public ModelAndView toIndexPage() {
+    public ModelAndView toIndexPage(HttpServletRequest request) {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("index");
         List<Article> list=articleService.searchAllArticle("杂谈");
@@ -116,6 +125,24 @@ public class UserController {
         return modelAndView;
 
     }
+    //更多文章界面
+    @RequestMapping("/more")
+    public ModelAndView toMorePage(HttpServletRequest request){
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("moreArticle");
+        String tag = request.getSession().getAttribute("tag").toString();
+        List<Article> articleByTagComment = articleMapper.findArticleByTagComment(tag);
+        List<Article> articleByLike = articleMapper.findArticleByLike(tag);
+        List<Article> articleByView = articleMapper.findArticleByView(tag);
+        List<Article> articleByTagTime = articleMapper.findArticleByTagTime(tag);
+        modelAndView.addObject("tagListTime",articleByTagTime);
+        modelAndView.addObject("tagListComment",articleByTagComment);
+        modelAndView.addObject("likeList",articleByLike);
+        modelAndView.addObject("viewList",articleByView);
+        return modelAndView;
+    }
+
+
     //跳转到管理员界面
     @GetMapping("/admin")
     public String toAdminPage(){
@@ -182,6 +209,27 @@ public class UserController {
     public  Map<String,Object> modifyUserInfoByName(String userName, String mailbox,String signature,HttpServletRequest req) {
         Map<String, Object> map = userService.modifyUserByName(userName,mailbox, signature,req);
         return map;
+    }
+    //签到
+    @PostMapping("/signIn")
+    @ResponseBody
+    public  Map<String,Object> signIn(HttpServletRequest request){
+        Map<String,Object> map=new HashMap<>();
+        Integer id=Integer.parseInt(request.getSession().getAttribute("userId").toString());
+
+        int integral=10;
+        int exp=100;
+        int i = userMapper.signIn(id,integral,exp);
+        if (i>=1){
+            request.getSession().setAttribute("signIn","yes");
+            map.put("state",200);
+            return map;
+        }else {
+            map.put("state",100);
+            request.getSession().setAttribute("signIn","no");
+            return map;
+
+        }
     }
 
 }

@@ -40,4 +40,14 @@ public interface ArticleMapper {
     List<Article> findArticleByCreateId(Integer createId);
     //根据标签和id找文章
     List<Article> findArticleByCreateIdAndTag(Integer createId,String tag);
+    //通过标签查找文章时间排序
+    List<Article> findArticleByTagTime(String tag);
+    //通过标签查找文章评论数排序
+    List<Article> findArticleByTagComment(String tag);
+    //根据阅读量查找所有文章
+    List<Article> findArticleByView(String tag);
+    //根据点赞数排序
+    List<Article> findArticleByLike(String tag);
+    //修改评论数
+    int modifyCommentCount(Integer commentCount,Integer articleId);
 }

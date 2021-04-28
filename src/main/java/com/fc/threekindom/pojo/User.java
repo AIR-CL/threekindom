@@ -20,7 +20,8 @@ public class User implements Serializable {
     private String signature;//个性签A名
     private String avatar;
     private Date createTime;//账号注册时间
-
+    private Date signInTime;
+    private Integer exp;
 
 
 }
