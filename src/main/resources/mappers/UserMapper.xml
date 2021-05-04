@@ -38,4 +38,22 @@ namespace:命名空间  作为多个mapper文件的唯一标识
   <update id="signIn" >
     update tb_user set signInTime=now(),integral=integral+#{integral},exp=exp+#{exp} where user_id=#{userId}
   </update>
+  <update id="setLogTime">
+    update tb_user set login_time=now() where user_id=#{userId}
+  </update>
+  <select id="findAllByLogTime" resultType="User">
+    select * from tb_user WHERE TO_DAYS( NOW()) -TO_DAYS(login_time)=#{i};
+  </select>
+  <select id="getAll" resultType="User">
+    SELECT * FROM tb_user
+  </select>
+  <select id="findUserById" resultType="User">
+    select *from tb_user where user_id=#{userId}
+  </select>
+  <update id="modifyUserInfo" parameterType="User">
+    update tb_user set integral=#{integral},exp=#{exp} where user_name=#{userName}
+  </update>
+  <delete id="deleteUser">
+    delete from tb_user where user_id=#{userId}
+  </delete>
 </mapper>

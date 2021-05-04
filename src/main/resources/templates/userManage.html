@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>后台管理</title>
+    <!-- basic styles -->
+
+    <link href="/asset/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="/asset/css/font-awesome.min.css" />
+
+    <!--[if IE 7]>
+    <link rel="stylesheet" href="/asset/css/font-awesome-ie7.min.css" />
+    <![endif]-->
+
+    <!-- page specific plugin styles -->
+
+    <link rel="stylesheet" href="/asset/css/jquery-ui-1.10.3.full.min.css" />
+    <link rel="stylesheet" href="/asset/css/datepicker.css" />
+    <link rel="stylesheet" href="/asset/css/ui.jqgrid.css" />
+
+    <!-- fonts -->
+
+
+
+    <!-- ace styles -->
+
+    <link rel="stylesheet" href="/asset/css/ace.min.css" />
+    <link rel="stylesheet" href="/asset/css/ace-rtl.min.css" />
+    <link rel="stylesheet" href="/asset/css/ace-skins.min.css" />
+
+    <!--[if lte IE 8]>
+    <link rel="stylesheet" href="/asset/css/ace-ie.min.css" />
+    <![endif]-->
+
+    <!-- inline styles related to this page -->
+
+    <!-- ace settings handler -->
+
+    <script src="/asset/js/ace-extra.min.js"></script>
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+
+    <!--[if lt IE 9]>
+    <script src="/asset/js/html5shiv.js"></script>
+    <script src="/asset/js/respond.min.js"></script>
+    <![endif]-->
+</head>
+<body style="background-color: white">
+<!--导航栏-->
+<div class="navbar navbar-default" id="navbar">
+    <script type="text/javascript">
+        try{ace.settings.check('navbar' , 'fixed')}catch(e){}
+    </script>
+
+    <div class="navbar-container" id="navbar-container">
+        <div class="navbar-header pull-left">
+            <a href="#" class="navbar-brand">
+                <small>
+                    <i class="icon-leaf"></i>
+                    三国爱好者交流论坛后台管理系统
+                </small>
+            </a><!-- /.brand -->
+        </div><!-- /.navbar-header -->
+
+        <div class="navbar-header pull-right" role="navigation">
+            <ul class="nav ace-nav">
+
+                <li class="light-blue">
+                    <a data-toggle="dropdown" href="#" class="dropdown-toggle">
+                        <img class="nav-user-photo" th:src="@{${session.avatar}}" alt="Jason's Photo" />
+                        <span class="user-info">
+									<small>欢迎光临,</small >
+                            <span th:text="${session.username}">管理员</span>
+
+								</span>
+
+                        <i class="icon-caret-down"></i>
+                    </a>
+
+                    <ul class="user-menu pull-right dropdown-menu dropdown-yellow dropdown-caret dropdown-close">
+                        <li>
+                            <a href="#">
+                                <i class="icon-cog"></i>
+                                头像修改
+                            </a>
+                        </li>
+
+
+                        <li class="divider"></li>
+
+                        <li>
+                            <a href="#">
+                                <i class="icon-off"></i>
+                                退出
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+            </ul><!-- /.ace-nav -->
+        </div><!-- /.navbar-header -->
+    </div><!-- /.container -->
+</div>
+<!--侧边栏-->
+<div class="sidebar" id="sidebar">
+    <script type="text/javascript">
+        try{ace.settings.check('sidebar' , 'fixed')}catch(e){}
+    </script>
+
+    <div class="sidebar-shortcuts" id="sidebar-shortcuts">
+
+
+
+    </div><!-- #sidebar-shortcuts -->
+
+    <ul class="nav nav-list">
+        <li >
+            <a href="/admin">
+                <i class="icon-dashboard"></i>
+                <span class="menu-text"> 控制台 </span>
+            </a>
+        </li>
+
+        <li class="active">
+            <a href="/userManage">
+                <i class="icon-text-width"></i>
+                <span class="menu-text"> 用户管理 </span>
+            </a>
+        </li>
+        <li>
+            <a href="typography.html">
+                <i class="icon-text-width"></i>
+                <span class="menu-text"> 帖子管理 </span>
+            </a>
+        </li>
+        <li>
+            <a href="typography.html">
+                <i class="icon-text-width"></i>
+                <span class="menu-text"> 公告管理 </span>
+            </a>
+        </li>
+        <li>
+            <a href="typography.html">
+                <i class="icon-text-width"></i>
+                <span class="menu-text"> 留言管理 </span>
+            </a>
+        </li>
+        <li>
+            <a href="gallery.html">
+                <i class="icon-picture"></i>
+                <span class="menu-text"> 图鉴管理 </span>
+            </a>
+        </li>
+
+    </ul><!-- /.nav-list -->
+
+    <div class="sidebar-collapse" id="sidebar-collapse">
+        <i class="icon-double-angle-left" data-icon1="icon-double-angle-left" data-icon2="icon-double-angle-right"></i>
+    </div>
+
+    <script type="text/javascript">
+        try{ace.settings.check('sidebar' , 'collapsed')}catch(e){}
+    </script>
+</div>
+<!--主题上标栏-->
+<div class="main-content" >
+    <div class="breadcrumbs" id="breadcrumbs">
+        <script type="text/javascript">
+            try{ace.settings.check('breadcrumbs' , 'fixed')}catch(e){}
+        </script>
+
+        <ul class="breadcrumb">
+            <li>
+                <i class="icon-home home-icon"></i>
+                <a href="#">首页</a>
+            </li>
+            <li class="active">用户管理</li>
+        </ul><!-- .breadcrumb -->
+
+        <div class="nav-search" id="nav-search" style="margin-right :50%">
+            <form class="form-search">
+								<span class="input-icon">
+									<input type="text" placeholder="Search ..."  id="nav-search-input" autocomplete="off" />
+									<i class="icon-search nav-search-icon"></i>
+								</span>
+            </form>
+        </div><!-- #nav-search -->
+    </div>
+    <div class="page-content">
+<div class="row">
+    <div class="col-xs-12">
+        <!-- PAGE CONTENT BEGINS -->
+
+        <div class="alert alert-info" style="width: 70%;text-align: center">
+            <i class="icon-hand-right"></i>
+
+            在进行人员管理时,请慎重操作,以免因为失误操作,导致不可挽回的用户数据丢失
+            <button class="close" data-dismiss="alert">
+                <i class="icon-remove"></i>
+            </button>
+        </div>
+        <table class="table table-bordered  table-striped " style="width: 70%">
+
+    <tr>
+        <td class="alert-warning">ID</td>
+        <td class="alert-success">用户名</td>
+        <td class="alert-info">最近登录时间</td>
+        <td class="alert-success">注册时间</td>
+        <td class="alert-warning">积分</td>
+        <td class="alert-danger">经验</td>
+
+        <td class="info">操作</td>
+    </tr>
+            <tr th:each="u:${pageInfo.list}" >
+                <td class="alert-warning" style="width: 10%" th:text="${u.userId}">ID</td>
+                <td class="alert-success" style="width: 15%" th:text="${u.userName}">用户名</td>
+                <td class="alert-info" style="width: 20%" th:text="${#dates.format(u.signInTime,'yyyy-MM-dd ')}"></td>
+                <td class="alert-success" style="width: 20%" th:text="${#dates.format(u.createTime,'yyyy-MM-dd ')}"></td>
+                <td class="alert-warning" style="width: 10%" th:text="${u.integral}">积分</td>
+                <td class="alert-danger"style="width: 10%" th:text="${u.exp}">经验</td>
+                <td class="info" style="text-align: center;width: 15%"><i class="icon-edit bigger-200 blue" th:onclick="|javascript:modifyUser('${u.userId}')|" data-toggle="modal" data-target="#myModal"></i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i class="icon-trash bigger-200 red" th:onclick="|javascript:deleteUser('${u.userId}')|"></i></td>
+            </tr>
+</table>
+<!--        模态框-->
+        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content" style="background-color: rgba(200,237,247,0.7);margin-top: 200px">
+
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title"name="exampleModalLabel" style="color: white">修改信息</h4>
+                    </div><form>
+                    <div class="modal-body">
+
+
+                        <div class="form-group">
+                            <label for="userId"class="control-label"style="color: white">ID:</label>
+                            <input readonly="readonly" type="text"  class="form-control" name="userId"id="userId">
+                        </div>
+                        <div class="form-group">
+                            <label for="userName" class="control-label"style="color: white">用户名:</label>
+                            <input type="text" readonly="readonly" class="form-control" name="userName" id="userName">
+                            <div class="form-group">
+                                <label for="integral" class="control-label"style="color: white">积分:</label>
+                                <input type="text" class="form-control" name="integral" id="integral">
+                            </div>
+                            <div class="form-group">
+                                <label for="exp" class="control-label"style="color: white">经验:</label>
+                                <input type="text" class="form-control"name="exp"id="exp">
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                        <button type="button"class="btn btn-primary" data-whatever="@mdo onclick=" onclick="modifyInfo()" >确认</button>
+                    </div> </form>
+                </div>
+            </div></div>
+        <!--显示分页信息-->
+        <div class="modal-footer no-margin-top" style="width: 70%">
+            <div class="col-md-6">
+                当前第 [[${pageInfo.pageNum}]]页,共 [[${pageInfo.pages}]] 页.一共 [[${pageInfo.total}]] 条记录<span id= "pageThis" style="visibility: hidden" th:text="${pageInfo.pageNum}"></span>
+            </div>
+
+            <ul class="pagination pull-right no-margin">
+                <li th:if="${pageInfo.hasPreviousPage}">
+                    <a th:href="'/userManage?pageNum=1'">首页</a>
+                </li>
+
+                <li class="prev" th:if="${pageInfo.hasPreviousPage}">
+                    <a th:href="'/userManage?pageNum='+${pageInfo.prePage}">
+                        <i class="ace-icon fa fa-angle-double-left">上一页</i>
+                    </a>
+                </li>
+                <!--遍历条数-->
+                <li th:each="nav:${pageInfo.navigatepageNums}">
+                    <a th:href="'/userManage?pageNum='+${nav}" th:text="${nav}" th:if="${nav != pageInfo.pageNum}"></a>
+                    <span style="font-weight: bold;background: #6faed9;" th:if="${nav == pageInfo.pageNum}" th:text="${nav}" ></span>
+                </li>
+
+                <li class="next" th:if="${pageInfo.hasNextPage}">
+                    <a th:href="'/userManage?pageNum='+${pageInfo.nextPage}">
+                        <i class="ace-icon fa fa-angle-double-right">下一页</i>
+                    </a>
+                </li>
+
+                <li>
+                    <a th:href="'/userManage?pageNum='+${pageInfo.pages}">尾页</a>
+                </li>
+            </ul>
+        </div>
+
+<script type="text/javascript">
+    var $path_base = "/";//this will be used in gritter alerts containing images
+</script>
+</div>
+</div>
+</div>
+</div>
+
+
+<script type="text/javascript">
+        function modifyUser(id) {
+            var userId=id;
+            $.ajax({
+                type: "post",
+                url: "/findUserById",
+                data:{"userId":userId},
+                //请求成功
+                success: function (result) {
+                    if (result.state==100) {
+                       alert("数据库异常");
+                        window.location.href="/userManage";
+                    }
+                    $("#userName").val(result.userMo.userName);
+                    $("#userId").val(result.userMo.userId);
+                    $("#integral").val(result.userMo.integral);
+                    $("#exp").val(result.userMo.exp);
+
+
+
+                }
+            })
+
+        }
+</script>
+
+<script type="text/javascript">
+    function deleteUser(id) {
+        var pageNow=$("#pageThis").html();
+        var userId=id;
+        $.ajax({
+            type: "post",
+            url: "/deleteUserById",
+            data:{"userId":userId},
+            success: function (result) {
+                if (result.state==100) {
+                    alert("修改失败");
+                    window.location.href="/userManage";
+                }
+
+                alert("删除成功");
+                window.location.href="/userManage?pageNum="+pageNow;
+
+            }
+        })
+
+    }
+    </script>
+
+<!--修改信息-->
+<script>
+ function modifyInfo() {
+     var userName=$("#userName").val();
+     var exp=$("#exp").val();
+     var integral=$("#integral").val();
+     var pageNow=$("#pageThis").html();
+     $.post("/modifyUserInfo",{"userName":userName,"integral":integral,"exp":exp},function (data) {
+         if (data.state==100){
+             alert("修改失败");
+             window.location.href="/userManage?pageNum="+pageNow;
+             return;
+         }
+         alert("修改成功");
+         window.location.href="/userManage?pageNum="+pageNow;
+
+     })
+
+ }
+
+
+
+
+
+
+</script>
+</body>
+<!-- basic scripts -->
+
+<!--[if !IE]> -->
+
+<script src="asset/js/jquery.min.js"></script>
+
+<!-- <![endif]-->
+
+<!--[if IE]>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+<![endif]-->
+
+<!--[if !IE]> -->
+
+<script type="text/javascript">
+    window.jQuery || document.write("<script src='../static/asset/js/jquery-2.0.3.min.js'>"+"<"+"script>");
+</script>
+
+<!-- <![endif]-->
+
+<!--[if IE]>
+<script type="text/javascript">
+    window.jQuery || document.write("<script src='assets/js/jquery-1.10.2.min.js'>"+"<"+"script>");
+</script>
+<![endif]-->
+
+<script type="text/javascript">
+    if("ontouchend" in document) document.write("<script src='../static/asset/js/jquery.mobile.custom.min.js'>"+"<"+"script>");
+</script>
+<script src="asset/js/bootstrap.min.js"></script>
+<script src="asset/js/typeahead-bs2.min.js"></script>
+
+<!-- page specific plugin scripts -->
+
+<!--[if lte IE 8]>
+<script src="../static/asset/js/excanvas.min.js"></script>
+<![endif]-->
+
+
+<script src="asset/js/date-time/bootstrap-datepicker.min.js"></script>
+<script src="asset/js/jqGrid/jquery.jqGrid.min.js"></script>
+<script src="asset/js/jqGrid/i18n/grid.locale-en.js"></script>
+<!-- ace scripts -->
+
+<script src="asset/js/ace-elements.min.js"></script>
+<script src="asset/js/ace.min.js"></script>
+
+
+</html>

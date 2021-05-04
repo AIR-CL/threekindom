@@ -140,6 +140,34 @@ public class UserServiceImpl implements UserService {
             //将用户名绑定到session中
             req.getSession().setAttribute("userId",u.getUserId());
             req.getSession().setAttribute("username",u.getUserName());
+            req.getSession().setAttribute("avatar",u.getAvatar());
+            List<Article> xueshu = articleMapper.findArticleByTagTime("学术");
+            List<Article> zixun = articleMapper.findArticleByTagTime("资讯");
+            List<Article> zatan = articleMapper.findArticleByTagTime("杂谈");
+            List<Article> list = articleMapper.searchAllArticle();
+        List list1=new ArrayList();
+        for (int i=0;i<7;i++){
+            list1.add(i,userMapper.findAllByLogTime(i).size());
+        }
+        List list2=new ArrayList();
+            for (int i=0;i<7;i++){
+                list2.add(i,articleMapper.findAllByModifyTime(i).size());
+            }
+
+        req.getSession().setAttribute("listLog",list1);
+            req.getSession().setAttribute("listArticle",list2);
+            int view=0;int like=0;int comment=0;
+            for (int i=0;i<list.size();i++){
+                view=list.get(i).getViewCount()+view;
+                like=list.get(i).getLikeCount()+like;
+                comment=list.get(i).getCommentCount()+comment;
+            }
+            req.getSession().setAttribute("viewCount",view);
+            req.getSession().setAttribute("likeCount",like);
+            req.getSession().setAttribute("commentCount",comment);
+            req.getSession().setAttribute("xueShuCount",xueshu.size());
+            req.getSession().setAttribute("ziXunCount",zixun.size());
+            req.getSession().setAttribute("zaTanCount",zatan.size());
             return map;
         }
         //获取用户的盐值
@@ -148,6 +176,7 @@ public class UserServiceImpl implements UserService {
         String md5Password = getMD5Password(password, salt);
         User user = userMapper.loginCheck(username, md5Password);
         if (user!=null){
+            userMapper.setLogTime(user.getUserId());
             map.put("username",username);
             map.put("state",200);
             map.put("msg","登陆成功!!! ╮(￣▽ ￣)╭ ");
@@ -359,6 +388,14 @@ public class UserServiceImpl implements UserService {
 
     }
 
+    /**
+     * 查询所有用户
+     * @return
+     */
+    @Override
+    public List<User> getAll() {
+        return userMapper.getAll();
+    }
     //封装一个密码加密的方法
     private String getMD5Password(String password,String salt){
         String md5password=password+salt;

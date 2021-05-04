@@ -50,4 +50,6 @@ public interface ArticleMapper {
     List<Article> findArticleByLike(String tag);
     //修改评论数
     int modifyCommentCount(Integer commentCount,Integer articleId);
+    //查询莫一天文章数
+    List<Article> findAllByModifyTime(Integer i);
 }

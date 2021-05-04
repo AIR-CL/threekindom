@@ -26,4 +26,9 @@ public interface UserService {
  //去用户中心
  void toUserCenter(Model model, HttpServletRequest request);
 
+ /**
+  * 查询所有用户
+  * @return
+  */
+ public List<User> getAll();
 }

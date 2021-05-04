@@ -8,13 +8,12 @@ import com.fc.threekindom.pojo.Article;
 import com.fc.threekindom.pojo.User;
 import com.fc.threekindom.service.ArticleService;
 import com.fc.threekindom.service.UserService;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -232,4 +231,91 @@ public class UserController {
         }
     }
 
+   //分页查询数据
+    @GetMapping("/userManage")
+    public String usermanage(Model model,
+                             @RequestParam(required = false,defaultValue="1",value="pageNum")Integer pageNum,
+                             @RequestParam(defaultValue="8",value="pageSize")Integer pageSize){
+
+        //为了程序的严谨性，判断非空：
+        if(pageNum == null){
+            pageNum = 1;   //设置默认当前页
+        }
+        if(pageNum <= 0){
+            pageNum = 1;
+        }
+        if(pageSize == null){
+            pageSize = 8;    //设置默认每页显示的数据数
+        }
+        System.out.println("当前页是："+pageNum+"显示条数是："+pageSize);
+
+        //1.引入分页插件,pageNum是第几页，pageSize是每页显示多少条,默认查询总数count
+        PageHelper.startPage(pageNum,pageSize);
+        //2.紧跟的查询就是一个分页查询-必须紧跟.后面的其他查询不会被分页，除非再次调用PageHelper.startPage
+        try {
+            List<User> userList = userService.getAll();
+            System.out.println("分页数据："+userList);
+            //3.使用PageInfo包装查询后的结果,5是连续显示的条数,结果list类型是Page<E>
+            PageInfo<User> pageInfo = new PageInfo<User>(userList,pageSize);
+            System.out.println(pageInfo);
+            //4.使用model/map/modelandview等带回前端
+            model.addAttribute("pageInfo",pageInfo);
+        }finally {
+            PageHelper.clearPage(); //清理 ThreadLocal 存储的分页参数,保证线程安全
+        }
+        //5.设置返回的jsp/html等前端页面
+        // thymeleaf默认就会拼串classpath:/templates/xxxx.html
+        return "userManage";
+    }
+
+    //根据id查用户信息
+    @PostMapping("/findUserById")
+    @ResponseBody
+    public Map<String,Object> findUserById(String userId){
+        Integer id1=Integer.parseInt(userId);
+        User userMo = userMapper.findUserById(id1);
+        Map<String,Object> map=new HashMap<>();
+        map.put("userMo",userMo);
+        map.put("state",200);
+        return map;
+    }
+    //后台修改用户信息
+    @PostMapping("/modifyUserInfo")
+    @ResponseBody
+    public Map<String,Object> modifyUserInfo(String userName,String integral,String exp){
+        User user=new User();
+        user.setUserName(userName);
+        user.setExp(Integer.parseInt(exp));
+        user.setIntegral(Integer.parseInt(integral));
+        System.out.println(user);
+        Map<String,Object> map=new HashMap<>();
+        int i = userMapper.modifyUserInfo(user);
+        if (i>=1){
+            map.put("state",200);
+            map.put("msg","修改成功");
+            return map;
+
+        }else{
+            map.put("state",100);
+            map.put("msg","修改失败");
+            return map;
+        }
+    }
+    @PostMapping("/deleteUserById")
+    @ResponseBody
+    public Map<String,Object> deleteUserById(String userId){
+        Integer id1=Integer.parseInt(userId);
+        Map<String,Object> map=new HashMap<>();
+        int i = userMapper.deleteUser(id1);
+        if (i>=1){
+            map.put("state",200);
+            map.put("msg","删除成功");
+            return map;
+
+        }else{
+            map.put("state",100);
+            map.put("msg","删除失败");
+            return map;
+        }
+    }
 }

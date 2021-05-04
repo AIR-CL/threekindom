@@ -67,4 +67,7 @@ namespace:命名空间  作为多个mapper文件的唯一标识
     <update id="modifyCommentCount">
         update tb_article set comment_count=#{commentCount} where article_id=#{articleId};
     </update>
+    <select id="findAllByModifyTime" resultType="Article">
+        select *from tb_article where TO_DAYS( NOW()) -TO_DAYS(modifyTime)=#{i};
+    </select>
 </mapper>
