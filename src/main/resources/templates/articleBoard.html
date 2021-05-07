@@ -114,8 +114,9 @@ box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.08);
         <a id="menu-user-avatar" href="#" target="_blank">
             <img class="ui mini circular image" th:src="@{${session.avatar}}">
         </a>
-        <a class="ro-menu-item" id="menu-user-msg" href="/message?type=reply" target="_blank">
-            消息
+        <a class="ro-menu-item" id="menu-user-msg" href="#" >
+            <i class="icon iconfont icon-bell large" th:unless="${session.inRead!=0}"></i>
+            <i class="icon iconfont icon-bell-fill red large" th:if="${session.inRead!=0} " th:text="${session.inRead}"></i>
         </a>
     </div>
     <div class="right menu" th:unless="${session.userId}!=null" login=no>
@@ -156,11 +157,8 @@ box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.08);
 
 <div id="user-msg-menu" class="ui popup" style="padding: 0">
     <div class="ui large vertical secondary menu">
-        <a class="item" tab="reply" href="/message?type=reply" target="_blank">
+        <a class="item" tab="reply" href="/message" >
             回复
-        </a>
-        <a class="item" tab="inform" href="/message?type=inform" target="_blank">
-            通知
         </a>
     </div>
 </div>

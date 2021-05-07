@@ -56,4 +56,8 @@ namespace:命名空间  作为多个mapper文件的唯一标识
   <delete id="deleteUser">
     delete from tb_user where user_id=#{userId}
   </delete>
+  <select id="countInRead" resultType="Advice">
+    select *from tb_advice where user_name=#{userName} and read_state=1;
+  </select>
+
 </mapper>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fc.threekindom.mappers.AdviceMapper">
+<insert id="giveAdvice" parameterType="Advice" >
+    insert into tb_advice (user_id, user_name, advice, create_time) VALUES (#{userId},#{userName},#{advice},now())
+</insert>
+<select id="findAllAdvice" resultType="Advice">
+    select *from tb_advice  order by create_time desc limit 30
+</select>
+    <select id="findAdviceById" resultType="Advice">
+        select *from tb_advice where id=#{id}
+    </select>
+    <update id="replyAdvice">
+        update tb_advice set reply=#{reply} ,read_state=1 where id=#{id}
+    </update>
+    <update id="changeReadState">
+        update tb_advice set read_state=2 where user_name=#{username} and read_state=1
+    </update>
+    <select id="findAllAdviceByName" resultType="Advice">
+        select * from tb_advice where user_name=#{username}  and (read_state=1 or read_state=2 ) order by create_time desc
+    </select>
+</mapper>

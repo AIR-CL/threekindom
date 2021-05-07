@@ -2,8 +2,10 @@ package com.fc.threekindom.controller;
 
 
 
+import com.fc.threekindom.mappers.AdviceMapper;
 import com.fc.threekindom.mappers.ArticleMapper;
 import com.fc.threekindom.mappers.UserMapper;
+import com.fc.threekindom.pojo.Advice;
 import com.fc.threekindom.pojo.Article;
 import com.fc.threekindom.pojo.User;
 import com.fc.threekindom.service.ArticleService;
@@ -35,6 +37,8 @@ public class UserController {
     private ArticleMapper articleMapper;
     @Autowired(required = false)
     private UserMapper userMapper;
+    @Autowired(required = false)
+    private AdviceMapper adviceMapper;
 
     @GetMapping("/find")
     @ResponseBody
@@ -76,6 +80,8 @@ public class UserController {
             modelAndView.addObject("panDian",list1);
         List<Article> list2=articleService.searchAllArticle("学术");
         modelAndView.addObject("xueShu",list2);
+        Article noticeIndex = articleMapper.findNotice();
+        modelAndView.addObject("noticeIndex",noticeIndex);
 
             return modelAndView;
     }
@@ -121,6 +127,8 @@ public class UserController {
         modelAndView.addObject("ziXun",list1);
         List<Article> list2=articleService.searchAllArticle("学术");
         modelAndView.addObject("xueShu",list2);
+        Article noticeIndex = articleMapper.findNotice();
+        modelAndView.addObject("noticeIndex",noticeIndex);
         return modelAndView;
 
     }
@@ -231,7 +239,7 @@ public class UserController {
         }
     }
 
-   //分页查询数据
+   //分页查询用户数据
     @GetMapping("/userManage")
     public String usermanage(Model model,
                              @RequestParam(required = false,defaultValue="1",value="pageNum")Integer pageNum,
@@ -318,4 +326,188 @@ public class UserController {
             return map;
         }
     }
+    //文章页分页查询数据
+    @GetMapping("/articleManage")
+    public String articleManage(Model model,
+                             @RequestParam(required = false,defaultValue="1",value="pageNum")Integer pageNum,
+                             @RequestParam(defaultValue="8",value="pageSize")Integer pageSize){
+
+        //为了程序的严谨性，判断非空：
+        if(pageNum == null){
+            pageNum = 1;   //设置默认当前页
+        }
+        if(pageNum <= 0){
+            pageNum = 1;
+        }
+        if(pageSize == null){
+            pageSize = 8;    //设置默认每页显示的数据数
+        }
+        System.out.println("当前页是："+pageNum+"显示条数是："+pageSize);
+
+        //1.引入分页插件,pageNum是第几页，pageSize是每页显示多少条,默认查询总数count
+        PageHelper.startPage(pageNum,pageSize);
+        //2.紧跟的查询就是一个分页查询-必须紧跟.后面的其他查询不会被分页，除非再次调用PageHelper.startPage
+        try {
+            List<Article> articleList = articleService.getAll();
+            System.out.println("分页数据："+articleList);
+            //3.使用PageInfo包装查询后的结果,5是连续显示的条数,结果list类型是Page<E>
+            PageInfo<Article> pageInfo = new PageInfo<Article>(articleList,pageSize);
+            System.out.println(pageInfo);
+            //4.使用model/map/modelandview等带回前端
+            model.addAttribute("pageInfo",pageInfo);
+        }finally {
+            PageHelper.clearPage(); //清理 ThreadLocal 存储的分页参数,保证线程安全
+        }
+        //5.设置返回的jsp/html等前端页面
+        // thymeleaf默认就会拼串classpath:/templates/xxxx.html
+        return "articleManage";
+    }
+
+
+    //根据id查文章信息
+    @PostMapping("/findArticleByArticleId")
+    @ResponseBody
+    public Map<String,Object> findArticleById(String articleId){
+        Integer id1=Integer.parseInt(articleId);
+       Article articleMo = articleMapper.findArticleById(id1);
+        Map<String,Object> map=new HashMap<>();
+        map.put("articleMo",articleMo);
+        map.put("state",200);
+        return map;
+    }
+    //后台删除文章
+    @PostMapping("/deleteArticleById")
+    @ResponseBody
+    public Map<String,Object> deleteArticleById(String articleId){
+        Integer id1=Integer.parseInt(articleId);
+        Map<String,Object> map=new HashMap<>();
+        int i = articleMapper.deleteArticle(id1);
+        if (i>=1){
+            map.put("state",200);
+            map.put("msg","删除成功");
+            return map;
+
+        }else{
+            map.put("state",100);
+            map.put("msg","删除失败");
+            return map;
+        }
+    }
+    //后台修改用户信息
+    @PostMapping("/modifyArticleInfo")
+    @ResponseBody
+    public Map<String,Object> modifyArticleInfo(String articleId,String viewCount,String likeCount){
+      Article article=new Article();
+      article.setArticleId(Integer.parseInt(articleId));
+      article.setViewCount(Integer.parseInt(viewCount));
+      article.setLikeCount(Integer.parseInt(likeCount));
+
+        Map<String,Object> map=new HashMap<>();
+        int i =articleMapper.modifyArticle(article);
+        if (i>=1){
+            map.put("state",200);
+            map.put("msg","修改成功");
+            return map;
+
+        }else{
+            map.put("state",100);
+            map.put("msg","修改失败");
+            return map;
+        }
+    }
+
+@RequestMapping("/advice")
+public ModelAndView toAdvicePage() {
+    ModelAndView modelAndView = new ModelAndView();
+    modelAndView.setViewName("advice");
+    List<Advice> allAdvice = adviceMapper.findAllAdvice();
+    modelAndView.addObject("allAdvice",allAdvice);
+    return modelAndView;
+
+}
+//提建议
+    @PostMapping("/giveAdvice")
+    @ResponseBody
+    public Map<String ,Object> giveAdvice(HttpServletRequest request ,@RequestBody Map<String,Object> ma){
+        Map<String,Object> map=new HashMap<>();
+        String advice=ma.get("comment").toString();
+        Advice advice1=new Advice();
+        advice1.setAdvice(advice);
+        advice1.setUserId(Integer.parseInt(request.getSession().getAttribute("userId").toString()));
+        advice1.setUserName(request.getSession().getAttribute("username").toString());
+        int i = adviceMapper.giveAdvice(advice1);
+        if (i>=1){
+            map.put("state",200);
+            map.put("msg","提交成功");
+            return map;
+
+        }else{
+            map.put("state",100);
+            map.put("msg","提交失败");
+            return map;
+        }
+
+    }
+
+    //去公告管理
+    @RequestMapping("/adviceManage")
+    public ModelAndView toAdviceManagePage() {
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("adviceManage");
+        List<Advice> allAdvice = adviceMapper.findAllAdvice();
+        modelAndView.addObject("allAdvice",allAdvice);
+        return modelAndView;
+
+    }
+    //根据id查建议
+    @PostMapping("/findAdviceById")
+    @ResponseBody
+    public Map<String,Object> findAdviceById(String Id,HttpServletRequest request){
+        Map<String,Object> map=new HashMap<>();
+        Advice replyAdvice = adviceMapper.findAdviceById(Integer.parseInt(Id));
+        map.put("id",replyAdvice.getId());
+        return map;
+    }
+    //后台回复反馈
+    @PostMapping("/replyAdvice")
+    @ResponseBody
+    public Map<String,Object> replyAdvice(String id,String reply){
+        Map<String,Object> map=new HashMap<>();
+        int i = adviceMapper.replyAdvice(Integer.parseInt(id), reply);
+        if (i>=1){
+            map.put("state",200);
+            map.put("msg","回复成功");
+            return map;
+
+        }else{
+            map.put("state",100);
+            map.put("msg","回复失败");
+            return map;
+        }
+    }
+    //去消息界面
+    @GetMapping("/message")
+    public String toMessage(HttpServletRequest request){
+        String username = request.getSession().getAttribute("username").toString();
+        List<Advice> myReply = adviceMapper.findAllAdviceByName(username);
+
+        request.getSession().setAttribute("myReply",myReply);
+        adviceMapper.changeReadState(username);
+        List<Advice> inRead = userMapper.countInRead(username);
+        request.getSession().setAttribute("inRead",inRead.size());
+
+
+        return "message";
+    }
+    //管理员退出
+    @GetMapping("/adminLogout")
+    public String adminLogout(HttpServletRequest request){
+        HttpSession session = request.getSession();
+        session.removeAttribute("username");
+        session.removeAttribute("userId");
+        session.removeAttribute("avatar");
+
+        return "login";
+    }
+
 }

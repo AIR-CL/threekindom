@@ -1,5 +1,6 @@
 package com.fc.threekindom.controller;
 
+import com.fc.threekindom.mappers.ArticleMapper;
 import com.fc.threekindom.pojo.Article;
 import com.fc.threekindom.service.ArticleService;
 
@@ -21,7 +22,8 @@ public class ArticleController {
 
     @Autowired
     private ArticleService articleService;
-
+    @Autowired(required = false)
+    private ArticleMapper articleMapper;
 
     @PostMapping("/upload")
     @ResponseBody
@@ -33,6 +35,12 @@ public class ArticleController {
     @ResponseBody
     public Map<String,Object> toPublish( String topicId, String title, String content , String mainImg, String  category, String text,String userAvatar,HttpServletRequest request){
         Map<String, Object> map = articleService.toPublishArticle(topicId,title,content,mainImg,category,text,userAvatar,request);
+        return map;
+    }
+    @PostMapping("/pubNotice")
+    @ResponseBody
+    public Map<String,Object> toNotice( String topicId, String title, String content , String mainImg, String  category, String text,String userAvatar,HttpServletRequest request){
+        Map<String, Object> map = articleService.toPublishNotice(topicId,title,content,mainImg,category,text,userAvatar,request);
         return map;
     }
 
@@ -87,6 +95,11 @@ public class ArticleController {
         return map;
 
     }
-
+    @GetMapping("/notice")
+    public String toNoticePage( HttpServletRequest request){
+        List<Article> notice=articleService.searchAllArticle("公告");
+         request.getSession().setAttribute("notice",notice);
+        return "notice";
+    }
 
 }

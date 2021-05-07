@@ -70,4 +70,16 @@ namespace:命名空间  作为多个mapper文件的唯一标识
     <select id="findAllByModifyTime" resultType="Article">
         select *from tb_article where TO_DAYS( NOW()) -TO_DAYS(modifyTime)=#{i};
     </select>
+    <select id="getAll" resultType="Article">
+     select *from tb_article
+    </select>
+    <update id="modifyArticle" parameterType="Article">
+        update tb_article set view_count=#{viewCount} ,like_count=#{likeCount} where article_id=#{articleId}
+    </update>
+    <update id="publishNotice">
+        update tb_article set article_title=#{articleTitle},article_content=#{articleContent},article_face=#{articleFace},text=#{text} where create_id=1
+    </update>
+    <select id="findNotice" resultType="Article">
+        select * from tb_article where create_id=1
+    </select>
 </mapper>

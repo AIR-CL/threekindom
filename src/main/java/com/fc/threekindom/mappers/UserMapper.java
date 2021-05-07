@@ -1,5 +1,6 @@
 package com.fc.threekindom.mappers;
 
+import com.fc.threekindom.pojo.Advice;
 import com.fc.threekindom.pojo.User;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -39,4 +40,6 @@ public interface UserMapper {
     int modifyUserInfo(User user);
     //后台根据用户id删除用户
     int deleteUser(Integer userId);
+    //查询用户未读消息数
+    List<Advice> countInRead(@Param("userName") String userName);
 }

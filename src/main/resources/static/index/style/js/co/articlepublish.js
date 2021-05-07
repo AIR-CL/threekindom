@@ -66,6 +66,7 @@ $(function () {
         'head',  // 标题
         'bold',  // 粗体
         'fontSize', //字号
+        'fontName',
         'italic',  // 斜体
         'underline',  // 下划线
         'strikeThrough',  // 删除线
@@ -118,6 +119,21 @@ $(function () {
         'rgb(95, 95, 95)',
         '#222',
     ];
+    // 配置字体
+    editor.config.fontNames = [
+        // 字符串形式
+        '黑体',
+        '仿宋',
+        '楷体',
+        '标楷体',
+        '华文仿宋',
+        '华文楷体',
+        '宋体',
+        '微软雅黑',
+        'Times New Roman',
+        '华文行楷',
+        'RuiHei Bauhaus Kr',
+    ]
 
     editor.config.fontSizes = {
         'small': {name: '小', value: '2'},//12

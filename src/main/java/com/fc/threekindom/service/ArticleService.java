@@ -1,6 +1,7 @@
 package com.fc.threekindom.service;
 
 import com.fc.threekindom.pojo.Article;
+import com.fc.threekindom.pojo.User;
 import org.springframework.ui.Model;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -13,6 +14,8 @@ public interface ArticleService {
     Map<String,Object> uploadPic(MultipartFile file, HttpServletRequest request);
     //发布文章
     Map<String,Object> toPublishArticle(String topicId, String title, String content , String mainImg, String  category, String text,String userAvatar,HttpServletRequest request);
+    //发布公告
+    Map<String,Object> toPublishNotice(String topicId, String title, String content , String mainImg, String  category, String text,String userAvatar,HttpServletRequest request);
     //根据用户查账所有文章
     List<Article> searchAllArticleById( HttpServletRequest request);
     //用户删除文章
@@ -29,4 +32,9 @@ public interface ArticleService {
     void toOverView(Model model,HttpServletRequest request);
     //去更多界面
     Map<String,Object> toMore(String tag,HttpServletRequest request);
+    /**
+     * 查询所有文章
+     * @return
+     */
+    public List<Article> getAll();
 }

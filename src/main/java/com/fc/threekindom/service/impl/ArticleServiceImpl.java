@@ -4,6 +4,7 @@ import com.fc.threekindom.mappers.ArticleMapper;
 import com.fc.threekindom.mappers.CommentMapper;
 import com.fc.threekindom.pojo.Article;
 import com.fc.threekindom.pojo.Comment;
+import com.fc.threekindom.pojo.User;
 import com.fc.threekindom.pojo.like;
 import com.fc.threekindom.service.ArticleService;
 import com.fc.threekindom.util.UploadUtils;
@@ -117,6 +118,41 @@ public class ArticleServiceImpl implements ArticleService {
         article.setText(text);
         article.setCreateAvatar(userAvatar);
         int row=articleMapper.publishArticle(article);
+        if (row>=1){
+            map.put("state",200);
+            map.put("msg","发布成功!!! ╮(￣▽ ￣)╭");
+        }else {
+            map.put("state",100);
+            map.put("msg","发布失败! (×_×)");
+        }
+
+        return map;
+    }
+    //公告发布
+    @Override
+    public Map<String,Object> toPublishNotice(String topicId, String title, String content , String mainImg, String  category, String text,String userAvatar,HttpServletRequest request){
+        Map<String,Object> map=new HashMap<>();
+        //通过用户名查找用户
+        String username = (String)request.getSession().getAttribute("username");
+        if (username==null){
+            map.put("state",100);
+            map.put("msg","用户名过期,请重新登录");
+            return map;
+        }
+        Integer userId=(Integer)request.getSession().getAttribute("userId");
+        Article article=new Article();
+        article.setArticleTitle(title);
+        article.setArticleContent(content);
+        article.setArticleFace(mainImg);
+        article.setTag(category);
+        article.setCreateName(username);
+        article.setCreateId(userId);
+        article.setArticleState("已发布");
+        article.setText(text);
+        article.setCreateAvatar(userAvatar);
+        int row=articleMapper.publishNotice(article);
+        List<Article> notice = articleMapper.findArticleByCreateId(Integer.parseInt(request.getSession().getAttribute("userId").toString()));
+        request.getSession().setAttribute("notice",notice);
         if (row>=1){
             map.put("state",200);
             map.put("msg","发布成功!!! ╮(￣▽ ￣)╭");
@@ -352,5 +388,14 @@ public Map<String,Object> reload(String articleId, HttpServletRequest request, M
         map.put("state",200);
         return map;
 
+    }
+
+    /**
+     * 查询所有文章
+     * @return
+     */
+    @Override
+    public List<Article> getAll() {
+        return articleMapper.getAll();
     }
 }

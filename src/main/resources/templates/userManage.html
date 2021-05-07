@@ -45,7 +45,7 @@
     <script src="/asset/js/respond.min.js"></script>
     <![endif]-->
 </head>
-<body style="background-color: white">
+<body style="background-color: white" th:if="${session.role=='admin'}">
 <!--导航栏-->
 <div class="navbar navbar-default" id="navbar">
     <script type="text/javascript">
@@ -127,19 +127,19 @@
             </a>
         </li>
         <li>
-            <a href="typography.html">
+            <a href="/articleManage">
                 <i class="icon-text-width"></i>
                 <span class="menu-text"> 帖子管理 </span>
             </a>
         </li>
         <li>
-            <a href="typography.html">
+            <a href="/article/notice">
                 <i class="icon-text-width"></i>
                 <span class="menu-text"> 公告管理 </span>
             </a>
         </li>
         <li>
-            <a href="typography.html">
+            <a href="/adviceManage">
                 <i class="icon-text-width"></i>
                 <span class="menu-text"> 留言管理 </span>
             </a>

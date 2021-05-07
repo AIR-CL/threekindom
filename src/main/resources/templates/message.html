@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-FYBEW0S5S5"></script> <script> window.dataLayer = window.dataLayer || []; function gtag() { dataLayer.push(arguments); } gtag('js', new Date()); gtag('config', 'G-FYBEW0S5S5'); </script>        <meta charset="utf-8"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <title>消息</title>
+
+    <link rel="stylesheet" th:href="@{/index/style/css/main.css}">
+    <link rel="stylesheet" th:href="@{/index/style/components/semanticui/semantic.min.css}">
+    <link rel="stylesheet" th:href="@{/index/style/css/message/m.css}">
+
+    <style type="text/css">
+
+    </style>
+
+
+</head>
+<body style="background: #f4f5f7;overflow-y:hidden">
+
+<link rel="stylesheet" th:href="@{/index/style/icon/iconfont.css}">
+
+<div class="ui text ro-menu menu " style="position: relative;
+        background: #fff;
+box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.08);
+        margin-bottom: 0;
+        margin-top: 0;
+        ">
+    <a href="#">
+        <img src="/image/logo.png">
+    </a>
+    <a class="ro-menu-item" href="/index">
+        <span>主页</span>
+    </a>
+    <a class="ro-menu-item" href="#">
+        <span>图鉴查询</span>
+    </a>
+    <a class="ro-menu-item" href="#">
+        <span>获取积分</span>
+    </a>
+    <div class="right menu" th:if="${session.userId}!=null" login=yes>
+        <div id="ro-search-box" class="ro-menu-item" style="display: none">
+            <div id="main-search-input" class="ui left icon input">
+                <input type="text" placeholder="搜索...">
+                <i class="icon iconfont icon-search"></i>
+            </div>
+        </div>
+        <a id="ro-search-button" class="ro-menu-item">
+            <i class="icon iconfont icon-search"></i>
+        </a>
+        <div id="ro-menu-split">
+            <span></span>
+        </div>
+
+        <a id="menu-user-avatar" href="#" target="_blank">
+            <img class="ui mini circular image" th:src="@{${session.avatar}}">
+        </a>
+        <a class="ro-menu-item" id="menu-user-msg" href="#" >
+            <i class="icon iconfont icon-bell large"></i>
+
+        </a>
+    </div>
+    <div class="right menu" th:unless="${session.userId}!=null" login=no>
+        <div id="ro-search-box" class="ro-menu-item" style="display: none">
+            <div id="main-search-input" class="ui left icon input">
+                <input type="text" placeholder="搜索...">
+                <i class="icon iconfont icon-search"></i>
+            </div>
+        </div>
+        <a id="ro-search-button" class="ro-menu-item">
+            <i class="icon iconfont icon-search"></i>
+        </a>
+        <div id="ro-menu-split">
+            <span></span>
+        </div>
+
+        <a id="menu-user-avatar" class="ro-menu-item" href="/log">
+            <span>登录</span>
+        </a>
+    </div>
+</div>
+
+<div id="user-menu" class="ui popup" style="padding: 0">
+    <div id="user-menu-namebox" th:text="${session.username}">
+    </div>
+    <div class="ui large vertical secondary menu">
+        <a class="item" href="/userCenter" >
+            个人中心
+        </a>
+        <a class="item" href="/publish/overview" >
+            投稿后台
+        </a>
+        <a class="item" href="/ucLogout">
+            退出
+        </a>
+    </div>
+</div>
+
+
+
+<div class="msg-center-box">
+
+    <div class="warp-col1">
+        <div class="msg-tab">
+            <a href="/message?type=reply" tab="reply"><span>◆</span>回复我的</a>
+            <a href="/message?type=inform" tab="inform"><span>◆</span>系统通知</a>
+        </div>
+    </div>
+
+    <div class="warp-col2">
+        <div class="msg-box" >
+
+            <div id="msg-list" class="ui items" th:each="u:${session.myReply}"  >
+                <div th:if="${u.readState}==1">
+                <span style="color: red; font-size: 200%">◆</span><span style="font-family: 华文楷体;font-size: 120%;font-weight: bold">未读:</span><br><br><span th:text="${u.advice}" style="margin-left: 6%;margin-bottom: 5%"></span>
+               </div>
+                <div th:if="${u.readState}==2">
+                    <span   style="color: green;font-size: 200%">◆</span><span style="font-family: 华文楷体;font-size: 120%;font-weight: bold">已读:</span><br><br><span th:text="${u.advice}"style="margin-left: 6%;margin-bottom: 5%"></span>
+                </div>
+                <div>
+                    <span style="font-family: 华文楷体;font-size: 100%;font-weight: bold">回复:</span><br>
+                    <span th:text="${u.reply}" style="margin-left: 10%"></span>
+                </div>
+                <div class="ui divider" style="margin-top: 6%"></div>
+        </div>
+    </div>
+
+</div>
+
+
+<script th:src="@{/index/style/components/jquery.min.js}"></script>
+<script th:src="@{/index/style/components/semanticui/semantic.min.js}"></script>
+<script th:src="@{/index/style/js/common.js}"></script>
+<script th:src="@{/index/style/js/usermenu.js}"></script>
+
+<script type="text/javascript">
+    $(".footer-spread-tip")
+        .popup({
+            inline: true,
+            position: 'top center',
+        });
+</script>
+</body>
+
+<script type="application/javascript">
+    $("a[tab=reply]").css('color', '#ff837d');
+</script>
+
+
+</html>

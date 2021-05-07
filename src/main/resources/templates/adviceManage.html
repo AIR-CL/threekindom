@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>后台管理</title>
+    <!-- basic styles -->
+
+    <link href="asset/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="asset/css/font-awesome.min.css" />
+
+    <!--[if IE 7]>
+    <link rel="stylesheet" href="asset/css/font-awesome-ie7.min.css" />
+    <![endif]-->
+
+    <!-- page specific plugin styles -->
+
+    <link rel="stylesheet" href="asset/css/jquery-ui-1.10.3.custom.min.css" />
+    <link rel="stylesheet" href="asset/css/jquery.gritter.css" />
+
+    <!-- fonts -->
+
+
+
+    <!-- ace styles -->
+
+    <link rel="stylesheet" href="asset/css/ace.min.css" />
+    <link rel="stylesheet" href="asset/css/ace-rtl.min.css" />
+    <link rel="stylesheet" href="asset/css/ace-skins.min.css" />
+
+    <!--[if lte IE 8]>
+    <link rel="stylesheet" href="asset/css/ace-ie.min.css" />
+    <![endif]-->
+
+    <!-- inline styles related to this page -->
+
+    <style>
+        .spinner-preview {
+            width:100px;
+            height:100px;
+            text-align:center;
+            margin-top:60px;
+        }
+
+        .dropdown-preview {
+            margin:0 5px;
+            display:inline-block;
+        }
+        .dropdown-preview  > .dropdown-menu {
+            display: block;
+            position: static;
+            margin-bottom: 5px;
+        }
+    </style>
+
+    <!-- ace settings handler -->
+
+    <script src="asset/js/ace-extra.min.js"></script>
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+
+    <!--[if lt IE 9]>
+    <script src="asset/js/html5shiv.js"></script>
+    <script src="asset/js/respond.min.js"></script>
+    <![endif]-->
+</head>
+<body style="background-color: white" th:if="${session.role=='admin'}">
+<!--导航栏-->
+<div class="navbar navbar-default" id="navbar">
+    <script type="text/javascript">
+        try{ace.settings.check('navbar' , 'fixed')}catch(e){}
+    </script>
+
+    <div class="navbar-container" id="navbar-container">
+        <div class="navbar-header pull-left">
+            <a href="#" class="navbar-brand">
+                <small>
+                    <i class="icon-leaf"></i>
+                    三国爱好者交流论坛后台管理系统
+                </small>
+            </a><!-- /.brand -->
+        </div><!-- /.navbar-header -->
+
+        <div class="navbar-header pull-right" role="navigation">
+            <ul class="nav ace-nav">
+
+                <li class="light-blue">
+                    <a data-toggle="dropdown" href="#" class="dropdown-toggle">
+                        <img class="nav-user-photo" th:src="@{${session.avatar}}" alt="Jason's Photo" />
+                        <span class="user-info">
+									<small>欢迎光临,</small >
+                            <span th:text="${session.username}">管理员</span>
+
+								</span>
+
+                        <i class="icon-caret-down"></i>
+                    </a>
+
+                    <ul class="user-menu pull-right dropdown-menu dropdown-yellow dropdown-caret dropdown-close">
+                        <li>
+                            <a href="#">
+                                <i class="icon-cog"></i>
+                                头像修改
+                            </a>
+                        </li>
+
+
+                        <li class="divider"></li>
+
+                        <li>
+                            <a href="#">
+                                <i class="icon-off"></i>
+                                退出
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+            </ul><!-- /.ace-nav -->
+        </div><!-- /.navbar-header -->
+    </div><!-- /.container -->
+</div>
+<!--侧边栏-->
+<div class="sidebar" id="sidebar">
+    <script type="text/javascript">
+        try{ace.settings.check('sidebar' , 'fixed')}catch(e){}
+    </script>
+
+    <div class="sidebar-shortcuts" id="sidebar-shortcuts">
+
+
+
+    </div><!-- #sidebar-shortcuts -->
+
+    <ul class="nav nav-list">
+        <li >
+            <a href="/admin">
+                <i class="icon-dashboard"></i>
+                <span class="menu-text"> 控制台 </span>
+            </a>
+        </li>
+
+        <li >
+            <a href="/userManage">
+                <i class="icon-text-width"></i>
+                <span class="menu-text"> 用户管理 </span>
+            </a>
+        </li>
+        <li>
+            <a href="/articleManage">
+                <i class="icon-text-width"></i>
+                <span class="menu-text"> 帖子管理 </span>
+            </a>
+        </li>
+        <li>
+            <a href="/article/notice">
+                <i class="icon-text-width"></i>
+                <span class="menu-text"> 公告管理 </span>
+            </a>
+        </li>
+        <li class="active">
+            <a href="/adviceManage">
+                <i class="icon-text-width"></i>
+                <span class="menu-text"> 留言管理 </span>
+            </a>
+        </li>
+        <li>
+            <a href="gallery.html">
+                <i class="icon-picture"></i>
+                <span class="menu-text"> 图鉴管理 </span>
+            </a>
+        </li>
+
+    </ul><!-- /.nav-list -->
+
+    <div class="sidebar-collapse" id="sidebar-collapse">
+        <i class="icon-double-angle-left" data-icon1="icon-double-angle-left" data-icon2="icon-double-angle-right"></i>
+    </div>
+
+    <script type="text/javascript">
+        try{ace.settings.check('sidebar' , 'collapsed')}catch(e){}
+    </script>
+</div>
+<!--主题上标栏-->
+<div class="main-content" >
+    <div class="breadcrumbs" id="breadcrumbs">
+        <script type="text/javascript">
+            try{ace.settings.check('breadcrumbs' , 'fixed')}catch(e){}
+        </script>
+
+        <ul class="breadcrumb">
+            <li>
+                <i class="icon-home home-icon"></i>
+                <a href="#">首页</a>
+            </li>
+            <li class="active">留言管理</li>
+        </ul><!-- .breadcrumb -->
+
+        <div class="nav-search" id="nav-search" style="margin-right :50%">
+            <form class="form-search">
+								<span class="input-icon">
+									<input type="text" placeholder="Search ..."  id="nav-search-input" autocomplete="off" />
+									<i class="icon-search nav-search-icon"></i>
+								</span>
+            </form>
+        </div><!-- #nav-search -->
+    </div>
+    <div class="page-content">
+        <div class="row">
+            <div class="col-sm-6">
+
+                <div id="accordion" class="accordion-style1 panel-group" >
+                    <div class="panel panel-default" th:each="u:${allAdvice}">
+                        <div class="panel-heading">
+                            <h4 class="panel-title">
+                                <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" th:href="'#'+${u.id}">
+                                    <i class="icon-angle-down bigger-110" data-icon-hide="icon-angle-down" data-icon-show="icon-angle-right"></i>
+                                    &nbsp;<span th:text="${u.userName}"></span>
+                                </a>
+                            </h4>
+                        </div>
+
+                        <div class="panel-collapse collapse in" th:id="${u.id}">
+                            <div class="panel-body">
+                                <span th:text="${u.advice}"></span>
+                                <i class="icon-comment-alt green" style="margin-left: 90%;cursor:pointer;"  th:onclick="|javascript:reply('${u.id}')|" data-toggle="modal" data-target="#myModal">  回复</i>
+                            </div>
+
+
+
+
+
+                        </div>
+                    </div>
+
+                </div>
+            </div><!-- /span -->
+
+
+        </div><!-- /row -->
+        </div>
+    </div>
+</div>
+
+<!--        模态框-->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content" style="background-color: rgba(200,237,247,0.7);margin-top: 200px">
+
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title"name="exampleModalLabel" style="color: white">回复消息</h4>
+            </div><form>
+            <div class="modal-body">
+
+                <textarea type="text" id="reply" class="form-control" style="height: 200px"></textarea>
+                <input style="display: none" id="replyId" ></input>
+
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="button"class="btn btn-primary" data-whatever="@mdo onclick=" onclick="modifyInfo()" >确认</button>
+            </div> </form>
+        </div>
+    </div></div>
+<script src="/asset/js/jquery.min.js"></script>
+
+<!-- <![endif]-->
+
+<!--[if IE]>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+<![endif]-->
+
+<!--[if !IE]> -->
+
+<script type="text/javascript">
+    window.jQuery || document.write("<script src='/asset/js/jquery-2.0.3.min.js'>"+"<"+"/script>");
+</script>
+
+<!-- <![endif]-->
+
+<!--[if IE]>
+<script type="text/javascript">
+    window.jQuery || document.write("<script src='/asset/js/jquery-1.10.2.min.js'>"+"<"+"/script>");
+</script>
+<![endif]-->
+
+<script type="text/javascript">
+    if("ontouchend" in document) document.write("<script src='/asset/js/jquery.mobile.custom.min.js'>"+"<"+"/script>");
+</script>
+<script src="/asset/js/bootstrap.min.js"></script>
+<script src="/asset/js/typeahead-bs2.min.js"></script>
+
+<!-- page specific plugin scripts -->
+
+<!--[if lte IE 8]>
+<script src="/asset/js/excanvas.min.js"></script>
+<![endif]-->
+
+<script src="/asset/js/jquery-ui-1.10.3.custom.min.js"></script>
+<script src="/asset/js/jquery.ui.touch-punch.min.js"></script>
+<script src="/asset/js/bootbox.min.js"></script>
+<script src="/asset/js/jquery.easy-pie-chart.min.js"></script>
+<script src="/asset/js/jquery.gritter.min.js"></script>
+
+
+<!-- ace scripts -->
+
+<script src="/asset/js/ace-elements.min.js"></script>
+<script src="/asset/js/ace.min.js"></script>
+
+<!-- inline scripts related to this page -->
+
+
+</body>
+<script type="text/javascript">
+    function reply(id) {
+        var Id=id;
+        $.ajax({
+            type: "post",
+            url: "/findAdviceById",
+            data:{"Id":Id},
+            //请求成功
+            success: function (result) {
+                $("#replyId").val(result.id);
+
+            }
+        })
+
+    }
+</script>
+
+<!--回复-->
+<script>
+    function modifyInfo() {
+
+        var replyId=$("#replyId").val();
+        var reply=$("#reply").val();
+
+        $.post("/replyAdvice",{"id":replyId,"reply":reply},function (data) {
+            if (data.state==100){
+                alert("回复失败");
+                window.location.href="/adviceManage";
+                return;
+            }
+            alert("回复成功");
+            window.location.href="/adviceManage";
+
+        })
+
+    }
+
+
+
+
+
+
+</script>
+
+
+<!-- basic scripts -->
+
+<!--[if !IE]> -->
+
+<script src="asset/js/jquery.min.js"></script>
+
+<!-- <![endif]-->
+
+<!--[if IE]>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+<![endif]-->
+
+<!--[if !IE]> -->
+
+<script type="text/javascript">
+    window.jQuery || document.write("<script src='../static/asset/js/jquery-2.0.3.min.js'>"+"<"+"script>");
+</script>
+
+<!-- <![endif]-->
+
+<!--[if IE]>
+<script type="text/javascript">
+    window.jQuery || document.write("<script src='asset/js/jquery-1.10.2.min.js'>"+"<"+"script>");
+</script>
+<![endif]-->
+
+<script type="text/javascript">
+    if("ontouchend" in document) document.write("<script src='../static/asset/js/jquery.mobile.custom.min.js'>"+"<"+"script>");
+</script>
+<script src="asset/js/bootstrap.min.js"></script>
+<script src="asset/js/typeahead-bs2.min.js"></script>
+
+<!-- page specific plugin scripts -->
+
+<!--[if lte IE 8]>
+<script src="../static/asset/js/excanvas.min.js"></script>
+<![endif]-->
+
+
+<script src="asset/js/date-time/bootstrap-datepicker.min.js"></script>
+<script src="asset/js/jqGrid/jquery.jqGrid.min.js"></script>
+<script src="asset/js/jqGrid/i18n/grid.locale-en.js"></script>
+<!-- ace scripts -->
+
+<script src="asset/js/ace-elements.min.js"></script>
+<script src="asset/js/ace.min.js"></script>
+
+
+</html>

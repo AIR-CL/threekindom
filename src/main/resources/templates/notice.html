@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>文章管理</title>
+    <!-- basic styles -->
+
+    <link href="/asset/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="/asset/css/font-awesome.min.css" />
+
+    <!--[if IE 7]>
+    <link rel="stylesheet" href="/asset/css/font-awesome-ie7.min.css" />
+    <![endif]-->
+
+    <!-- page specific plugin styles -->
+
+    <link rel="stylesheet" href="/asset/css/jquery-ui-1.10.3.full.min.css" />
+    <link rel="stylesheet" href="/asset/css/datepicker.css" />
+    <link rel="stylesheet" href="/asset/css/ui.jqgrid.css" />
+
+    <!-- fonts -->
+
+
+
+    <!-- ace styles -->
+
+    <link rel="stylesheet" th:href="@{/static/asset/css/ace.min.css}" />
+    <link rel="stylesheet" href="/asset/css/ace-rtl.min.css" />
+    <link rel="stylesheet" href="/asset/css/ace-skins.min.css" />
+
+    <!--[if lte IE 8]>
+    <link rel="stylesheet" href="/asset/css/ace-ie.min.css" />
+    <![endif]-->
+
+
+    <!-- inline styles related to this page -->
+
+    <!-- ace settings handler -->
+
+    <script src="/asset/js/ace-extra.min.js"></script>
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <link rel="stylesheet" th:href="@{/index/style/components/semanticui/semantic.min.css}">
+    <link rel="stylesheet" th:href="@{/index/style/components/semanticui/components/dropdown.min.css}">
+    <link rel="stylesheet" th:href="@{/index/style/css/main.css}">
+    <link rel="stylesheet" th:href="@{/index/style/css/co/publish/main.css}">
+
+    <link rel="stylesheet" th:href="@{/avatar/components/cropper/cropper.min.css}">
+    <link rel="stylesheet" th:href="@{/index/style/css/co/publish/article.css}">
+    <link rel="stylesheet" th:href="@{/index/style/css/co/article-style.css}">
+    <!--[if lt IE 9]>
+    <script src="/asset/js/html5shiv.js"></script>
+    <script src="/asset/js/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+<body style="background-color: white;font-family: 华文楷体" th:if="${session.role=='admin'}">
+<!--导航栏-->
+<div class="navbar navbar-default" id="navbar">
+    <script type="text/javascript">
+        try{ace.settings.check('navbar' , 'fixed')}catch(e){}
+    </script>
+
+    <div class="navbar-container" id="navbar-container">
+        <div class="navbar-header pull-left">
+            <a href="#" class="navbar-brand">
+                <small>
+                    <i class="icon-leaf"></i>
+                    三国爱好者交流论坛后台管理系统
+                </small>
+            </a><!-- /.brand -->
+        </div><!-- /.navbar-header -->
+
+        <div class="navbar-header pull-right" role="navigation">
+            <ul class="nav ace-nav">
+
+                <li class="light-blue">
+                    <a data-toggle="dropdown" href="#" class="dropdown-toggle">
+                        <img class="nav-user-photo" th:src="@{${session.avatar}}" alt="Jason's Photo" />
+                        <span class="user-info">
+									<small>欢迎光临,</small >
+                            <span th:text="${session.username}">管理员</span>
+
+								</span>
+
+                        <i class="icon-caret-down"></i>
+                    </a>
+
+                    <ul class="user-menu pull-right dropdown-menu dropdown-yellow dropdown-caret dropdown-close">
+                        <li>
+                            <a href="#">
+                                <i class="icon-cog"></i>
+                                头像修改
+                            </a>
+                        </li>
+
+
+                        <li class="divider"></li>
+
+                        <li>
+                            <a href="#">
+                                <i class="icon-off"></i>
+                                退出
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+            </ul><!-- /.ace-nav -->
+        </div><!-- /.navbar-header -->
+    </div><!-- /.container -->
+</div>
+<!--侧边栏-->
+<div class="sidebar" id="sidebar">
+    <script type="text/javascript">
+        try{ace.settings.check('sidebar' , 'fixed')}catch(e){}
+    </script>
+
+    <div class="sidebar-shortcuts" id="sidebar-shortcuts">
+
+
+
+    </div><!-- #sidebar-shortcuts -->
+
+    <ul class="nav nav-list">
+        <li >
+            <a href="/admin">
+                <i class="icon-dashboard"></i>
+                <span class="menu-text"> 控制台 </span>
+            </a>
+        </li>
+
+        <li >
+            <a href="/userManage">
+                <i class="icon-text-width"></i>
+                <span class="menu-text"> 用户管理 </span>
+            </a>
+        </li>
+        <li >
+            <a href="/articleManage">
+                <i class="icon-text-width"></i>
+                <span class="menu-text"> 文章管理 </span>
+            </a>
+        </li>
+        <li class="active">
+            <a href="/article/notice">
+                <i class="icon-text-width"></i>
+                <span class="menu-text"> 公告管理 </span>
+            </a>
+        </li>
+        <li>
+            <a href="/adviceManage">
+                <i class="icon-text-width"></i>
+                <span class="menu-text"> 留言管理 </span>
+            </a>
+        </li>
+        <li>
+            <a href="gallery.html">
+                <i class="icon-picture"></i>
+                <span class="menu-text"> 图鉴管理 </span>
+            </a>
+        </li>
+
+    </ul><!-- /.nav-list -->
+
+    <div class="sidebar-collapse" id="sidebar-collapse">
+        <i class="icon-double-angle-left" data-icon1="icon-double-angle-left" data-icon2="icon-double-angle-right"></i>
+    </div>
+
+    <script type="text/javascript">
+        try{ace.settings.check('sidebar' , 'collapsed')}catch(e){}
+    </script>
+</div>
+<!--主题上标栏-->
+<div class="main-content" >
+    <div class="breadcrumbs" id="breadcrumbs">
+        <script type="text/javascript">
+            try{ace.settings.check('breadcrumbs' , 'fixed')}catch(e){}
+        </script>
+
+        <ul class="breadcrumb">
+            <li>
+                <i class="icon-home home-icon"></i>
+                <a href="#">首页</a>
+            </li>
+            <li class="active">公告管理</li>
+        </ul><!-- .breadcrumb -->
+
+        <div class="nav-search" id="nav-search" style="margin-right :50%">
+            <form class="form-search">
+								<span class="input-icon">
+									<input type="text" placeholder="Search ..."  id="nav-search-input" autocomplete="off" />
+									<i class="icon-search nav-search-icon"></i>
+								</span>
+            </form>
+        </div><!-- #nav-search -->
+    </div><div  id="noticeContent" style="display:none"  th:text="${session.notice.get(0).articleContent}"></div>
+    <div class="page-content">
+        <div class="row">
+            <div class="col-xs-12">
+                <!-- PAGE CONTENT BEGINS -->
+
+                <div class="co-publish-right thirteen wide column">
+                    <topic
+                            state=""
+                            tab="column"
+                    ></topic>
+                    <div id="co-articlepublish-context">
+                        <div class="content-wrap">
+                            <div id="editor-toolbar" class="toolbar" style="width: 100%"></div>
+
+                            <div id="co-editor-text-warp">
+                <textarea th:text="${session.notice.get(0).articleTitle}" id="topicTitle" class="article-title" maxlength="" placeholder="请输入标题（建议30字以内）"
+                          style="overflow-y: hidden; height: 64px;"></textarea>
+                                <div  id="editor-text" class="text">
+                                </div>
+                                <div style="color: #9d9d9d;font-size: 10px!important;">已输入<span id="wordCount">0</span>字</div>
+                                <div id="article-handler">
+                                    <div id="article-category" class="block-wrap"  style="display: none" >
+                                        <div class="block-title">选择文章分类</div>
+                                        <ul class="category-list">
+                                            <li class="category-list-item">学术</li>
+                                            <li class="category-list-item">资讯</li>
+                                            <li class="category-list-item">杂谈</li>
+
+
+
+
+                                        </ul>
+                                    </div>
+
+                                    <div id="article-bigimg" class="block-wrap">
+                                        <!-- 一个用于获取上传文件的input，type="file"，并且监听onchange事件  -->
+                                        <input
+                                                type="file"
+                                                accept="image/*"
+                                                id="imgReader"
+                                                onchange="loadingImg('cropImg',event)"
+                                                style="display: none"
+                                        >
+
+                                        <!-- 2.一个用于给Cropper.js覆盖使用的img  -->
+                                        <div id="main-img">
+                                            <div class="block-title">设置文章主图</div>
+                                            <img id="ggb" src="" onclick='$("#imgReader").click()'  th:src="@{${session.notice.get(0).articleFace}}">
+                                        </div>
+                                    </div>
+                                    <div style="text-align: center; margin-bottom: 20px">
+                                        <button id="toPublish" class="ui primary button">发布</button>
+                                        <button id="saveToDraft" class="ui primary basic button">存草稿</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="ui modal "  >
+
+                        <div class="header" >
+                            选择截取位置
+                        </div>
+                        <div class="image content" style="margin-left: 170px">
+                            <div class="ui image" style="width: 520px">
+                                <img id="cropImg">
+                            </div>
+
+                        </div>
+                        <hr>
+                        <div class="description" style="max-width: 660px;margin-left: 100px;margin-top: 30px;margin-bottom: 50px">
+                               <div style="font-family: 'RuiHei Bauhaus Kr'">最终展示效果</div>
+                                <div class="previewBox"></div>
+
+                    </div>
+                        <div class="actions" style="margin-top: 30px">
+                            <div class="ui black deny button">
+                                取消
+                            </div>
+                            <div class="ui positive right button" onclick="submitMainImage(this)"style=";margin-right: 300px">
+                                确定
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+
+                <script type="text/javascript">
+                    var $path_base = "/";//this will be used in gritter alerts containing images
+                </script>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+</body>
+
+<script th:src="@{/static/asset/js/bootstrap.min.js}"></script>
+<script th:src="@{/static/asset/js/typeahead-bs2.min.js}"></script>
+
+<script th:src="@{/static/asset/js/date-time/bootstrap-datepicker.min.js}"></script>
+<script th:src="@{/static/asset/js/jqGrid/jquery.jqGrid.min.js}"></script>
+<script th:src="@{/static/asset/js/jqGrid/i18n/grid.locale-en.js}"></script>
+
+
+
+<script th:src="@{/index/style/components/jquery.min.js}"></script>
+<!-- ace scripts -->
+
+<script th:src="@{/static/asset/js/ace-elements.min.js}"></script>
+<script th:src="@{/static/asset/js/ace.min.js}"></script>
+<script th:src="@{/index/style/components/semanticui/semantic.min.js}"></script>
+<script th:src="@{/index/style/js/common.js}"></script>
+<script th:src="@{/index/style/js/usermenu.js}"></script>
+<script th:src="@{/index/style/components/wangEditor/wangEditor4.min.js}"></script>
+<script th:src="@{/index/style/components/compressor.min.js}"></script>
+<script th:src="@{/avatar/components/cropper/cropper.min.js}"></script>
+<script type="application/javascript" th:src="@{/index/style/js/co/noticepublish.js}"></script>
+<script type="application/javascript">
+
+    $('.menu-item[menu-tab="column"]').addClass('active');
+
+    $('#publish-menu').sticky({
+        context: '.co-container'
+    });
+</script>
+
+
+<script type="text/javascript">
+
+
+</script>
+
+
+
+</html>

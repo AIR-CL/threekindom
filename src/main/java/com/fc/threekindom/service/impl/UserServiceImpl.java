@@ -2,6 +2,7 @@ package com.fc.threekindom.service.impl;
 
 import com.fc.threekindom.mappers.ArticleMapper;
 import com.fc.threekindom.mappers.UserMapper;
+import com.fc.threekindom.pojo.Advice;
 import com.fc.threekindom.pojo.Article;
 import com.fc.threekindom.pojo.User;
 import com.fc.threekindom.service.UserService;
@@ -141,6 +142,7 @@ public class UserServiceImpl implements UserService {
             req.getSession().setAttribute("userId",u.getUserId());
             req.getSession().setAttribute("username",u.getUserName());
             req.getSession().setAttribute("avatar",u.getAvatar());
+
             List<Article> xueshu = articleMapper.findArticleByTagTime("学术");
             List<Article> zixun = articleMapper.findArticleByTagTime("资讯");
             List<Article> zatan = articleMapper.findArticleByTagTime("杂谈");
@@ -168,6 +170,7 @@ public class UserServiceImpl implements UserService {
             req.getSession().setAttribute("xueShuCount",xueshu.size());
             req.getSession().setAttribute("ziXunCount",zixun.size());
             req.getSession().setAttribute("zaTanCount",zatan.size());
+            req.getSession().setAttribute("role",u.getRole());
             return map;
         }
         //获取用户的盐值
@@ -176,7 +179,11 @@ public class UserServiceImpl implements UserService {
         String md5Password = getMD5Password(password, salt);
         User user = userMapper.loginCheck(username, md5Password);
         if (user!=null){
+
             userMapper.setLogTime(user.getUserId());
+
+            List<Advice> inRead= userMapper.countInRead(username);
+            req.getSession().setAttribute("inRead",inRead.size());
             map.put("username",username);
             map.put("state",200);
             map.put("msg","登陆成功!!! ╮(￣▽ ￣)╭ ");
@@ -191,6 +198,7 @@ public class UserServiceImpl implements UserService {
             req.getSession().setAttribute("integral",user.getIntegral());
             req.getSession().setAttribute("mailbox",user.getMailbox());
             req.getSession().setAttribute("signature",user.getSignature());
+            req.getSession().setAttribute("role",u.getRole());
             Date t = new Date();
             SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
             if (df.format(t).equals(df.format(user.getSignInTime()))){

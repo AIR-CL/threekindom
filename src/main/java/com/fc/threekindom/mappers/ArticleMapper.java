@@ -12,8 +12,10 @@ import java.util.List;
 
 @Mapper
 public interface ArticleMapper {
-    //添加新用户
+    //发布文章
     int publishArticle(Article article);
+    //修改公告
+    int publishNotice(Article article);
     //通过用户名查找他的文章
     List<Article> searchAllArticleById(int userId);
     //通过文章id删除文章
@@ -52,4 +54,10 @@ public interface ArticleMapper {
     int modifyCommentCount(Integer commentCount,Integer articleId);
     //查询莫一天文章数
     List<Article> findAllByModifyTime(Integer i);
+    //后台查询所有文章
+    List<Article> getAll();
+    //根据文章id修改文章
+    int modifyArticle(Article article);
+    //查询公告
+    Article findNotice();
 }

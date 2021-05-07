@@ -1,0 +1,350 @@
+
+<!DOCTYPE html>
+<html lang="zh-CN"xmlns:th="http://www.thymeleaf.org">
+<head>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-FYBEW0S5S5"></script> <script> window.dataLayer = window.dataLayer || []; function gtag() { dataLayer.push(arguments); } gtag('js', new Date()); gtag('config', 'G-FYBEW0S5S5'); </script>    <meta charset="utf-8"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <title>意见反馈&优化建议</title>
+    <meta name="description"
+          content="月幕Galgame, Galgame小圈子内最新消息通道, 收录全网各站最新的汉化资源、Gal咨询、Gal专栏、业界要闻等, 一个专属于Galgame玩家的驿站！">
+
+    <link rel="stylesheet" th:href="@{/index/style/css/main.css}">
+    <link rel="stylesheet" th:href="@{/index/style/components/semanticui/semantic.min.css}">
+
+    <style type="text/css">
+        .text-placeholder {
+            height: 24px;
+        }
+    </style>
+
+</head>
+<body style="background: #fafafa;">
+
+<link rel="stylesheet" th:href="@{/index/style/icon/iconfont.css}">
+
+<div class="ui text ro-menu menu " style="position: relative;
+        background: #fff;
+box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.08);
+        margin-bottom: 0;
+        margin-top: 0;
+        ">
+    <a href="#">
+        <img src="/image/logo.png">
+    </a>
+    <a class="ro-menu-item" href="/index">
+        <span>主页</span>
+    </a>
+    <a class="ro-menu-item" href="#">
+        <span>图鉴查询</span>
+    </a>
+    <a class="ro-menu-item" href="#">
+        <span>获取积分</span>
+    </a>
+    <div class="right menu" th:if="${session.userId}!=null" login=yes>
+        <div id="ro-search-box" class="ro-menu-item" style="display: none">
+            <div id="main-search-input" class="ui left icon input">
+                <input type="text" placeholder="搜索...">
+                <i class="icon iconfont icon-search"></i>
+            </div>
+        </div>
+        <a id="ro-search-button" class="ro-menu-item">
+            <i class="icon iconfont icon-search"></i>
+        </a>
+        <div id="ro-menu-split">
+            <span></span>
+        </div>
+
+        <a id="menu-user-avatar" href="#" target="_blank">
+            <img class="ui mini circular image" th:src="@{${session.avatar}}">
+        </a>
+        <a class="ro-menu-item" id="menu-user-msg" href="#" >
+            <i class="icon iconfont icon-bell large" th:unless="${session.inRead!=0}"></i>
+            <i class="icon iconfont icon-bell-fill red large" th:if="${session.inRead!=0} " th:text="${session.inRead}"></i>
+        </a>
+    </div>
+    <div class="right menu" th:unless="${session.userId}!=null" login=no>
+        <div id="ro-search-box" class="ro-menu-item" style="display: none">
+            <div id="main-search-input" class="ui left icon input">
+                <input type="text" placeholder="搜索...">
+                <i class="icon iconfont icon-search"></i>
+            </div>
+        </div>
+        <a id="ro-search-button" class="ro-menu-item">
+            <i class="icon iconfont icon-search"></i>
+        </a>
+        <div id="ro-menu-split">
+            <span></span>
+        </div>
+
+        <a id="menu-user-avatar" class="ro-menu-item" href="/log">
+            <span>登录</span>
+        </a>
+    </div>
+</div>
+
+<div id="user-menu" class="ui popup" style="padding: 0">
+    <div id="user-menu-namebox" th:text="${session.username}">
+    </div>
+    <div class="ui large vertical secondary menu">
+        <a class="item" href="/userCenter" >
+            个人中心
+        </a>
+        <a class="item" href="/publish/overview" >
+            投稿后台
+        </a>
+        <a class="item" href="/ucLogout">
+            退出
+        </a>
+    </div>
+</div>
+
+<div id="user-msg-menu" class="ui popup" style="padding: 0">
+    <div class="ui large vertical secondary menu">
+        <a class="item" tab="reply" href="/message" >
+            回复
+        </a>
+    </div>
+</div>
+
+
+
+<div style="min-height: 1600px;width: 50%;min-width: 380px;margin: 0 auto;padding-bottom: 60px">
+
+    <h3 class="ui dividing header" style="margin-top: 48px">意见反馈&优化建议</h3>
+
+    <div class="ui stacked segment" style="margin-top: 36px">
+        <p class="header"><strong>这里是一个提出你的宝贵意见的地方</strong></p>
+        <p>包括但不限于页面设计、UI控件调整、功能需求等。</p>
+        <p>有什么你认为能做的、和 网站 相关的，那么可以尽管将需求提出来，只要不涉及到黑色地带站长都可以考虑。</p>
+        <div class="text-placeholder"></div>
+
+        <p class="header"><strong>同时, 你也可以在这里反馈你找到的站点bug</strong></p>
+        <p>比如页面卡顿、跳转报错等</p>
+        <p>我会尽快的修复, 当然因为有工作在身, 有的bug如果不是很严重的话可能会延时几天。</p>
+        <div class="text-placeholder"></div>
+        <p>无论是否登录, 回复均为匿名。 系统将会随机一个名字。 在提交反馈时请不要输入敏感信息、广告等哦。</p>
+        <p>因为完全匿名的原因，所以也不会有回复。</p>
+        <p>如需更进一步的交流，可发送邮件 <b>2016787823@qq.com</b>  和站长说明。如有联系的需要，请在正文附带自身的联系方式 (如邮件地址)</p>
+        <div class="text-placeholder"></div>
+        <p style="text-align: right">-- 傅聪</p>
+    </div>
+
+
+    <div class="ui grid" >
+        <div class="ten wide column">
+
+            <div style="height: 36px"></div>
+
+
+            <div class="ui error message" style="display: none">
+                <div id="verifyMsg" class="header">
+                </div>
+            </div>
+            <form id="feedbackForm" class="ui reply form" th:if="${session.userId!=null}">
+                <div class="field">
+                    <textarea name="comment"></textarea>
+                </div>
+                <div class="eight column">
+
+                    <div class="ui action input" style="width: 30%;height: 40px; top:0; ">
+
+                        <div id="feedbackFormSubmitButton" class="ui blue submit button">
+                            回复
+                        </div>
+                    </div>
+                </div>
+
+
+            </form>
+
+            <div style="margin-top: 48px"></div>
+            <div class="ui divider"></div>
+
+            <div class="ui comments" th:each="u:${allAdvice}">
+                <div class="comment" comment-id="19" style="margin-top: 12px">
+                    <div class="content">
+                        <a class="author" th:text="${u.userName}">胡德</a>
+                        <div class="metadata">
+                            <div class="date" th:text="${#dates.format(u.createTime,'yyyy-MM-dd HH:mm:ss')}">2021-04-27 16:03:48</div>
+                        </div>
+                        <div class="text" th:text="${u.advice}">
+                            站长好，不知道账户可不可以修改绑定邮箱与重置密码？没找到修改的地方，希望有，谢谢
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="six wide column">
+
+        </div>
+    </div>
+
+
+</div>
+
+<footer class="ro-footer">
+    <div class="ui grid stackable">
+        <div class="two wide column"></div>
+        <div class="six wide column">
+            <h3>三国爱好者交流论坛 <span
+                    style="font-size: 12px; margin-left: 8px; font-weight: initial">请感受这绝妙的故事体裁</span>
+            </h3>
+            <p> 本论坛提供的内容基本引用自公开网络或用户自行上传，仅供网友阅读与交流。站点本身不发布、提供任何资源。</p>
+            <div style="min-height: 18px"></div>
+            <p> ©SGAHZLT. All Rights Reserved!<span id= "isLog" style="visibility: hidden" th:text="${session.userId}"></span></p>
+        </div>
+        <div class="six wide column" style="text-align: right">
+            <div style="margin-bottom: 20px">
+                <a href="javaScript:void(0);" style="margin-right: 20px">
+                        <span class="iconfont icon-wechat-fill footer-spread-tip"
+                              style="color: white;font-size: 48px;"></span>
+                    <div class="ui special popup" style="width: 200px">
+                        <img src="image/06.jpg" width="200px">
+                        <p style="text-align: center">关注公众号: <b>三国爱好者交流论坛</b><br/> 洞悉三国大小事</p>
+                    </div>
+                </a>
+                <a href="javaScript:void(0);">
+                        <span class="iconfont icon-QQ-circle-fill footer-spread-tip"
+                              style="color: white;font-size: 48px;"></span>
+                    <div class="ui special popup" style="width: 200px">
+                        <img src="/image/06.jpg" width="200px">
+                        <p style="text-align: center">讨论、反馈、交流q群<br/> 276491323</p>
+                    </div>
+                </a>
+            </div>
+            <p></p>
+            <p></p>
+        </div>
+        <div class="two wide column"></div>
+    </div>
+    <div class="ui grid stackable">
+        <div class="two wide column"></div>
+        <div class="three wide column"></div>
+        <div class="six wide column" style="text-align: center">
+            <img style="max-width: 200px" src="/image/logo.png">
+        </div>
+        <div class="three wide column"></div>
+        <div class="two wide column"></div>
+    </div>
+</footer>
+
+<script th:src="@{/index/style/components/jquery.min.js}"></script>
+<script th:src="@{/index/style/components/semanticui/semantic.min.js}"></script>
+<script th:src="@{/index/style/js/common.js}"></script>
+<script th:src="@{/index/style/js/usermenu.js}"></script>
+
+<script type="text/javascript">
+    $(".footer-spread-tip")
+        .popup({
+            inline: true,
+            position: 'top center',
+        });
+</script>
+<div class="ym-right-bar">
+    <a href="/advice">
+        <li data-inverted="" data-tooltip="建议·反馈" data-position="left center">
+            <i class="iconfont icon-customerservice"></i>
+        </li>
+    </a>
+
+    <li data-inverted="" data-tooltip="关注公众号" data-position="left center" onclick="wechatModel()">
+        <i class="iconfont icon-wechat-fill"></i>
+    </li>
+    <li id="gotoTop" style="display: none" data-inverted="" data-tooltip="返回顶部" data-position="left center">
+        <i class="iconfont icon-rocket"></i>
+    </li>
+</div>
+
+<div id="wechat-model" class="ui tiny modal">
+    <div class="content">
+        <div class="description" style="padding-top: 12px">
+            <div style="text-align: center">
+                <h3>公众号: 三国爱好者交流论坛</h3>
+                <img src="/image/06.jpg" width="260px">
+            </div>
+            <p>随时随地获取<b>最新的汉化情报</b>。每两小时更新</p>
+            <p>可在微信上搜索论坛内容, 查看最新三国资讯以及站长转载的各路文章。上午 10:00 整不定期推送 (只要前一日有文章)</p>
+        </div>
+        <div class="ui divider"></div>
+    </div>
+</div>
+
+<script type="application/javascript">
+
+    $(function () {
+        gotoTop();
+    });
+
+    function wechatModel() {
+        $('#wechat-model')
+            .modal({
+                duration: 200,
+                inverted: false
+            })
+            .modal('show');
+    }
+</script>
+</body>
+
+<script type="application/javascript">
+
+    $(function () {
+        $("#feedbackFormSubmitButton").click(function () {
+
+            var that = $(this);
+
+            that.addClass("disabled");
+            setTimeout(function () {
+                that.removeClass("disabled");
+            }, 3000);
+
+            //序列化表 from value ==》 json
+            var formData = serializeForm($('#feedbackForm'));
+
+            if (isEmpty(formData.comment) ) {
+                verifyTips("反馈内容不能为空!");
+                return;
+            }
+
+            if (formData.comment.length < 10) {
+                verifyTips("反馈内容不能少于10字!");
+                return;
+            }
+
+            var requestBody = JSON.stringify(formData);
+
+            $.ajax({
+                type: "POST",
+                contentType: "application/json",
+                url: "/giveAdvice",
+                data: requestBody,
+                //请求成功
+                success: function (result) {
+
+                    if (result.state==100) {
+                        verifyTips(result.msg);
+                        refreshVerify("#verifyCode");
+                        return;
+                    }
+
+                    //成功则刷新页面
+                    $("#verifyMsg").text("反馈提交成功!").parent().css("display", "block").removeClass("error").addClass("success");
+                    setTimeout(function () {
+                        window.location.reload();
+                    }, 1500)
+                }
+            })
+
+        })
+    });
+
+
+    //效验错误提示
+    function verifyTips(msg) {
+        $("#verifyMsg").text(msg).parent().css("display", "block");
+    }
+
+
+</script>
+</html>

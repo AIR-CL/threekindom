@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>文章管理</title>
+    <!-- basic styles -->
+
+    <link href="/asset/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="/asset/css/font-awesome.min.css" />
+
+    <!--[if IE 7]>
+    <link rel="stylesheet" href="/asset/css/font-awesome-ie7.min.css" />
+    <![endif]-->
+
+    <!-- page specific plugin styles -->
+
+    <link rel="stylesheet" href="/asset/css/jquery-ui-1.10.3.full.min.css" />
+    <link rel="stylesheet" href="/asset/css/datepicker.css" />
+    <link rel="stylesheet" href="/asset/css/ui.jqgrid.css" />
+
+    <!-- fonts -->
+
+
+
+    <!-- ace styles -->
+
+    <link rel="stylesheet" href="/asset/css/ace.min.css" />
+    <link rel="stylesheet" href="/asset/css/ace-rtl.min.css" />
+    <link rel="stylesheet" href="/asset/css/ace-skins.min.css" />
+
+    <!--[if lte IE 8]>
+    <link rel="stylesheet" href="/asset/css/ace-ie.min.css" />
+    <![endif]-->
+
+    <!-- inline styles related to this page -->
+
+    <!-- ace settings handler -->
+
+    <script src="/asset/js/ace-extra.min.js"></script>
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+
+    <!--[if lt IE 9]>
+    <script src="/asset/js/html5shiv.js"></script>
+    <script src="/asset/js/respond.min.js"></script>
+    <![endif]-->
+</head>
+<body style="background-color: white" th:if="${session.role=='admin'}">
+<!--导航栏-->
+<div class="navbar navbar-default" id="navbar">
+    <script type="text/javascript">
+        try{ace.settings.check('navbar' , 'fixed')}catch(e){}
+    </script>
+
+    <div class="navbar-container" id="navbar-container">
+        <div class="navbar-header pull-left">
+            <a href="#" class="navbar-brand">
+                <small>
+                    <i class="icon-leaf"></i>
+                    三国爱好者交流论坛后台管理系统
+                </small>
+            </a><!-- /.brand -->
+        </div><!-- /.navbar-header -->
+
+        <div class="navbar-header pull-right" role="navigation">
+            <ul class="nav ace-nav">
+
+                <li class="light-blue">
+                    <a data-toggle="dropdown" href="#" class="dropdown-toggle">
+                        <img class="nav-user-photo" th:src="@{${session.avatar}}" alt="Jason's Photo" />
+                        <span class="user-info">
+									<small>欢迎光临,</small >
+                            <span th:text="${session.username}">管理员</span>
+
+								</span>
+
+                        <i class="icon-caret-down"></i>
+                    </a>
+
+                    <ul class="user-menu pull-right dropdown-menu dropdown-yellow dropdown-caret dropdown-close">
+                        <li>
+                            <a href="#">
+                                <i class="icon-cog"></i>
+                                头像修改
+                            </a>
+                        </li>
+
+
+                        <li class="divider"></li>
+
+                        <li>
+                            <a href="#">
+                                <i class="icon-off"></i>
+                                退出
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+            </ul><!-- /.ace-nav -->
+        </div><!-- /.navbar-header -->
+    </div><!-- /.container -->
+</div>
+<!--侧边栏-->
+<div class="sidebar" id="sidebar">
+    <script type="text/javascript">
+        try{ace.settings.check('sidebar' , 'fixed')}catch(e){}
+    </script>
+
+    <div class="sidebar-shortcuts" id="sidebar-shortcuts">
+
+
+
+    </div><!-- #sidebar-shortcuts -->
+
+    <ul class="nav nav-list">
+        <li >
+            <a href="/admin">
+                <i class="icon-dashboard"></i>
+                <span class="menu-text"> 控制台 </span>
+            </a>
+        </li>
+
+        <li >
+            <a href="/userManage">
+                <i class="icon-text-width"></i>
+                <span class="menu-text"> 用户管理 </span>
+            </a>
+        </li>
+        <li class="active">
+            <a href="/articleManage">
+                <i class="icon-text-width"></i>
+                <span class="menu-text"> 文章管理 </span>
+            </a>
+        </li>
+        <li>
+            <a href="/article/notice">
+                <i class="icon-text-width"></i>
+                <span class="menu-text"> 公告管理 </span>
+            </a>
+        </li>
+        <li>
+            <a href="/adviceManage">
+                <i class="icon-text-width"></i>
+                <span class="menu-text"> 留言管理 </span>
+            </a>
+        </li>
+        <li>
+            <a href="gallery.html">
+                <i class="icon-picture"></i>
+                <span class="menu-text"> 图鉴管理 </span>
+            </a>
+        </li>
+
+    </ul><!-- /.nav-list -->
+
+    <div class="sidebar-collapse" id="sidebar-collapse">
+        <i class="icon-double-angle-left" data-icon1="icon-double-angle-left" data-icon2="icon-double-angle-right"></i>
+    </div>
+
+    <script type="text/javascript">
+        try{ace.settings.check('sidebar' , 'collapsed')}catch(e){}
+    </script>
+</div>
+<!--主题上标栏-->
+<div class="main-content" >
+    <div class="breadcrumbs" id="breadcrumbs">
+        <script type="text/javascript">
+            try{ace.settings.check('breadcrumbs' , 'fixed')}catch(e){}
+        </script>
+
+        <ul class="breadcrumb">
+            <li>
+                <i class="icon-home home-icon"></i>
+                <a href="#">首页</a>
+            </li>
+            <li class="active">文章管理</li>
+        </ul><!-- .breadcrumb -->
+
+        <div class="nav-search" id="nav-search" style="margin-right :50%">
+            <form class="form-search">
+								<span class="input-icon">
+									<input type="text" placeholder="Search ..."  id="nav-search-input" autocomplete="off" />
+									<i class="icon-search nav-search-icon"></i>
+								</span>
+            </form>
+        </div><!-- #nav-search -->
+    </div>
+    <div class="page-content">
+        <div class="row">
+            <div class="col-xs-12">
+                <!-- PAGE CONTENT BEGINS -->
+
+                <div class="alert alert-info" style="width: 70%;text-align: center">
+                    <i class="icon-hand-right"></i>
+
+                    在进行用户管理时,请慎重操作,以免因为失误操作,导致不可挽回的数据丢失
+                    <button class="close" data-dismiss="alert">
+                        <i class="icon-remove"></i>
+                    </button>
+                </div>
+                <table class="table table-bordered  table-striped " style="width: 70%">
+
+                    <tr>
+                        <td class="alert-warning">ID</td>
+                        <td class="alert-success">文章名</td>
+                        <td class="alert-info">发表时间</td>
+                        <td class="alert-warning">作者</td>
+                        <td class="alert-success">评论数</td>
+                        <td class="alert-warning">点赞量</td>
+                        <td class="alert-danger">阅读量</td>
+                        <td class="alert-info">分类</td>
+                        <td class="info">操作</td>
+                    </tr>
+                    <tr th:each="u:${pageInfo.list}" >
+                        <td class="alert-warning" style="width: 5%" th:text="${u.articleId}">ID</td>
+                        <td class="alert-success" style="width: 20%" th:text="${u.articleTitle}">文章名</td>
+                        <td class="alert-info" style="width: 15%" th:text="${#dates.format(u.modifyTime,'yyyy-MM-dd ')}"></td>
+                        <td class="alert-warning" style="width: 15%" th:text="${u.createName}"></td>
+                        <td class="alert-success" style="width: 7%" th:text="${u.commentCount}">评论量</td>
+                        <td class="alert-warning" style="width: 7%" th:text="${u.likeCount}">点赞量</td>
+                        <td class="alert-danger"style="width: 7%" th:text="${u.viewCount}">阅读量</td>
+                        <td class="alert-info" style="width: 9%" th:text="${u.tag}"></td>
+                        <td class="info" style="text-align: center;width: 15%"><i class="icon-edit bigger-200 blue" th:onclick="|javascript:modifyArticle('${u.articleId}')|" data-toggle="modal" data-target="#myModal"></i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i class="icon-trash bigger-200 red" th:onclick="|javascript:deleteArticle('${u.articleId}')|"></i></td>
+                    </tr>
+                </table>
+                <!--        模态框-->
+                <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content" style="background-color: rgba(200,237,247,0.7);margin-top: 200px">
+
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                <h4 class="modal-title"name="exampleModalLabel" style="color: white">修改信息</h4>
+                            </div><form>
+                            <div class="modal-body">
+
+
+                                <div class="form-group">
+                                    <label for="articleId"class="control-label"style="color: white">ID:</label>
+                                    <input readonly="readonly" type="text"  class="form-control" name="articleId" id="articleId">
+                                </div>
+                                <div class="form-group">
+                                    <label for="articleTitle" class="control-label"style="color: white">文章名:</label>
+                                    <input type="text" readonly="readonly" class="form-control" name="articleTitle" id="articleTitle">
+                                    <div class="form-group">
+                                        <label for="createName" class="control-label"style="color: white">作者:</label>
+                                        <input type="text" readonly="readonly" class="form-control" name="createName" id="createName">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="likeCount" class="control-label"style="color: white">点赞数:</label>
+                                        <input type="text" class="form-control"name="likeCount"id="likeCount">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="viewCount" class="control-label"style="color: white">阅读数:</label>
+                                        <input type="text" class="form-control"name="viewCount"id="viewCount">
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                                <button type="button"class="btn btn-primary" data-whatever="@mdo onclick=" onclick="modifyInfo()" >确认</button>
+                            </div> </form>
+                        </div>
+                    </div></div>
+                <!--显示分页信息-->
+                <div class="modal-footer no-margin-top" style="width: 70%">
+                    <div class="col-md-6">
+                        当前第 [[${pageInfo.pageNum}]]页,共 [[${pageInfo.pages}]] 页.一共 [[${pageInfo.total}]] 条记录<span id= "pageThis" style="visibility: hidden" th:text="${pageInfo.pageNum}"></span>
+                    </div>
+
+                    <ul class="pagination pull-right no-margin">
+                        <li th:if="${pageInfo.hasPreviousPage}">
+                            <a th:href="'/articleManage?pageNum=1'">首页</a>
+                        </li>
+
+                        <li class="prev" th:if="${pageInfo.hasPreviousPage}">
+                            <a th:href="'/articleManage?pageNum='+${pageInfo.prePage}">
+                                <i class="ace-icon fa fa-angle-double-left">上一页</i>
+                            </a>
+                        </li>
+                        <!--遍历条数-->
+                        <li th:each="nav:${pageInfo.navigatepageNums}">
+                            <a th:href="'/articleManage?pageNum='+${nav}" th:text="${nav}" th:if="${nav != pageInfo.pageNum}"></a>
+                            <span style="font-weight: bold;background: #6faed9;" th:if="${nav == pageInfo.pageNum}" th:text="${nav}" ></span>
+                        </li>
+
+                        <li class="next" th:if="${pageInfo.hasNextPage}">
+                            <a th:href="'/articleManage?pageNum='+${pageInfo.nextPage}">
+                                <i class="ace-icon fa fa-angle-double-right">下一页</i>
+                            </a>
+                        </li>
+
+                        <li>
+                            <a th:href="'/articleManage?pageNum='+${pageInfo.pages}">尾页</a>
+                        </li>
+                    </ul>
+                </div>
+
+                <script type="text/javascript">
+                    var $path_base = "/";//this will be used in gritter alerts containing images
+                </script>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script type="text/javascript">
+    function modifyArticle(id) {
+        var articleId=id;
+        $.ajax({
+            type: "post",
+            url: "/findArticleByArticleId",
+            data:{"articleId":articleId},
+            //请求成功
+            success: function (result) {
+                if (result.state==100) {
+                    alert("数据库异常");
+                    window.location.href="/articleManage";
+                }
+                $("#articleId").val(result.articleMo.articleId);
+                $("#articleTitle").val(result.articleMo.articleTitle);
+                $("#createName").val(result.articleMo.createName);
+                $("#likeCount").val(result.articleMo.likeCount);
+                $("#viewCount").val(result.articleMo.viewCount);
+
+            }
+        })
+
+    }
+</script>
+
+<script type="text/javascript">
+    function deleteArticle(id) {
+        var pageNow=$("#pageThis").html();
+        var articleId=id;
+        $.ajax({
+            type: "post",
+            url: "/deleteArticleById",
+            data:{"articleId":articleId},
+            success: function (result) {
+                if (result.state==100) {
+                    alert("修改失败");
+                    window.location.href="/articleManage";
+                }
+                alert("删除成功");
+                window.location.href="/articleManage?pageNum="+pageNow;
+
+            }
+        })
+
+    }
+</script>
+
+<!--修改信息-->
+<script>
+    function modifyInfo() {
+        var likeCount=$("#likeCount").val();
+        var articleId=$("#articleId").val();
+        var viewCount=$("#viewCount").val();
+        var pageNow=$("#pageThis").html();
+        $.post("/modifyArticleInfo",{"articleId":articleId,"viewCount":viewCount,"likeCount":likeCount},function (data) {
+            if (data.state==100){
+                alert("修改失败");
+                window.location.href="/articleManage?pageNum="+pageNow;
+                return;
+            }
+            alert("修改成功");
+            window.location.href="/articleManage?pageNum="+pageNow;
+
+        })
+
+    }
+
+</script>
+
+</body>
+<!-- basic scripts -->
+
+<!--[if !IE]> -->
+
+<script src="asset/js/jquery.min.js"></script>
+
+<!-- <![endif]-->
+
+<!--[if IE]>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+<![endif]-->
+
+<!--[if !IE]> -->
+
+<script type="text/javascript">
+    window.jQuery || document.write("<script src='../static/asset/js/jquery-2.0.3.min.js'>"+"<"+"script>");
+</script>
+
+<!-- <![endif]-->
+
+<!--[if IE]>
+<script type="text/javascript">
+    window.jQuery || document.write("<script src='assets/js/jquery-1.10.2.min.js'>"+"<"+"script>");
+</script>
+<![endif]-->
+
+<script type="text/javascript">
+    if("ontouchend" in document) document.write("<script src='../static/asset/js/jquery.mobile.custom.min.js'>"+"<"+"script>");
+</script>
+<script src="asset/js/bootstrap.min.js"></script>
+<script src="asset/js/typeahead-bs2.min.js"></script>
+
+<!-- page specific plugin scripts -->
+
+<!--[if lte IE 8]>
+<script src="../static/asset/js/excanvas.min.js"></script>
+<![endif]-->
+
+
+<script src="asset/js/date-time/bootstrap-datepicker.min.js"></script>
+<script src="asset/js/jqGrid/jquery.jqGrid.min.js"></script>
+<script src="asset/js/jqGrid/i18n/grid.locale-en.js"></script>
+<!-- ace scripts -->
+
+<script src="asset/js/ace-elements.min.js"></script>
+<script src="asset/js/ace.min.js"></script>
+
+
+</html>

@@ -55,11 +55,12 @@ box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.08);
             <span></span>
         </div>
 
-        <a id="menu-user-avatar" href="#" target="_blank">
+        <a id="menu-user-avatar" target="_blank">
             <img class="ui mini circular image" th:src="@{${session.avatar}}">
         </a>
-        <a class="ro-menu-item" id="menu-user-msg" href="/message?type=reply" target="_blank">
-            消息
+        <a class="ro-menu-item" id="menu-user-msg" href="#" >
+            <i class="icon iconfont icon-bell large" th:unless="${session.inRead!=0}"></i>
+            <i class="icon iconfont icon-bell-fill red large" th:if="${session.inRead!=0} " th:text="${session.inRead}"></i>
         </a>
     </div>
     <div class="right menu" th:unless="${session.userId}!=null" login=no>
@@ -100,11 +101,8 @@ box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.08);
 
 <div id="user-msg-menu" class="ui popup" style="padding: 0">
     <div class="ui large vertical secondary menu">
-        <a class="item" tab="reply" href="/message?type=reply" target="_blank">
+        <a class="item" tab="reply" href="/message" >
             回复
-        </a>
-        <a class="item" tab="inform" href="/message?type=inform" target="_blank">
-            通知
         </a>
     </div>
 </div>
@@ -169,18 +167,18 @@ box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.08);
 
         <div id="index-bulletin" class="ui equal width grid">
             <div class="column bulletin-box">
-                <div style="background-image: url(https://ymgal.com/anntt/topic/main/250/369/25036975a27c2c620200926.webp)">
-                    <a class="istop" href="https://ymgal.com/co/article/26206664041709575" target="_blank">
+                <div th:style="'background-image:url(' + ${noticeIndex.articleFace} + ');'" >
+                    <a class="istop" th:onclick="|javascript:toAticlePage('${noticeIndex.articleId}')|">
                         <div class="overlay"></div>
                         <div class="title">
                             <span>公告</span>
-                            <h3>文章区发文守则 (投稿前必看)</h3>
+                            <h3 th:text="${noticeIndex.articleTitle}">文章区发文守则 (投稿前必看)</h3>
                         </div>
                     </a>
                 </div>
             </div>
             <div class="column bulletin-box">
-                <div style="background-image: url(https://store.ymgal.com/topic/main/uwZ/J0h/uwZJ0hCwvaMUtKhe.webp)">
+                <div style="background-image: url(https://ymgal.com/anntt/topic/main/250/369/25036975a27c2c620200926.webp)">
                     <a class="istop" href="https://www.ymgal.com/co/article/140181205919203328" target="_blank">
                         <div class="overlay"></div>
                         <div class="title">
@@ -544,7 +542,7 @@ box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.08);
         });
 </script>
 <div class="ym-right-bar">
-    <a href="/feedback" target="_blank">
+    <a href="/advice">
         <li data-inverted="" data-tooltip="建议·反馈" data-position="left center">
             <i class="iconfont icon-customerservice"></i>
         </li>
@@ -696,7 +694,6 @@ $.ajax({
             return;
         }
         //成功则跳转
-        $msg.info("发布成功!");
 
         window.location.href = "/more";
 
@@ -719,7 +716,7 @@ $.ajax({
                     return;
                 }
                 //成功则跳转
-                $msg.info("发布成功!");
+
 
                 window.location.href = "/more";
 
@@ -742,7 +739,7 @@ $.ajax({
                     return;
                 }
                 //成功则跳转
-                $msg.info("发布成功!");
+
 
                 window.location.href = "/more";
 
@@ -765,7 +762,7 @@ $.ajax({
                     return;
                 }
                 //成功则跳转
-                $msg.info("发布成功!");
+
 
                 window.location.href = "/more";
 
@@ -788,7 +785,7 @@ $.ajax({
                     return;
                 }
                 //成功则跳转
-                $msg.info("发布成功!");
+
 
                 window.location.href = "/more";
 
@@ -811,7 +808,7 @@ $.ajax({
                     return;
                 }
                 //成功则跳转
-                $msg.info("发布成功!");
+
 
                 window.location.href = "/more";
 
