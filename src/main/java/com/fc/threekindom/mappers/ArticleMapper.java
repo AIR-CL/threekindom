@@ -60,4 +60,6 @@ public interface ArticleMapper {
     int modifyArticle(Article article);
     //查询公告
     Article findNotice();
+    //搜索文章
+    List<Article> searchArticle(String keyWord);
 }

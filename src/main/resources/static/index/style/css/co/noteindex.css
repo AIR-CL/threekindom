@@ -1,0 +1,447 @@
+.notes-top-banner {
+    width: 100%;
+    height: 620px;
+    background-color: #63b5ff
+}
+
+.swiper-container {
+    width: 1440px;
+    margin: 0 auto;
+    height: 100%
+}
+
+.swiper-container {
+    --swiper-theme-color: #eae3df
+}
+
+.swiper-container .swiper-wrapper .swiper-slide {
+    background-color: #63b5ff
+}
+
+.swiper-pagination-bullet {
+    background: #fff
+}
+
+.swiper-button-next, .swiper-button-prev {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: white;
+    opacity: .6
+}
+
+.swiper-button-next:hover, .swiper-button-prev:hover {
+    opacity: 1
+}
+
+.swiper-button-next:after, .swiper-button-prev:after {
+    color: #63b5ff;
+    font-size: 14px;
+    font-weight: 600
+}
+
+.notes-top-banner .banner-box {
+    width: 1180px;
+    height: 100%;
+    margin: 0 auto;
+    font-family: "YX-HiraginoSansGB-W3", Sans-serif;
+    position: relative
+}
+
+.notes-top-banner .banner-box > div {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%)
+}
+
+.banner-img-box {
+    float: right;
+    max-width: 60%;
+    max-height: 620px;
+    box-sizing: border-box
+}
+
+.banner-img-box > img {
+    max-width: 100%;
+    max-height: 100%
+}
+
+.notes-top-banner .banner-box {
+    width: 1180px;
+    margin: 0 auto;
+    font-family: "YX-HiraginoSansGB-W3", Sans-serif
+}
+
+.notes-top-banner .banner-box .banner-big-title {
+    text-align: left;
+    color: #fff;
+    font-size: 46px;
+    line-height: 66px;
+    margin: 10px 0
+}
+
+.notes-top-banner .banner-box .banner-sub-title {
+    text-align: left;
+    color: #fff;
+    font-size: 22px;
+    line-height: 1.5em;
+    margin: 0;
+    font-weight: 600
+}
+
+.notes-top-banner .banner-box .banner-btn {
+    display: inline-block;
+    font-size: 14px;
+    line-height: 20px;
+    padding: 15px 62px 15px 62px;
+    margin: 28px 0 0 0;
+    background-color: #fff;
+    color: #63b5ff;
+    border-style: solid;
+    border-width: 1px 1px 1px 1px;
+    border-color: #fff;
+    border-radius: 8px 8px 8px 8px
+}
+
+.note-list-warp {
+    width: 1180px;
+    margin: 0 auto
+}
+
+.note-list-warp .note-list-header {
+    margin: 150px 0 16px 0;
+    padding: 10px;
+    border-bottom: 1px solid rgba(34, 36, 38, .15)
+}
+
+.note-list-warp .note-list-header p > span {
+    font-family: "YX-HiraginoSansGB-W3", Sans-serif;
+    font-size: 44px;
+    line-height: 1em;
+    margin: 0 0 20px;
+    vertical-align: baseline;
+    font-style: inherit;
+    font-weight: inherit;
+    color: #424242
+}
+
+.note-list-warp .note-pager {
+    text-align: center;
+    margin-top: 24px
+}
+
+.note-list-warp .note-pager > span {
+    cursor: pointer;
+    box-sizing: border-box;
+    padding: 10px;
+    color: #929292
+}
+
+.note-list-warp .note-pager > span.current {
+    color: #63b5ff
+}
+
+.note-list-warp .note-pager > span:not(:first-child) {
+    margin-left: 6px
+}
+
+#note-list-box {
+    width: 100%;
+    min-height: 860px
+}
+
+#note-bottom-users {
+    margin: 0 0 120px
+}
+
+#note-bottom-users > div {
+    width: 1180px;
+    margin: 0 auto;
+    padding: 10px
+}
+
+#note-bottom-users p.note-user-title {
+    margin-top: 60px;
+    margin-bottom: 26px;
+    font-size: 24px;
+    line-height: 24px
+}
+
+#note-bottom-users .user-avatar-warp {
+    display: flex;
+    justify-content: space-around
+}
+
+#note-bottom-users .user-avatar-warp .user-avabox {
+    width: 130px;
+    height: 124px
+}
+
+#note-bottom-users .user-avatar-warp .user-avabox .img-avatar {
+    width: 130px;
+    text-align: center
+}
+
+#note-bottom-users .user-avatar-warp .user-avabox .img-avatar img {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    display: inline-block;
+    overflow: hidden;
+    object-fit: cover;
+    border: 1px solid rgba(0, 0, 0, .06)
+}
+
+#note-bottom-users .user-avatar-warp .user-avabox p {
+    color: #6d757a;
+    font-size: 14px;
+    text-align: center
+}
+
+.note-stats {
+    padding: 10px
+}
+
+.note-stats span {
+    font-size: 16px;
+    margin-right: 22px;
+    color: #797979
+}
+
+#cropImg {
+    height: 400px;
+    width: 400px;
+    box-shadow: 0 0 5px #adadad
+}
+#cropImg1 {
+    height: 400px;
+    width: 400px;
+    box-shadow: 0 0 5px #adadad
+}
+.previewBox {
+    box-shadow: 0 0 5px #adadad;
+    width: 226px;
+    height: 226px;
+    overflow: hidden;
+    margin: 0 auto
+}
+.previewBox1 {
+    box-shadow: 0 0 5px #adadad;
+    width: 226px;
+    height: 226px;
+    overflow: hidden;
+    margin: 0 auto
+}
+
+:root {
+    --shadow-color: #bebebe
+}
+
+.blue-btn {
+    background-color: #63b5ff !important
+}
+
+.blue-btn:hover {
+    background-color: #5ea0da !important
+}
+
+.box-hshadow {
+    background: #fff;
+    box-shadow: 0 2px 10px var(--shadow-color);
+    -moz-box-shadow: 0 2px 10px var(--shadow-color);
+    -webkit-box-shadow: 0 2px 10px var(--shadow-color);
+    transition: background .1s
+}
+
+.note-warp {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-content: flex-start;
+    min-height: 450px
+}
+
+.notes-box {
+    width: 260px;
+    height: 400px;
+    padding-left: calc(32px / 2);
+    padding-right: calc(32px / 2);
+    padding-top: calc(39px / 2);
+    padding-bottom: calc(39px / 2)
+}
+
+.notes-content {
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+    box-sizing: border-box;
+    border-radius: 3px;
+    border: 1px solid #f0f0f0;
+    transition: all .3s
+}
+
+.notes-content:hover {
+    border-color: rgba(0, 0, 0, .09);
+    box-shadow: 0 2px 8px rgb(0 0 0 / 9%)
+}
+
+.notes-content img {
+    border-radius: 3px 3px 0 0;
+    width: 226px;
+    height: 226px
+}
+
+.notes-content .note-title {
+    align-self: flex-start;
+    font-size: 16px;
+    line-height: 24px;
+    color: #424242;
+    flex-direction: row;
+    font-weight: 500;
+    height: 24px;
+    margin-top: 10px;
+    padding: 0 6px;
+    box-sizing: border-box;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap
+}
+
+.notes-content .note-introduction {
+    color: #797979;
+    font-family: "YX-PingFangSC", Sans-serif;
+    font-size: 14px;
+    line-height: 20px;
+    margin-top: 10px;
+    padding: 0 6px;
+    height: 40px;
+    display: -webkit-box;
+    word-break: break-all;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    overflow: hidden;
+    text-overflow: ellipsis
+}
+
+.note-extra {
+    margin-top: 6px;
+    font-family: "YX-HiraginoSansGB-W3", Sans-serif;
+    font-size: 12px;
+    padding: 0 6px
+}
+
+.note-extra > span {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    color: rgba(0, 0, 0, .65);
+    font-size: 14px;
+    font-variant: tabular-nums;
+    line-height: 1.5715;
+    list-style: none;
+    font-feature-settings: "tnum";
+    display: inline-block;
+    height: auto;
+    margin-right: 8px;
+    padding: 0 7px;
+    font-size: 12px;
+    line-height: 20px;
+    white-space: nowrap;
+    background: #fafafa;
+    border: 1px solid #d9d9d9;
+    border-radius: 2px;
+    cursor: default;
+    opacity: 1;
+    transition: all .3s cubic-bezier(.78, .14, .15, .86)
+}
+
+.note-extra > span:not(:last-child) {
+    margin-right: 4px
+}
+
+.note-extra > span.tips-green {
+    color: #1890ff;
+    background: #e6f7ff;
+    border-color: #91d5ff
+}
+
+.note-extra > span.tips-green:hover {
+    opacity: .8
+}
+
+#notes-save-form {
+    margin-top: 12px
+}
+
+#notes-save-form .ui.toggle.checkbox input:checked ~ label:before {
+    background-color: #ff837d !important
+}
+
+#notes-save-form > input, #notes-save-form > textarea, #notes-save-form > div {
+    outline: 0;
+    display: block;
+    width: 300px;
+    margin: 0 auto
+}
+
+#notes-save-form > input:focus, #notes-save-form > textarea:focus {
+    border-color: #ff837d
+}
+
+#notes-save-form > input {
+    border-top: 0;
+    border-left: 0;
+    border-right: 0;
+    border-bottom: 1px solid #b8c0cc;
+    line-height: 20px;
+    font-size: 18px
+}
+
+#notes-save-form > textarea {
+    border: 1px solid #b8c0cc;
+    margin-top: 12px;
+    height: 80px;
+    resize: none
+}
+
+#notes-save-form > div {
+    margin-top: 12px
+}
+#notes-save-form1{
+    margin-top: 12px
+}
+
+#notes-save-form1 .ui.toggle.checkbox input:checked ~ label:before {
+    background-color: #ff837d !important
+}
+
+#notes-save-form1 > input, #notes-save-form1 > textarea, #notes-save-form1 > div {
+    outline: 0;
+    display: block;
+    width: 300px;
+    margin: 0 auto
+}
+
+#notes-save-form1 > input:focus, #notes-save-form1 > textarea:focus {
+    border-color: #ff837d
+}
+
+#notes-save-form1 > input {
+    border-top: 0;
+    border-left: 0;
+    border-right: 0;
+    border-bottom: 1px solid #b8c0cc;
+    line-height: 20px;
+    font-size: 18px
+}
+
+#notes-save-form1 > textarea {
+    border: 1px solid #b8c0cc;
+    margin-top: 12px;
+    height: 80px;
+    resize: none
+}
+
+#notes-save-form1 > div {
+    margin-top: 12px
+}

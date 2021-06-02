@@ -6,6 +6,8 @@ public class UploadUtils {
     // 项目根路径下的目录  -- SpringBoot static 目录相当于是根路径下（SpringBoot 默认）
     public final static String IMG_PATH_PREFIX = "static/upload/face";
     public final static String ART_PATH_PREFIX = "static/upload/article";
+    public final static String PER_PATH_PREFIX = "static/upload/personImage";
+
 
     public static File getImgDirFile(){
 
@@ -23,6 +25,18 @@ public class UploadUtils {
 
         // 构建上传文件的存放 "文件夹" 路径
         String fileDirPath = new String("src/main/resources/" + ART_PATH_PREFIX);
+
+        File fileDir = new File(fileDirPath);
+        if(!fileDir.exists()){
+            // 递归生成文件夹
+            fileDir.mkdirs();
+        }
+        return fileDir;
+    }
+    public static File getPerDirFile(){
+
+        // 构建上传文件的存放 "文件夹" 路径
+        String fileDirPath = new String("src/main/resources/" + PER_PATH_PREFIX);
 
         File fileDir = new File(fileDirPath);
         if(!fileDir.exists()){

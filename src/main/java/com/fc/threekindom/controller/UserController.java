@@ -4,9 +4,11 @@ package com.fc.threekindom.controller;
 
 import com.fc.threekindom.mappers.AdviceMapper;
 import com.fc.threekindom.mappers.ArticleMapper;
+import com.fc.threekindom.mappers.PersonageMapper;
 import com.fc.threekindom.mappers.UserMapper;
 import com.fc.threekindom.pojo.Advice;
 import com.fc.threekindom.pojo.Article;
+import com.fc.threekindom.pojo.Personage;
 import com.fc.threekindom.pojo.User;
 import com.fc.threekindom.service.ArticleService;
 import com.fc.threekindom.service.UserService;
@@ -39,7 +41,8 @@ public class UserController {
     private UserMapper userMapper;
     @Autowired(required = false)
     private AdviceMapper adviceMapper;
-
+    @Autowired(required = false)
+    private PersonageMapper personageMapper;
     @GetMapping("/find")
     @ResponseBody
     public List<User> findAll(){
@@ -132,6 +135,7 @@ public class UserController {
         return modelAndView;
 
     }
+
     //更多文章界面
     @RequestMapping("/more")
     public ModelAndView toMorePage(HttpServletRequest request){
@@ -238,7 +242,154 @@ public class UserController {
 
         }
     }
+    //跳转到文章查询
+    @GetMapping("/search")
+    public String toSearchPage(Model model,
+                               @RequestParam(required = false,defaultValue="1",value="pageNum")Integer pageNum,
+                               @RequestParam(defaultValue="8",value="pageSize")Integer pageSize){
+        model.addAttribute("keyWord",null);
+        //为了程序的严谨性，判断非空：
+        if(pageNum == null){
+            pageNum = 1;   //设置默认当前页
+        }
+        if(pageNum <= 0){
+            pageNum = 1;
+        }
+        if(pageSize == null){
+            pageSize = 8;    //设置默认每页显示的数据数
+        }
+        System.out.println("当前页是："+pageNum+"显示条数是："+pageSize);
 
+        //1.引入分页插件,pageNum是第几页，pageSize是每页显示多少条,默认查询总数count
+        PageHelper.startPage(pageNum,pageSize);
+        //2.紧跟的查询就是一个分页查询-必须紧跟.后面的其他查询不会被分页，除非再次调用PageHelper.startPage
+        try {
+            List<Article> articleList = articleService.getAll();
+            System.out.println("分页数据："+articleList);
+            //3.使用PageInfo包装查询后的结果,5是连续显示的条数,结果list类型是Page<E>
+            PageInfo<Article> pageInfo = new PageInfo<Article>(articleList,pageSize);
+            System.out.println(pageInfo);
+            //4.使用model/map/modelandview等带回前端
+            model.addAttribute("pageInfo",pageInfo);
+        }finally {
+            PageHelper.clearPage(); //清理 ThreadLocal 存储的分页参数,保证线程安全
+        }
+        //5.设置返回的jsp/html等前端页面
+        // thymeleaf默认就会拼串classpath:/templates/xxxx.html
+
+        return "search";
+    }
+    //搜索文章
+    @GetMapping("/searchArticle")
+    public String searchArticle(Model model,
+                               @RequestParam(required = false,defaultValue="1",value="pageNum")Integer pageNum,
+                               @RequestParam(defaultValue="5",value="pageSize")Integer pageSize,String keyWord){
+        model.addAttribute("keyWord",keyWord);
+        //为了程序的严谨性，判断非空：
+        if(pageNum == null){
+            pageNum = 1;   //设置默认当前页
+        }
+        if(pageNum <= 0){
+            pageNum = 1;
+        }
+        if(pageSize == null){
+            pageSize = 5;    //设置默认每页显示的数据数
+        }
+        System.out.println("当前页是："+pageNum+"显示条数是："+pageSize);
+
+        //1.引入分页插件,pageNum是第几页，pageSize是每页显示多少条,默认查询总数count
+        PageHelper.startPage(pageNum,pageSize);
+        //2.紧跟的查询就是一个分页查询-必须紧跟.后面的其他查询不会被分页，除非再次调用PageHelper.startPage
+        try {
+            List<Article> articleList = articleMapper.searchArticle(keyWord);
+            System.out.println("分页数据："+articleList);
+            //3.使用PageInfo包装查询后的结果,5是连续显示的条数,结果list类型是Page<E>
+            PageInfo<Article> pageInfo = new PageInfo<Article>(articleList,pageSize);
+            System.out.println(pageInfo);
+            //4.使用model/map/modelandview等带回前端
+            model.addAttribute("pageInfo",pageInfo);
+        }finally {
+            PageHelper.clearPage(); //清理 ThreadLocal 存储的分页参数,保证线程安全
+        }
+        //5.设置返回的jsp/html等前端页面
+        // thymeleaf默认就会拼串classpath:/templates/xxxx.html
+
+        return "search";
+    }
+//跳转到图鉴查询
+@GetMapping("/searchImage")
+public String toSearchImagePage(Model model,
+                                @RequestParam(required = false,defaultValue="1",value="pageNum")Integer pageNum,
+                                @RequestParam(defaultValue="20",value="pageSize")Integer pageSize){
+    model.addAttribute("keyWord",null);
+    //为了程序的严谨性，判断非空：
+    if(pageNum == null){
+        pageNum = 1;   //设置默认当前页
+    }
+    if(pageNum <= 0){
+        pageNum = 1;
+    }
+    if(pageSize == null){
+        pageSize = 20;    //设置默认每页显示的数据数
+    }
+    System.out.println("当前页是："+pageNum+"显示条数是："+pageSize);
+
+    //1.引入分页插件,pageNum是第几页，pageSize是每页显示多少条,默认查询总数count
+    PageHelper.startPage(pageNum,pageSize);
+    //2.紧跟的查询就是一个分页查询-必须紧跟.后面的其他查询不会被分页，除非再次调用PageHelper.startPage
+    try {
+        List<Personage> personageList = personageMapper.findAll();
+        System.out.println("分页数据："+personageList);
+        //3.使用PageInfo包装查询后的结果,5是连续显示的条数,结果list类型是Page<E>
+        PageInfo<Personage> pageInfo = new PageInfo<Personage>(personageList,pageSize);
+        System.out.println(pageInfo);
+        //4.使用model/map/modelandview等带回前端
+        model.addAttribute("pageInfo",pageInfo);
+    }finally {
+        PageHelper.clearPage(); //清理 ThreadLocal 存储的分页参数,保证线程安全
+    }
+    //5.设置返回的jsp/html等前端页面
+    // thymeleaf默认就会拼串classpath:/templates/xxxx.html
+
+    return "searchImage";
+}
+//搜索图鉴
+@GetMapping("/likeSearchImage")
+public String likeSearchImage(Model model,
+                                @RequestParam(required = false,defaultValue="1",value="pageNum")Integer pageNum,
+                                @RequestParam(defaultValue="20",value="pageSize")Integer pageSize,String keyWord){
+    model.addAttribute("keyWord",keyWord);
+    //为了程序的严谨性，判断非空：
+    if(pageNum == null){
+        pageNum = 1;   //设置默认当前页
+    }
+    if(pageNum <= 0){
+        pageNum = 1;
+    }
+    if(pageSize == null){
+        pageSize = 20;    //设置默认每页显示的数据数
+    }
+    System.out.println("当前页是："+pageNum+"显示条数是："+pageSize);
+
+    //1.引入分页插件,pageNum是第几页，pageSize是每页显示多少条,默认查询总数count
+    PageHelper.startPage(pageNum,pageSize);
+    //2.紧跟的查询就是一个分页查询-必须紧跟.后面的其他查询不会被分页，除非再次调用PageHelper.startPage
+    try {
+        List<Personage> personageList = personageMapper.likeSearch(keyWord);
+        System.out.println("分页数据："+personageList);
+        //3.使用PageInfo包装查询后的结果,5是连续显示的条数,结果list类型是Page<E>
+        PageInfo<Personage> pageInfo = new PageInfo<Personage>(personageList,pageSize);
+        System.out.println(pageInfo);
+        //4.使用model/map/modelandview等带回前端
+        model.addAttribute("pageInfo",pageInfo);
+    }finally {
+        PageHelper.clearPage(); //清理 ThreadLocal 存储的分页参数,保证线程安全
+    }
+    //5.设置返回的jsp/html等前端页面
+    // thymeleaf默认就会拼串classpath:/templates/xxxx.html
+
+    return "searchImage";
+}
    //分页查询用户数据
     @GetMapping("/userManage")
     public String usermanage(Model model,
@@ -509,5 +660,40 @@ public ModelAndView toAdvicePage() {
 
         return "login";
     }
+    //去图鉴管理
+//文章页分页查询数据
+    @GetMapping("/personageManage")
+    public String personageManage(Model model,
+                                @RequestParam(required = false,defaultValue="1",value="pageNum")Integer pageNum,
+                                @RequestParam(defaultValue="5",value="pageSize")Integer pageSize){
 
+        //为了程序的严谨性，判断非空：
+        if(pageNum == null){
+            pageNum = 1;   //设置默认当前页
+        }
+        if(pageNum <= 0){
+            pageNum = 1;
+        }
+        if(pageSize == null){
+            pageSize = 5;    //设置默认每页显示的数据数
+        }
+
+        //1.引入分页插件,pageNum是第几页，pageSize是每页显示多少条,默认查询总数count
+        PageHelper.startPage(pageNum,pageSize);
+        //2.紧跟的查询就是一个分页查询-必须紧跟.后面的其他查询不会被分页，除非再次调用PageHelper.startPage
+        try {
+            List<Personage> personageList = personageMapper.findAll();
+
+            //3.使用PageInfo包装查询后的结果,5是连续显示的条数,结果list类型是Page<E>
+            PageInfo<Personage> pageInfo = new PageInfo<Personage>(personageList,pageSize);
+
+            //4.使用model/map/modelandview等带回前端
+            model.addAttribute("pageInfo",pageInfo);
+        }finally {
+            PageHelper.clearPage(); //清理 ThreadLocal 存储的分页参数,保证线程安全
+        }
+        //5.设置返回的jsp/html等前端页面
+        // thymeleaf默认就会拼串classpath:/templates/xxxx.html
+        return "personageManage";
+    }
 }

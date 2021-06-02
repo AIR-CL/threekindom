@@ -54,7 +54,7 @@
     <![endif]-->
 
 </head>
-<body style="background-color: white;font-family: 华文楷体" th:if="${session.role=='admin'}">
+<body style="background-color: white;font-family: Helvetica Neue" th:if="${session.role=='admin'}">
 <!--导航栏-->
 <div class="navbar navbar-default" id="navbar">
     <script type="text/javascript">
@@ -64,8 +64,8 @@
     <div class="navbar-container" id="navbar-container">
         <div class="navbar-header pull-left">
             <a href="#" class="navbar-brand">
-                <small>
-                    <i class="icon-leaf"></i>
+                <small style="font-size: 20px">
+                    <i class="icon-leaf" ></i>
                     三国爱好者交流论坛后台管理系统
                 </small>
             </a><!-- /.brand -->
@@ -154,7 +154,7 @@
             </a>
         </li>
         <li>
-            <a href="gallery.html">
+            <a href="/personageManage">
                 <i class="icon-picture"></i>
                 <span class="menu-text"> 图鉴管理 </span>
             </a>

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--
+namespace:命名空间  作为多个mapper文件的唯一标识
+-->
+<mapper namespace="com.fc.threekindom.mappers.PersonageMapper">
+    <select id="findAll" resultType="Personage">
+        select * from tb_personage
+    </select>
+    <insert id="addNewPerson" parameterType="Personage">
+        insert into tb_personage(name, native_place, life, person_image, nation) VALUES (#{name},#{nativePlace},#{life},#{personImage},#{nation})
+    </insert>
+    <select id="findPersonById" resultType="Personage">
+        select *from tb_personage where id=#{id}
+    </select>
+    <update id="modifyInfo" parameterType="Personage">
+        update tb_personage set name=#{name},native_place=#{nativePlace},life=#{life},person_image=#{personImage},nation=#{nation} where id=#{id}
+    </update>
+    <update id="modifyInfoWithoutPic" parameterType="Personage">
+        update tb_personage set name=#{name},native_place=#{nativePlace},life=#{life},nation=#{nation} where id=#{id}
+    </update>
+    <delete id="deletePersonById" >
+        delete from tb_personage where id=#{id}
+    </delete>
+    <select id="likeSearch" resultType="Personage">
+        select * from tb_personage where nation like '%${keyWord}%' or name like '%${keyWord}%'or life  like '%${keyWord}%'
+    </select>
+</mapper>

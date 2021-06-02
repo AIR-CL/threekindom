@@ -2,7 +2,7 @@
 <html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>文章管理</title>
+    <title>后台管理</title>
     <!-- basic styles -->
 
     <link href="/asset/css/bootstrap.min.css" rel="stylesheet" />
@@ -44,8 +44,14 @@
     <script src="/asset/js/html5shiv.js"></script>
     <script src="/asset/js/respond.min.js"></script>
     <![endif]-->
+
+    <link rel="stylesheet" th:href="@{/index/style/css/main.css}">
+    <link rel="stylesheet" th:href="@{/index/style/components/semanticui/semantic.min.css}">
+    <link rel="stylesheet" th:href="@{/index/style/components/swiper/swiper-bundle.min.css}">
+    <link rel="stylesheet" th:href="@{/index/style/css/co/noteindex.css}">
+    <link rel="stylesheet" th:href="@{/avatar/components/cropper/cropper.min.css}">
 </head>
-<body style="background-color: white;" th:if="${session.role=='admin'}">
+<body style="background-color: white;font-family: Helvetica Neue" th:if="${session.role=='admin'}">
 <!--导航栏-->
 <div class="navbar navbar-default" id="navbar">
     <script type="text/javascript">
@@ -56,7 +62,7 @@
         <div class="navbar-header pull-left">
             <a href="#" class="navbar-brand">
                 <small>
-                    <i class="icon-leaf"></i>
+                    <i class="icon-leaf" style="font-size: 20px"></i>
                     三国爱好者交流论坛后台管理系统
                 </small>
             </a><!-- /.brand -->
@@ -126,7 +132,7 @@
                 <span class="menu-text"> 用户管理 </span>
             </a>
         </li>
-        <li class="active">
+        <li>
             <a href="/articleManage">
                 <i class="icon-text-width"></i>
                 <span class="menu-text"> 文章管理 </span>
@@ -144,7 +150,7 @@
                 <span class="menu-text"> 留言管理 </span>
             </a>
         </li>
-        <li>
+        <li class="active">
             <a href="/personageManage">
                 <i class="icon-picture"></i>
                 <span class="menu-text"> 图鉴管理 </span>
@@ -173,7 +179,7 @@
                 <i class="icon-home home-icon"></i>
                 <a href="#">首页</a>
             </li>
-            <li class="active">文章管理</li>
+            <li class="active">图鉴管理</li>
         </ul><!-- .breadcrumb -->
 
         <div class="nav-search" id="nav-search" style="margin-right :50%">
@@ -188,81 +194,113 @@
     <div class="page-content">
         <div class="row">
             <div class="col-xs-12">
+                <div class="ui modal" id="model1">
+                    <div class="header">
+                        创建新的人物资料
+                    </div>
+                    <div class="image content" >
+                        <input type="file"
+                               accept="image/*"
+                               id="imgReader"
+                               onchange="loadingImg(event)"
+                               style="display: none"
+                        >
+                        <div class="ui image"  style="height: 50%;">
+                            <img id="cropImg">
+                        </div>
+                        <div class="description" style="flex: 1 0 auto">
+                            <div class="previewBox">
+                            </div>
+                            <form id="notes-save-form" class="ui form">
+                                <input type="text"  name="personName" placeholder="姓名(20字以内)"/>
+                                <input type="text"  name="nativePlace"  style="margin-top: 5%" placeholder="籍贯(13字以内)"/>
+                                <input type="text"  name="nation" style="margin-top: 5%" placeholder="国家(20字以内)"/>
+                                <textarea  name="life" style="margin-top: 5%;width: 200%;margin-left: -100%;height: 500px"placeholder="生平(3000字以内)"></textarea>
+
+                            </form>
+                        </div>
+                    </div>
+                    <div class="actions">
+                        <div class="ui black button" onclick="uploadImg()">
+                            选择主图
+                        </div>
+                        <div class="ui black deny button">
+                            取消
+                        </div>
+                        <div class="ui positive right button blue-btn" onclick="createNotes(this)">
+                            确定
+                        </div>
+                    </div>
+                </div>
                 <!-- PAGE CONTENT BEGINS -->
+                <div class="ui modal" id="model2">
+                                        <div class="header">
+                                            创建新的人物资料
+                                        </div>
+                                        <div class="image content" >
+                                            <input type="file"
+                                                   accept="image/*"
+                                                   id="imgReader1"
+                                                   onchange="loadingImg1(event)"
+                                                   style="display: none"
+                                            >
+                                            <div class="ui image"  style="height: 50%;">
+                                                <img id="cropImg1">
+                                            </div>
+                                            <div class="description" style="flex: 1 0 auto">
+                                                <div class="previewBox1">
+                                                </div>
+                                                <form id="notes-save-form1" class="ui form">
+                                                    <input type="text"  id="personName" name="personName" placeholder="姓名(20字以内)"/>
+                                                    <input type="text" id="nativePlace" name="nativePlace"  style="margin-top: 5%" placeholder="籍贯(20字以内)"/>
+                                                    <input type="text" id="nation" name="nation" style="margin-top: 5%" placeholder="国家(20字以内)"/>
+                                                    <input style="display: none" id="personId" name="personId">
+                                                    <textarea  id="life" name="life" style="margin-top: 5%;width: 200%;margin-left: -100%;height: 500px"placeholder="生平(3000字以内)"></textarea>
 
-                <div class="alert alert-info" style="width: 70%;text-align: center">
-                    <i class="icon-hand-right"></i>
+                                                </form>
+                                            </div>
+                                        </div>
+                                        <div class="actions">
+                                            <div class="ui black button" onclick="uploadImg1()">
+                                                选择主图
+                                            </div>
+                                            <div class="ui black deny button">
+                                                取消
+                                            </div>
+                                            <div class="ui positive right button blue-btn" onclick="modifyNotes(this)">
+                                             修改
+                                            </div>
+                                        </div>
 
-                    在进行用户管理时,请慎重操作,以免因为失误操作,导致不可挽回的数据丢失
-                    <button class="close" data-dismiss="alert">
-                        <i class="icon-remove"></i>
-                    </button>
+                </div>
+                <div  id="notes-create" class="alert alert-success" style="width: 8%;">
+                    <i class="icon-plus-sign bigger-120 green">增加新人物</i>
                 </div>
                 <table class="table table-bordered  table-striped " style="width: 70%">
 
                     <tr>
                         <td class="alert-warning">ID</td>
-                        <td class="alert-success">文章名</td>
-                        <td class="alert-info">发表时间</td>
-                        <td class="alert-warning">作者</td>
-                        <td class="alert-success">评论数</td>
-                        <td class="alert-warning">点赞量</td>
-                        <td class="alert-danger">阅读量</td>
-                        <td class="alert-info">分类</td>
+                        <td class="alert-success">姓名</td>
+                        <td class="alert-block">图鉴</td>
+                        <td class="alert-info">国家</td>
+                        <td class="alert-warning">籍贯</td>
+                        <td class="alert-danger">生平</td>
+
                         <td class="info">操作</td>
                     </tr>
                     <tr th:each="u:${pageInfo.list}" >
-                        <td class="alert-warning" style="width: 5%" th:text="${u.articleId}">ID</td>
-                        <td class="alert-success" style="width: 20%" th:text="${u.articleTitle}">文章名</td>
-                        <td class="alert-info" style="width: 15%" th:text="${#dates.format(u.modifyTime,'yyyy-MM-dd ')}"></td>
-                        <td class="alert-warning" style="width: 15%" th:text="${u.createName}"></td>
-                        <td class="alert-success" style="width: 7%" th:text="${u.commentCount}">评论量</td>
-                        <td class="alert-warning" style="width: 7%" th:text="${u.likeCount}">点赞量</td>
-                        <td class="alert-danger"style="width: 7%" th:text="${u.viewCount}">阅读量</td>
-                        <td class="alert-info" style="width: 9%" th:text="${u.tag}"></td>
-                        <td class="info" style="text-align: center;width: 15%"><i class="icon-edit bigger-200 blue" th:onclick="|javascript:modifyArticle('${u.articleId}')|" data-toggle="modal" data-target="#myModal"></i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i class="icon-trash bigger-200 red" th:onclick="|javascript:deleteArticle('${u.articleId}')|"></i></td>
+                        <td class="alert-block" style="width: 5%;display:table-cell;vertical-align:middle" th:text="${u.id}">ID</td>
+                        <td class="alert-warning" style="width: 10%;display:table-cell;vertical-align:middle" th:text="${u.name}">姓名</td>
+                        <td style="width: 10%"><img  style="width: 100%"th:src="${u.personImage}"></td>
+                        <td class="alert-info" style="width:10%;display:table-cell;vertical-align:middle" th:text="${u.nation}"></td>
+                        <td class="alert-success" style="width: 10%;display:table-cell;vertical-align:middle" th:text="${u.nativePlace}">籍贯</td>
+                        <td class="alert-warning"style="overflow:hidden;text-overflow:ellipsis;display:-webkit-box;
+-webkit-box-orient:vertical;
+-webkit-line-clamp:5; " th:text="${u.life}">生平</td>
+                        <td class="alert-danger" style="text-align: center;width: 15%"><i class="icon-edit bigger-200 blue" th:onclick="|javascript:modifyPerson('${u.id}')|" ></i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i class="icon-trash bigger-200 red" th:onclick="|javascript:deletePerson('${u.id}')|"></i></td>
                     </tr>
                 </table>
-                <!--        模态框-->
-                <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-                    <div class="modal-dialog" role="document">
-                        <div class="modal-content" style="background-color: rgba(200,237,247,0.7);margin-top: 200px">
 
-                            <div class="modal-header">
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                <h4 class="modal-title"name="exampleModalLabel" style="color: white">修改信息</h4>
-                            </div><form>
-                            <div class="modal-body">
-
-
-                                <div class="form-group">
-                                    <label for="articleId"class="control-label"style="color: white">ID:</label>
-                                    <input readonly="readonly" type="text"  class="form-control" name="articleId" id="articleId">
-                                </div>
-                                <div class="form-group">
-                                    <label for="articleTitle" class="control-label"style="color: white">文章名:</label>
-                                    <input type="text" readonly="readonly" class="form-control" name="articleTitle" id="articleTitle">
-                                    <div class="form-group">
-                                        <label for="createName" class="control-label"style="color: white">作者:</label>
-                                        <input type="text" readonly="readonly" class="form-control" name="createName" id="createName">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="likeCount" class="control-label"style="color: white">点赞数:</label>
-                                        <input type="text" class="form-control"name="likeCount"id="likeCount">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="viewCount" class="control-label"style="color: white">阅读数:</label>
-                                        <input type="text" class="form-control"name="viewCount"id="viewCount">
-                                    </div>
-                                </div>
-
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-                                <button type="button"class="btn btn-primary" data-whatever="@mdo onclick=" onclick="modifyInfo()" >确认</button>
-                            </div> </form>
-                        </div>
-                    </div></div>
                 <!--显示分页信息-->
                 <div class="modal-footer no-margin-top" style="width: 70%">
                     <div class="col-md-6">
@@ -271,28 +309,28 @@
 
                     <ul class="pagination pull-right no-margin">
                         <li th:if="${pageInfo.hasPreviousPage}">
-                            <a th:href="'/articleManage?pageNum=1'">首页</a>
+                            <a th:href="'/personageManage?pageNum=1'">首页</a>
                         </li>
 
                         <li class="prev" th:if="${pageInfo.hasPreviousPage}">
-                            <a th:href="'/articleManage?pageNum='+${pageInfo.prePage}">
+                            <a th:href="'/personageManage?pageNum='+${pageInfo.prePage}">
                                 <i class="ace-icon fa fa-angle-double-left">上一页</i>
                             </a>
                         </li>
                         <!--遍历条数-->
                         <li th:each="nav:${pageInfo.navigatepageNums}">
-                            <a th:href="'/articleManage?pageNum='+${nav}" th:text="${nav}" th:if="${nav != pageInfo.pageNum}"></a>
+                            <a th:href="'/personageManage?pageNum='+${nav}" th:text="${nav}" th:if="${nav != pageInfo.pageNum}"></a>
                             <span style="font-weight: bold;background: #6faed9;" th:if="${nav == pageInfo.pageNum}" th:text="${nav}" ></span>
                         </li>
 
                         <li class="next" th:if="${pageInfo.hasNextPage}">
-                            <a th:href="'/articleManage?pageNum='+${pageInfo.nextPage}">
+                            <a th:href="'/personageManage?pageNum='+${pageInfo.nextPage}">
                                 <i class="ace-icon fa fa-angle-double-right">下一页</i>
                             </a>
                         </li>
 
                         <li>
-                            <a th:href="'/articleManage?pageNum='+${pageInfo.pages}">尾页</a>
+                            <a th:href="'/personageManage?pageNum='+${pageInfo.pages}">尾页</a>
                         </li>
                     </ul>
                 </div>
@@ -307,23 +345,27 @@
 
 
 <script type="text/javascript">
-    function modifyArticle(id) {
-        var articleId=id;
+    function modifyPerson(id) {
+        var id=id;
         $.ajax({
             type: "post",
-            url: "/findArticleByArticleId",
-            data:{"articleId":articleId},
+            url: "/personage/findPersonById",
+            data:{"id":id},
             //请求成功
             success: function (result) {
-                if (result.state==100) {
+                if (result.state!=200) {
                     alert("数据库异常");
-                    window.location.href="/articleManage";
+                    window.location.href="/personageManage";
                 }
-                $("#articleId").val(result.articleMo.articleId);
-                $("#articleTitle").val(result.articleMo.articleTitle);
-                $("#createName").val(result.articleMo.createName);
-                $("#likeCount").val(result.articleMo.likeCount);
-                $("#viewCount").val(result.articleMo.viewCount);
+
+                $("#nation").val(result.person.nation);
+                $("#nativePlace").val(result.person.nativePlace);
+                $("#personName").val(result.person.name);
+                $("#life").val(result.person.life);
+                $("#cropImg1").attr("src",result.person.personImage);
+                $("#preview").attr("src",result.person.personImage);
+                $("#personId").val(result.person.id);
+
 
             }
         })
@@ -332,20 +374,21 @@
 </script>
 
 <script type="text/javascript">
-    function deleteArticle(id) {
+    function deletePerson(id) {
         var pageNow=$("#pageThis").html();
-        var articleId=id;
+        var id=id;
         $.ajax({
             type: "post",
-            url: "/deleteArticleById",
-            data:{"articleId":articleId},
+            url: "/personage/deletePersonById",
+            data:{"id":id},
             success: function (result) {
-                if (result.state==100) {
-                    alert("修改失败");
-                    window.location.href="/articleManage";
+                if (result.state!=200) {
+                    alert("数据库异常");
+                    window.location.href="/personageManage";
                 }
+
                 alert("删除成功");
-                window.location.href="/articleManage?pageNum="+pageNow;
+                window.location.href="/personageManage?pageNum="+pageNow;
 
             }
         })
@@ -353,29 +396,9 @@
     }
 </script>
 
-<!--修改信息-->
-<script>
-    function modifyInfo() {
-        var likeCount=$("#likeCount").val();
-        var articleId=$("#articleId").val();
-        var viewCount=$("#viewCount").val();
-        var pageNow=$("#pageThis").html();
-        $.post("/modifyArticleInfo",{"articleId":articleId,"viewCount":viewCount,"likeCount":likeCount},function (data) {
-            if (data.state==100){
-                alert("修改失败");
-                window.location.href="/articleManage?pageNum="+pageNow;
-                return;
-            }
-            alert("修改成功");
-            window.location.href="/articleManage?pageNum="+pageNow;
-
-        })
-
-    }
-
-</script>
 
 </body>
+
 <!-- basic scripts -->
 
 <!--[if !IE]> -->
@@ -424,4 +447,12 @@
 <script src="asset/js/ace.min.js"></script>
 
 
+<script src="/index/style/components/jquery.min.js"></script>
+<script src="/index/style/components/semanticui/semantic.min.js"></script>
+<script src="/index/style/js/common.js"></script>
+<script src="/index/style/js/usermenu.js"></script>
+<script th:src="@{/index/style/components/swiper/swiper-bundle.min.js}"></script>
+<script th:src="@{/index/style/components/vue/vue.min.js}"></script>
+<script th:src="@{/index/style/js/co/noteindex.js}"></script>
+<script th:src="@{/avatar/components/cropper/cropper.min.js}"></script>
 </html>

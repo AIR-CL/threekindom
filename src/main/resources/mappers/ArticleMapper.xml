@@ -82,4 +82,7 @@ namespace:命名空间  作为多个mapper文件的唯一标识
     <select id="findNotice" resultType="Article">
         select * from tb_article where create_id=1
     </select>
+    <select id="searchArticle" resultType="Article">
+        select * from tb_article where article_title like '%${keyWord}%'or text like '%${keyWord}%'
+    </select>
 </mapper>

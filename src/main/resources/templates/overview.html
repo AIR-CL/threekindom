@@ -38,11 +38,11 @@ box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.08);
     <a class="ro-menu-item" href="/index">
         <span>主页</span>
     </a>
-    <a class="ro-menu-item" href="#">
+    <a class="ro-menu-item" href="/searchImage">
         <span>图鉴查询</span>
     </a>
-    <a class="ro-menu-item" href="#">
-        <span>获取积分</span>
+    <a class="ro-menu-item" href="/search">
+        <span>文章查询</span>
     </a>
     <div class="right menu" th:if="${session.userId}!=null" login=yes>
         <div id="ro-search-box" class="ro-menu-item" style="display: none">
@@ -204,13 +204,13 @@ box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.08);
                 </div>
             </h3>
 
-            <p>如果你已经在第三方平台发布了文章, 想要简单的搬到三国爱好者交流论坛。那么可以直接 <code>crtl + c/v</code> 进行复制。 月幕的富文本编辑器支持将主流文章平台的内容直接复制过来并保持格式不变动，
+            <p>如果你已经在第三方平台发布了文章, 想要简单的搬到三国爱好者交流论坛。那么可以直接 <code>crtl + c/v</code> 进行复制。 三国爱好者交流论坛的富文本编辑器支持将主流文章平台的内容直接复制过来并保持格式不变动，
                 如知乎、B站专栏、微信公众号等。
                 <br/>但对于一些根本没格式 <small>(bangumi、贴吧)</small> 的网站不支持, 这些网站一复制过来文字就都堆在一起了，只能手动改，无解。</p>
             <p>需要注意的是, 要保持格式那么复制时需要在第三方平台的<b>编辑页</b>复制, 直接 <code>crtl + a</code> 全选即可。 如果已经发布, 则可以点击修改， 进入修改页然后在复制。</p>
             <hr color="#ddd" width="50%"/>
             <p>关于文章的附图, 支持直接上传和复制网络图片</p>
-            <p><b>复制网络图片的方法: </b>右键你需要的图片, 点击【复制图片】按钮 <small>(不是复制图片地址)</small>， 即可在月幕的富文本编辑器中 <code>ctrl+v</code> 进行粘贴。</p>
+            <p><b>复制网络图片的方法: </b>右键你需要的图片, 点击【复制图片】按钮 <small>(不是复制图片地址)</small>， 即可在三国爱好者交流论坛的富文本编辑器中 <code>ctrl+v</code> 进行粘贴。</p>
             <hr color="#ddd" width="50%"/>
             <p>月幕没有审核, 只要是Galgame相关的想发什么都行， 仅需注意图片不要露点, 如果发错了位置(比如把专栏发到资讯里了) 可以在文章总览页的条目右边小菜单中进行修改。
                 更多注意事项可以查看

@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-FYBEW0S5S5"></script>
+    <script> window.dataLayer = window.dataLayer || []; function gtag() { dataLayer.push(arguments); } gtag('js', new Date()); gtag('config', 'G-FYBEW0S5S5'); </script>        <meta charset="utf-8"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <title>图鉴查询</title>
+
+
+    <link rel="stylesheet" th:href="@{/index/style/css/main.css}">
+    <link rel="stylesheet" th:href="@{/index/style/components/semanticui/semantic.min.css}">
+    <link rel="stylesheet" th:href="@{/index/style/css/search/search.css}">
+
+    <style type="text/css">
+    </style>
+
+
+</head>
+<body>
+
+<link rel="stylesheet" th:href="@{/index/style/icon/iconfont.css}">
+
+<div class="ui text ro-menu menu " style="position: relative;
+        background: #fff;
+box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.08);
+        margin-bottom: 0;
+        margin-top: 0;
+        ">
+    <a href="#">
+        <img src="/image/logo.png">
+    </a>
+    <a class="ro-menu-item" href="/index">
+        <span>主页</span>
+    </a>
+    <a class="ro-menu-item" href="/searchImage">
+        <span>图鉴查询</span>
+    </a>
+    <a class="ro-menu-item" href="/search">
+        <span>文章查询</span>
+    </a>
+    <a  style="margin-left: 20%;margin-top: 1.2%;font-family: 方正行楷繁体;font-size: 33px">
+        <span>三国爱好者交流论坛 </span>
+    </a>
+    <div class="right menu" th:if="${session.userId}!=null" login=yes>
+        <div id="ro-search-box" class="ro-menu-item" style="display: none">
+            <div id="main-search-input" class="ui left icon input">
+                <input type="text" placeholder="搜索...">
+                <i class="icon iconfont icon-search"></i>
+            </div>
+        </div>
+        <a id="ro-search-button" class="ro-menu-item">
+            <i class="icon iconfont icon-search"></i>
+        </a>
+        <div id="ro-menu-split">
+            <span></span>
+        </div>
+
+        <a id="menu-user-avatar" target="_blank">
+            <img class="ui mini circular image" th:src="@{${session.avatar}}">
+        </a>
+        <a class="ro-menu-item" id="menu-user-msg" href="#" >
+            <i class="icon iconfont icon-bell large" th:unless="${session.inRead!=0}"></i>
+            <i class="icon iconfont icon-bell-fill red large" th:if="${session.inRead!=0} " th:text="${session.inRead}"></i>
+        </a>
+    </div>
+    <div class="right menu" th:unless="${session.userId}!=null" login=no>
+        <div id="ro-search-box" class="ro-menu-item" style="display: none">
+            <div id="main-search-input" class="ui left icon input">
+                <input type="text" placeholder="搜索...">
+                <i class="icon iconfont icon-search"></i>
+            </div>
+        </div>
+        <a id="ro-search-button" class="ro-menu-item">
+            <i class="icon iconfont icon-search"></i>
+        </a>
+        <div id="ro-menu-split">
+            <span></span>
+        </div>
+
+        <a id="menu-user-avatar" class="ro-menu-item" href="/log">
+            <span>登录</span>
+        </a>
+    </div>
+</div>
+
+<div id="user-menu" class="ui popup" style="padding: 0">
+    <div id="user-menu-namebox" th:text="${session.username}">
+    </div>
+    <div class="ui large vertical secondary menu">
+        <a class="item" href="/userCenter" >
+            个人中心
+        </a>
+        <a class="item" href="/publish/overview" >
+            投稿后台
+        </a>
+        <a class="item" href="/logout">
+            退出
+        </a>
+    </div>
+</div>
+
+<div id="user-msg-menu" class="ui popup" style="padding: 0">
+    <div class="ui large vertical secondary menu">
+        <a class="item" tab="reply" href="/message" >
+            回复
+        </a>
+    </div>
+</div>
+<div id="yms-search-field">
+    <div class="ui left icon input yms-search-ipt">
+        <input id="searchInput" type="text" placeholder="搜索..."/>
+        <i style="font-size: 16px" class="icon iconfont icon-search"></i>
+    </div>
+
+    <div class="yms-search-btn" id="search">搜索</div>
+</div>
+
+<div style="min-height: 980px;width: 1080px;margin: 0 auto;padding: 44px 0 40px 0;">
+
+    <div id="yms-tab-wrap">
+        <ul class="tabs">
+            <a href="/search"><li tab="article"class="active">文章</li></a>
+            <a href="/searchImage"><li tab="hcode" >图鉴</li></a>
+        </ul>
+    </div>
+    <div id="yms-search-result" th:if="${keyWord}!=null">
+        <div id="article-result-list" class="ui divided items " >
+
+            <div class="ui item" th:each="u:${pageInfo.list}">
+                <div class="content">
+                    <a class="header" target="_blank"
+                       th:onclick="|javascript:toAticlePage('${u.articleId}')|" th:text="${u.articleTitle}">xxx</a>
+                    <div class="meta" th:text="${u.text}">好家伙， 组合是吧。点进了网站看一下， 网页倒是做的挺好的。官推说预计2021年6月公开官网内容， 到时候再看吧， 现在也就这么一张图。官网: http://ainolinks.com/Galgame</div>
+                    <div class="extra">
+                        <span class="topicCategory" th:text="${u.tag}"> 资讯 </span>
+                        <span th:text="${#dates.format(u.modifyTime,'yyyy-MM-dd ')}">2021-05-21 20:08</span>
+                        <span><i class="iconfont icon-eye" th:text="${u.viewCount}" style="font-size: 12px">230</i></span>
+                        <span><i class="iconfont icon-like"th:text="${u.likeCount}"
+                                 style="font-size: 12px"> 4</i></span>
+                        <span><i class="iconfont icon-message"th:text="${u.commentCount}"
+                                 style="font-size: 12px">1</i></span>
+                    </div>
+                </div>
+                <div class="image">
+                    <img th:src="${u.articleFace}">
+                </div>
+            </div>
+
+        </div>
+
+        <!--分页-->
+        <div id="pager-box">
+            <div class="ui pagination menu pager-wrap">
+
+                <a  th:if="${pageInfo.hasPreviousPage}"class="item pager-num  " th:href="'/searchArticle?pageNum=1'+'&keyWord='+${keyWord}">首页</a>
+
+
+
+                <a   th:if="${pageInfo.hasPreviousPage}" class="item pager-num" th:href="'/searchArticle?pageNum='+${pageInfo.prePage}+'&keyWord='+${keyWord}">
+                    <i class="ace-icon fa fa-angle-double-left">上一页</i>
+                </a>
+
+                <!--遍历条数-->
+                <a  th:each="nav:${pageInfo.navigatepageNums}">
+                    <a  class="item pager-num" th:href="'/searchArticle?pageNum='+${nav}+'&keyWord='+${keyWord}" th:text="${nav}" th:if="${nav != pageInfo.pageNum}"></a>
+                    <a class="item pager-num active " th:if="${nav == pageInfo.pageNum}" th:text="${nav}" ></a>
+                </a>
+
+
+                <a  th:if="${pageInfo.hasNextPage}"class="item pager-num" th:href="'/searchArticle?pageNum='+${pageInfo.nextPage}+'&keyWord='+${keyWord}">
+                    <i class="ace-icon fa fa-angle-double-right">下一页</i>
+                </a>
+
+                <a class="item pager-num"  th:href="'/searchArticle?pageNum='+${pageInfo.pages}+'&keyWord='+${keyWord}">尾页</a>
+
+            </div>
+        </div>
+    </div>
+<!--默认-->
+    <div id="yms-search-result" th:if="${keyWord}==null">
+        <div id="article-result-list" class="ui divided items " >
+
+            <div class="ui item" th:each="u:${pageInfo.list}">
+                <div class="content">
+                    <a class="header" target="_blank"
+                       th:onclick="|javascript:toAticlePage('${u.articleId}')|" th:text="${u.articleTitle}">xxx</a>
+                    <div class="meta" th:text="${u.text}">好家伙， 组合是吧。点进了网站看一下， 网页倒是做的挺好的。官推说预计2021年6月公开官网内容， 到时候再看吧， 现在也就这么一张图。官网: http://ainolinks.com/Galgame</div>
+                    <div class="extra">
+                        <span class="topicCategory" th:text="${u.tag}"> 资讯 </span>
+                        <span th:text="${#dates.format(u.modifyTime,'yyyy-MM-dd ')}">2021-05-21 20:08</span>
+                        <span><i class="iconfont icon-eye" th:text="${u.viewCount}" style="font-size: 12px">230</i></span>
+                        <span><i class="iconfont icon-like"th:text="${u.likeCount}"
+                                 style="font-size: 12px"> 4</i></span>
+                        <span><i class="iconfont icon-message"th:text="${u.commentCount}"
+                                 style="font-size: 12px">1</i></span>
+                    </div>
+                </div>
+                <div class="image">
+                    <img th:src="${u.articleFace}">
+                </div>
+            </div>
+
+        </div>
+
+        <!--分页-->
+        <div id="pager-box">
+            <div class="ui pagination menu pager-wrap">
+
+                <a  th:if="${pageInfo.hasPreviousPage}"class="item pager-num  " th:href="'/search?pageNum=1'">首页</a>
+
+
+
+                <a   th:if="${pageInfo.hasPreviousPage}" class="item pager-num" th:href="'/search?pageNum='+${pageInfo.prePage}">
+                    <i class="ace-icon fa fa-angle-double-left">上一页</i>
+                </a>
+
+                <!--遍历条数-->
+                <a  th:each="nav:${pageInfo.navigatepageNums}">
+                    <a  class="item pager-num" th:href="'/search?pageNum='+${nav}" th:text="${nav}" th:if="${nav != pageInfo.pageNum}"></a>
+                    <a class="item pager-num active " th:if="${nav == pageInfo.pageNum}" th:text="${nav}" ></a>
+                </a>
+
+
+                <a  th:if="${pageInfo.hasNextPage}"class="item pager-num" th:href="'/search?pageNum='+${pageInfo.nextPage}">
+                    <i class="ace-icon fa fa-angle-double-right">下一页</i>
+                </a>
+
+                <a class="item pager-num"  th:href="'/search?pageNum='+${pageInfo.pages}">尾页</a>
+
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<footer class="ro-footer">
+    <div class="ui grid stackable">
+        <div class="two wide column"></div>
+        <div class="six wide column">
+            <h3>三国爱好者交流论坛 <span
+                    style="font-size: 12px; margin-left: 8px; font-weight: initial">请感受这绝妙的故事体裁</span>
+            </h3>
+            <p> 本论坛提供的内容基本引用自公开网络或用户自行上传，仅供网友阅读与交流。站点本身不发布、提供任何资源。</p>
+            <div style="min-height: 18px"></div>
+            <p> ©SGAHZLT. All Rights Reserved!<span id= "isLog" style="visibility: hidden" th:text="${session.userId}"></span></p>
+        </div>
+        <div class="six wide column" style="text-align: right">
+            <div style="margin-bottom: 20px">
+                <a href="javaScript:void(0);" style="margin-right: 20px">
+                        <span class="iconfont icon-wechat-fill footer-spread-tip"
+                              style="color: white;font-size: 48px;"></span>
+                    <div class="ui special popup" style="width: 200px">
+                        <img src="image/06.jpg" width="200px">
+                        <p style="text-align: center">关注公众号: <b>三国爱好者交流论坛</b><br/> 洞悉三国大小事</p>
+                    </div>
+                </a>
+                <a href="javaScript:void(0);">
+                        <span class="iconfont icon-QQ-circle-fill footer-spread-tip"
+                              style="color: white;font-size: 48px;"></span>
+                    <div class="ui special popup" style="width: 200px">
+                        <img src="/image/06.jpg" width="200px">
+                        <p style="text-align: center">讨论、反馈、交流q群<br/> 276491323</p>
+                    </div>
+                </a>
+            </div>
+            <p></p>
+            <p></p>
+        </div>
+        <div class="two wide column"></div>
+    </div>
+    <div class="ui grid stackable">
+        <div class="two wide column"></div>
+        <div class="three wide column"></div>
+        <div class="six wide column" style="text-align: center">
+            <img style="max-width: 200px" src="/image/logo.png">
+        </div>
+        <div class="three wide column"></div>
+        <div class="two wide column"></div>
+    </div>
+</footer>
+<script th:src="@{/index/style/components/jquery.min.js}"></script>
+<script th:src="@{/index/style/components/semanticui/semantic.min.js}"></script>
+<script th:src="@{/index/style/js/common.js}"></script>
+<script th:src="@{/index/style/js/usermenu.js}"></script>
+
+<script type="text/javascript">
+    $(".footer-spread-tip")
+        .popup({
+            inline: true,
+            position: 'top center',
+        });
+</script>
+</body>
+
+<script type="application/javascript" th:src="@{/index/style/components/jquery.lazyload.min.js}"></script>
+<!--去文章页面-->
+<script type="text/javascript">
+    function toAticlePage(id) {
+        var articleId=id;
+        $.ajax({
+            type: "post",
+            url: "/article/article",
+            data:{"articleId":articleId},
+            //请求成功
+            success: function (result) {
+                if (result.state==100) {
+                    $msg.error("服务器异常!");
+                    window.location.href = "/index";
+                }
+
+                window.location.href = "/article";
+
+            }
+        })
+
+    }
+</script>
+<!--模糊查询-->
+<script>
+$("#search").click(function () {
+    var text=$("#searchInput").val();
+    window.location.href="/searchArticle?keyWord="+text;
+})
+</script>
+
+</html>
